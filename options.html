@@ -1,0 +1,130 @@
+<!doctype html>
+<html ng-app="youtubeBlocker">
+    <head>
+        <!-- bower:css -->
+        <!-- endbower -->
+
+       
+
+        <!-- bower:js -->
+        <!-- endbower -->
+
+        <!-- build:js scripts/options.js -->
+        <script src="scripts/jquery.js"></script>
+        <script src="scripts/angular.min.js"></script>
+        <script src="scripts/options.js"></script>
+        <!-- endbuild -->
+
+         <!-- build:css styles/main.css -->
+         <link href="styles/bootstrap.css" rel="stylesheet" media="screen">
+        <link href="styles/main.css" rel="stylesheet" media="screen">
+        <!-- endbuild -->
+    </head>
+    <body>
+        <div class="container" ng-controller="OptionsController">
+            <div class="page-header">
+                <h1 class="text-primary">Youtube Keyword Blocker <small>Options</small></h1>
+            </div>
+            <div ng-hide="checkPassword()">
+                <span class="text-info">Enter Options Password</span>
+                <input type="password" class="form-control" ng-model="password">
+            </div>
+
+            <div ng-show="checkPassword()">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-titel text-info">Blocked Keywords</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                           <li class="list-group-item" ng-repeat="keyword in keywords">
+                                <span class="badge ngClick" ng-click="remove($index)"><span class="glyphicon glyphicon-trash"></span></span>
+                                {{keyword}}
+                            </li>
+                        </ul>                    
+
+                        <div class="input-group">
+                            <input type="text" ng-enter="addKeyword()" class="form-control" ng-model="newKeyword">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-disabled="hasKeyword()" ng-click="addKeyword()"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-titel text-info">Remove blocked results from frontpage/search</h3>
+                    </div>
+                    <div class="panel-body"/
+                        <span>This will not display the block pop-over on the youtubefrontpage/searchresults but will remove video's which contain the blocked keywords in the title. Display of the block pop-over will still happen on individual video's</span>
+                        <form>
+                            <label>
+                                <input type="checkbox" ng-model="removeFromResults" ng-change="saveLocalStorage()"> Remove blocked results from search/frontpage
+                            </label>
+                        </form>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-titel text-info">Block Pop-Over</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form>
+                            <div class="form-group">
+                            <label for="popOverText">Text</label>
+                            <textarea id="popOverText" class="form-control" rows="5" ng-model="popOverText"></textarea>
+
+                            <label for="popOverImage">Image</label>
+                            <input type="url" id="popOverImage" class="form-control" ng-model="popOverImage">
+                            </div>
+                        </form>
+
+                        <span class="label label-info">Preview</span>
+                        <div class="well">
+                            <img class="img-responsive img-rounded" ng-src="{{popOverImage}}">
+                            <p style="white-space: pre-line;">
+                            {{popOverText}}
+                            </p>
+                        </div>
+                        <button class="btn btn-default" type="button" ng-click="savePopOver()">
+                            Save <span class="glyphicon glyphicon-floppy-save"></span>
+                        </button>
+                        <p>
+                            <div class="alert alert-success" role="alert" ng-show="popOverSaved">
+                                <button type="button" class="close" ng-click="popOverSaved = false">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+                                <strong>Pop-Over saved!</strong>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="panel panel-default">
+                   <div class="panel-heading">
+                        <h3 class="panel-titel text-info">Options Password</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-model="newOptionsPassword">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-disabled="hasKeyword()" ng-click="savePassword()">
+                                    <span class="glyphicon glyphicon-floppy-save"></span>
+                                </button>
+                            </span>
+                        </div>
+                        <p>
+                            <div class="alert alert-success" role="alert" ng-show="passwordSaved">
+                                <button type="button" class="close" ng-click="passwordSaved = false">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+                                <strong>Password saved!</strong>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,66 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+    "name": "Keyword Blocker",
+    "version": "1.4",
+    "manifest_version": 2,
+    "description": "Block Videos based on specified keywords",
+    "icons": {
+        "16": "images/icon-16.png",
+        "128": "images/icon-128.png"
+    },
+    "default_locale": "en",
+    "background": {
+        "scripts": [
+            "scripts/chromereload.js",
+            "scripts/background.js"
+        ]
+    },
+  "browser_action": {
+    "default_icon": {
+      "19": "images/icon-19.png",
+      "38": "images/icon-38.png"
+    },
+    "default_title": "Keyword Blocker",
+    "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+      "matches": [
+      	  "http://www.youtube.com/",
+      	  "http://www.youtube.nl/",
+      	  "https://www.youtube.com/",
+      	  "https://www.youtube.nl/",
+          "http://www.youtube.com/results*",
+          "http://www.youtube.nl/results*",
+          "https://www.youtube.com/results*",
+          "https://www.youtube.nl/results*",
+          "http://www.youtube.com/watch*",
+          "http://www.youtube.nl/watch*",
+          "https://www.youtube.com/watch*",
+          "https://www.youtube.nl/watch*"
+      ],
+      "css":[
+        "styles/bootstrap.css",
+        "styles/main.css"
+      ],
+      "js": [
+        "scripts/jquery.js",
+        "scripts/bootstrap.js",
+        "scripts/mutation-summary.js",
+        "scripts/contentscript.js"
+      ],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "storage",
+    "http://www.youtube.com/*",
+    "http://www.youtube.nl/*",
+    "https://www.youtube.com/*",
+    "https://www.youtube.nl/*"
+  ]
+}

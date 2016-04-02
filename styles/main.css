@@ -1,0 +1,15 @@
+body {
+    padding: 20px;
+}
+
+.ngClick {
+	cursor: pointer;
+}
+
+textarea {
+	resize: none;
+}
+
+.modal-body{
+	text-align: center;
+}
