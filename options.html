@@ -67,6 +67,19 @@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <h3 class="panel-titel text-info">Also search video description for keywords</h3>
+                    </div>
+                    <div class="panel-body"/
+                        <span>This will make it so that keywords that are present in the description also trigger the Block Pop-Over.</span>
+                        <form>
+                            <label>
+                                <input type="checkbox" ng-model="checkDescription" ng-change="saveLocalStorage()"> Also check description for keywords.
+                            </label>
+                        </form>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
                         <h3 class="panel-titel text-info">Block Pop-Over</h3>
                     </div>
                     <div class="panel-body">
