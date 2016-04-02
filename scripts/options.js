@@ -40,7 +40,7 @@ app.controller('OptionsController', function($scope){
 		}
 		else{
 			$scope.popOverText = 'Blocked';
-			$scope.popOverImage = 'http://us.cdn1.123rf.com/168nwm/arcady31/arcady311010/arcady31101000044/8101111-stop-bord.jpg'
+			$scope.popOverImage = 'https://i.imgur.com/sLmiP5n.png'
 		}
 
 		if(typeof data.removeFromResults != 'undefined'){
@@ -48,6 +48,13 @@ app.controller('OptionsController', function($scope){
 		}
 		else{
 			$scope.removeFromResults = true;
+		}
+
+		if(typeof data.checkDescription != 'undefined'){
+			$scope.checkDescription = data.checkDescription;
+		}
+		else{
+			$scope.checkDescription = true;
 		}
 		$scope.$apply();
 	});
@@ -100,7 +107,8 @@ app.controller('OptionsController', function($scope){
 		chrome.storage.local.set({
 			'keywords':$scope.keywords, 
 			'password':$scope.optionsPassword,
-			'removeFromResults':$scope.removeFromResults, 
+			'removeFromResults':$scope.removeFromResults,
+			'checkDescription':$scope.checkDescription,
 			'popOver':{
 				'image':$scope.popOverImage, 
 				'text':$scope.popOverText
