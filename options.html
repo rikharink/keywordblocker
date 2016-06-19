@@ -49,9 +49,15 @@
                                 <button class="btn btn-default" type="button" ng-disabled="hasKeyword()" ng-click="addKeyword()"><span class="glyphicon glyphicon-plus"></span></button>
                             </span>
                         </div>
+                        <br />
+                        <div>
+                            <label class="btn btn-default btn-file">
+                                Import Keywords <input type="file" class="form-control" file-reader="fileContent" accept=".csv" style="display: none;" />
+                            </label>
+                            <button class="btn btn-default" type="button" ng-click="exportKeywords()">Export Keywords</button>
+                        </div>
                     </div>
                 </div>
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-titel text-info">Remove blocked results from frontpage/search</h3>
