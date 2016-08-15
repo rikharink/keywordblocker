@@ -1,11 +1,14 @@
 'use strict';
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
-
 var observer = new MutationObserver(function(mutations, observer) {
     // fired when a mutation occurs
     chrome.storage.local.get(function(data){
         var blockKeywords = data.keywords;
+
+        if(blockKeywords.length == 0)
+            return;
+
         var searchTerm = $('[name="search_query"]')[0].value.toLowerCase();
         var videoTitle = $("#eow-title").text().toLowerCase();
         var descriptionText =$("#eow-description").text().toLowerCase();
