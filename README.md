@@ -8,10 +8,12 @@ Originally this was developed for a person who is easily scared and needed to be
 
 It is made for this person but published as an extension to possibly help other people who may have the same needs!
 
+Get it in the [Chrome Webstore](https://chrome.google.com/webstore/detail/keyword-blocker/pbgacppomjfpheddhifkdkklddnolnpg)
 
 **Changelog:**
    - **1.6**
     * Added csv export
+    * Fixed some small bugs
    - **1.5** 
     * Added option to also search the description for blocked keywords
    - **1.4**
