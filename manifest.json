@@ -2,7 +2,7 @@
 "update_url": "https://clients2.google.com/service/update2/crx",
 
     "name": "Keyword Blocker",
-    "version": "1.5",
+    "version": "1.6",
     "manifest_version": 2,
     "description": "Block Videos based on specified keywords",
     "icons": {
@@ -12,7 +12,6 @@
     "default_locale": "en",
     "background": {
         "scripts": [
-            "scripts/chromereload.js",
             "scripts/background.js"
         ]
     },
@@ -28,18 +27,7 @@
   "content_scripts": [
     {
       "matches": [
-      	  "http://www.youtube.com/",
-      	  "http://www.youtube.nl/",
-      	  "https://www.youtube.com/",
-      	  "https://www.youtube.nl/",
-          "http://www.youtube.com/results*",
-          "http://www.youtube.nl/results*",
-          "https://www.youtube.com/results*",
-          "https://www.youtube.nl/results*",
-          "http://www.youtube.com/watch*",
-          "http://www.youtube.nl/watch*",
-          "https://www.youtube.com/watch*",
-          "https://www.youtube.nl/watch*"
+          "*://www.youtube.*/*"
       ],
       "css":[
         "styles/bootstrap.css",
@@ -58,9 +46,6 @@
   "permissions": [
     "tabs",
     "storage",
-    "http://www.youtube.com/*",
-    "http://www.youtube.nl/*",
-    "https://www.youtube.com/*",
-    "https://www.youtube.nl/*"
+    "*://www.youtube.*/*"
   ]
 }
