@@ -40,7 +40,6 @@ app.directive('fileReader', function() {
 
 app.controller('OptionsController', function($scope){
     chrome.storage.local.get(function(data){
-        console.log(data.removeFromResultsss);
         $scope.localStorage = data;
         if(data.keywords){
             $scope.keywords = data.keywords;
