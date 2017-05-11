@@ -11,11 +11,15 @@ It is made for this person but published as an extension to possibly help other 
 Get it in the [Chrome Webstore](https://chrome.google.com/webstore/detail/keyword-blocker/pbgacppomjfpheddhifkdkklddnolnpg)
 
 **Changelog:**
+   - **1.7**
+        * Fix for new layout of YouTube
+        * Added regex support for keyword matching
+        * Cleaned up code
    - **1.6**
-    * Added csv export
-    * Fixed some small bugs
+        * Added csv export
+        * Fixed some small bugs
    - **1.5** 
-    * Added option to also search the description for blocked keywords
+        * Added option to also search the description for blocked keywords
    - **1.4**
-    * Redesign for a more robust extension (hopefully this will break less often now)
-    * Added an option to remove unwanted video's from search results/frontpage instead of always showing the block pop-over
+        * Redesign for a more robust extension (hopefully this will break less often now)
+        * Added an option to remove unwanted video's from search results/frontpage instead of always showing the block pop-over

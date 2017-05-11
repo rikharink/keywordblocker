@@ -169,6 +169,6 @@ app.controller('OptionsController', function($scope){
         link.setAttribute("href", encodedUri);
         link.setAttribute("download", "keywordblocker_keywords.csv");
         document.body.appendChild(link); // Required for FF
-        link.click(); // This will download the data file named "my_data.csv".
+        link.click(); // This will download the data file named "keywordblocker_keywords.csv".
     }
 });
