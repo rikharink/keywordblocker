@@ -155,8 +155,7 @@ var observer = new MutationObserver(function(mutations, observer) {
     }
 });
 
-function observe(){
-    var observable = document.getElementById('content');
+function observe(observable){
     observer.observe(observable, {
         subtree: true,
         attributes: true,
@@ -165,4 +164,19 @@ function observe(){
     });
 }
 
-observe();
+var ob = new MutationObserver(function (mutations, me) {
+  // `mutations` is an array of mutations that occurred
+  // `me` is the MutationObserver instance
+  var content = document.getElementById('content');
+  if (content) {
+    observe(content);
+    me.disconnect(); // stop observing
+    return;
+  }
+});
+
+// start observing
+ob.observe(document, {
+  childList: true,
+  subtree: true
+});

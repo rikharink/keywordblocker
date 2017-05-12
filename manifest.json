@@ -2,9 +2,9 @@
 "update_url": "https://clients2.google.com/service/update2/crx",
 
     "name": "Keyword Blocker",
-    "version": "1.7",
+    "version": "1.7.1",
     "manifest_version": 2,
-    "description": "Block Videos based on specified keywords",
+    "description": "Block YouTube videos based on specified keywords",
     "icons": {
         "16": "images/icon-16.png",
         "128": "images/icon-128.png"
