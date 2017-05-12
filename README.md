@@ -11,6 +11,8 @@ It is made for this person but published as an extension to possibly help other 
 Get it in the [Chrome Webstore](https://chrome.google.com/webstore/detail/keyword-blocker/pbgacppomjfpheddhifkdkklddnolnpg)
 
 **Changelog:**
+   - **1.7.1**
+        * Bug fix for blocking video
    - **1.7**
         * Fix for new layout of YouTube
         * Added regex support for keyword matching
