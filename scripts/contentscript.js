@@ -1,5 +1,26 @@
 'use strict';
-window.newYoutube = typeof document.__polymerGestures !== 'undefined';
+
+//content script
+// var clickedEl = null;
+
+// document.addEventListener("mousedown", function(event){
+//     //right click
+//     if(event.button == 2) { 
+//         clickedEl = event.target;
+//     }
+// }, true);
+
+// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+//     if(request == "blockChannel") {
+//         console.log("BLOCK CHANNEL");
+//         console.log(clickedEl);
+//         var cont = clickedEl.closest("div");
+//         var channel = cont.getElementsByClassName("yt-formatted-string")[0].innerHTML;
+//         console.log(channel);
+//         console.log("...");
+//     }
+// });
+
 
 function loadPopup(text, image){
     var modalCode = '<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
@@ -29,6 +50,13 @@ function loadPopup(text, image){
     }
 }
 
+function getChannels(){
+    if(isNewYouTube)
+        return Array.from(document.querySelectorAll("a.yt-formatted-string")).filter(x => (x.href.includes("channel") || x.href.includes("user")) && x.innerHTML != "Library");
+    else
+        return Array.from(document.querySelectorAll("a.g-hovercard.yt-uix-sessionlink.spf-link")).filter(x => (x.href.includes("channel") || x.href.includes("user")) && x.innerHTML != "Library");
+}
+
 function isYoutubeLink(value){
     if(value.href && value.title != "" && typeof value.href != 'undefined')
         return value.href.indexOf('watch?') != -1;
@@ -38,7 +66,9 @@ function isYoutubeLink(value){
 
 function removeNodeByTag(videoLink, tagname){
     var node = videoLink.closest(tagname);
-    node.parentNode.removeChild(node);
+    if(node && node.parentNode){
+        node.parentNode.removeChild(node);
+    }
 }
 
 function removeNodeByClassNames(videoLink, classNames){
@@ -54,12 +84,12 @@ function examineFrontpage(){
     var videoLinks = document.getElementsByTagName('a');
     videoLinks = [].slice.call(videoLinks).filter(isYoutubeLink);
     videoLinks.forEach(function(videoLink, index, array){
-        if(window.blockRe.test(videoLink.title)){
-            if(document.getElementsByTagName('ytd-grid-video-renderer').length != 0){
+        if(blockRe.test(videoLink.title) || wildcardKeywordRe.test(videoLink.title)){
+            if(isNewYouTube){
                 removeNodeByTag(videoLink, 'ytd-grid-video-renderer');
             }
             else{
-                removeNodeByClassNames(videolink, 'yt-shelf-grid-item');
+                removeNodeByClassNames(videoLink, 'yt-shelf-grid-item');
             }
         }                    
     });
@@ -67,14 +97,29 @@ function examineFrontpage(){
 
 function examineResults(){
     var videoLinks = document.getElementsByTagName('a');
+    
     videoLinks = [].slice.call(videoLinks).filter(isYoutubeLink);
+    
     videoLinks.forEach(function(videoLink, index, array){
         if(blockRe.test(videoLink.title)){
-            if(document.getElementsByTagName('ytd-video-renderer').length != 0){
+            if(isNewYouTube){
                 removeNodeByTag(videoLink, 'ytd-video-renderer');
             } else{ 
                 removeNodeByClassNames(videoLink, 'yt-lockup yt-lockup-tile yt-lockup-video clearfix yt-uix-tile');
             }
+        }
+    });
+
+    var playlistLinks = [];
+    if(isNewYouTube){
+        playlistLinks = document.getElementsByClassName('ytd-playlist-renderer');
+        playlistLinks = [].slice.call(playlistLinks);
+    }
+
+    playlistLinks.forEach(function(playlist, index, arr){
+        if(blockRe.test(playlist.innerHTML) || wildcardKeywordRe.test(playlist.innerHTML))
+        if(isNewYouTube){
+            removeNodeByTag(playlist, "ytd-playlist-renderer");
         }
     });
 }
@@ -82,19 +127,20 @@ function examineResults(){
 function examineVideo(){
     var videoTitle = "";
     var descriptionText = "";
+    var channelname = "";
 
-    if(document.getElementsByTagName("ytd-watch").length != 0){
-
+    if(isNewYouTube){
         videoTitle = document.getElementsByTagName("h1")[0];
         if(videoTitle)
             videoTitle = videoTitle.innerHTML.toLowerCase();
-        else
-            videoTitle = "";
         descriptionText = document.getElementById("description");
         if(descriptionText)
             descriptionText = descriptionText.innerHTML.toLowerCase();
-        else
-            descriptionText = "";
+        channelname = document.getElementById("owner-name")
+        if(channelname)
+            channelname = channelname.getElementsByTagName("a")[0]
+            if(channelname)
+                channelname = channelname.text.toLowerCase();
     } 
     else {
         videoTitle = document.getElementById("eow-title");
@@ -114,46 +160,171 @@ function examineVideo(){
         searchTerm = searchTerm[0].value.toLowerCase();
     else
         searchTerm = "";
-    if(searchTerm.length != 0 || videoTitle.length != 0 || title.length != 0){
-        var matchText = [searchTerm, videoTitle, title, window.kbData.checkDescription ? descriptionText : ""].join(" ");
-        var searchMatchedKeyword = blockRe.test(matchText);
+    if((searchTerm && searchTerm.length != 0) || (videoTitle && videoTitle.length != 0) || (title && title.length != 0) || (channelname && channelname.length != 0)){
+        var matchText = [searchTerm, videoTitle, title, kbData.checkDescription ? descriptionText : ""].join(" ");
+        var searchMatchedKeyword = blockRe.test(matchText) || wildcardKeywordRe.test(matchText);
+        var searchMatchedChannel = wildcardChannelRe.test(channelname) || channelRe.test(channelname);
+        if(searchMatchedKeyword || searchMatchedChannel)
+            loadPopup(kbData.popOver.text, kbData.popOver.image);
+    }
+}
 
-        if(searchMatchedKeyword)
-            loadPopup(window.kbData.popOver.text, window.kbData.popOver.image);
+function examineTrending(){
+    var videoLinks = document.getElementsByTagName('a');
+    videoLinks = [].slice.call(videoLinks).filter(isYoutubeLink);
+    videoLinks.forEach(function(videoLink, index, array){
+        if(blockRe.test(videoLink.title)){
+            if(isNewYouTube){
+                removeNodeByTag(videoLink, 'ytd-video-renderer');
+            } else{ 
+                removeNodeByClassNames(videoLink, 'expanded-shelf-content-item-wrapper');
+            }
+        }
+    });
+}
+
+function examineSubscriptions(){
+    var videoLinks = document.getElementsByTagName('a');
+    videoLinks = [].slice.call(videoLinks).filter(isYoutubeLink);
+    videoLinks.forEach(function(videoLink, index, array){
+        if(blockRe.test(videoLink.title)){
+            if(isNewYouTube){
+                removeNodeByTag(videoLink, 'ytd-grid-video-renderer');
+            }
+            else{
+                removeNodeByClassNames(videoLink, 'yt-shelf-grid-item');
+            }
+        }                    
+    });
+}
+
+function examineChannels(){
+    var channels = getChannels();
+    var blockedChannels = kbData.channels;
+    var blockedWildcardChannels = kbData.wildcardChannels;
+    channels.forEach(function(channel, index, array){
+        var channelname = channel.innerHTML;
+        if((blockedChannels.length != 0 && channelRe.test(channelname)) || (blockedWildcardChannels.length != 0 && wildcardChannelRe.test(channelname))){
+            removeVideo(channel);
+        }
+    });
+}
+
+function removeVideo(video){
+    if(!video) return;
+    if(kbData.removeFromResults){
+        if(location.pathname === "/"){
+            if(isNewYouTube){
+                removeNodeByTag(video, "ytd-grid-video-renderer");
+            }
+            else{
+                removeNodeByClassNames(video, "yt-shelf-grid-item yt-uix-shelfslider-item");
+            }
+        }
+        else if(location.pathname === "/results"){
+            if(isNewYouTube){
+                removeNodeByTag(video, "ytd-video-renderer");
+                removeNodeByTag(video, "ytd-playlist-renderer");
+            }
+            else{
+                removeNodeByClassNames(video, "yt-lockup yt-lockup-tile yt-lockup-video clearfix");
+            }
+        }
+        else if(location.pathname === "/feed/trending")
+        {
+            if(isNewYouTube){
+                removeNodeByTag(video, "ytd-video-renderer");
+            } 
+            else{
+                removeNodeByClassNames(video, "expanded-shelf-content-item-wrapper");
+            }
+        }
+        else if(location.pathname === "/feed/subscriptions"){
+            if(isNewYouTube){
+                removeNodeByTag(video, "ytd-grid-video-renderer");
+            } else{
+                removeNodeByClassNames(video, "yt-shelf-grid-item");
+            }
+        }
+    }
+    if(location.pathname === "/watch"){
+        if(isNewYouTube){
+            removeNodeByTag(video, "ytd-grid-video-renderer");
+        }
+        else{
+            removeNodeByClassNames(video, "video-list-item related-list-item related-list-item-compact-video");
+        }
     }
 }
 
 chrome.storage.local.get(function(data){
     window.kbData = data;
+    if(!data.keywords){
+        data.keywords = [];
+    }
+    if(!data.channels){
+        data.channels = [];
+    }
+    if(!data.wildcardChannels){
+        data.wildcardChannels = [];
+    }
+
+    if(!data.wildcardKeywords){
+        data.widcardKeywords = [];
+    }
+
     var blockKeywords = data.keywords;
-    if(blockKeywords.length == 0)
-        return;
     var beginRe = "(?:-|\\s|\\W|^)";
     var endRe = "(?:-|\\s|\\W|$)";
     var keywordRe = "(?:" + blockKeywords.join("|") + ")";
+    
     window.blockRe = new RegExp(beginRe + keywordRe + endRe, "i");
+
+    var channels = data.channels.map(channel => "^" + channel + "$");
+    var wildcardChannels = data.wildcardChannels.map(wildcardChannel => "(.)*" + wildcardChannel + "(.)*");
+    var channelRe = "(?:" + channels.join("|") + ")";
+    var wildcardChannelRe = "(?:" + wildcardChannels.join("|") + ")";
+    var wildcardKeywords = data.wildcardKeywords.map(wk => "(.)*" + wk + "(.)*");
+    var wildcardKeywordRe = "(?:" + wildcardKeywords.join("|") + ")";
+    window.channelRe = new RegExp(channelRe, "i");
+    window.wildcardChannelRe = new RegExp(wildcardChannelRe, "i");
+    window.wildcardKeywordRe = new RegExp(wildcardKeywordRe, "i");
 })
 
 var observer = new MutationObserver(function(mutations, observer) {
     // fired when a mutation occurs
-    if(!window.kbData) return;
+    if(!window.kbData) 
+        return;
     var blockKeywords = window.kbData.keywords;
     if(blockKeywords.length == 0)
         return;
+    
+    if(window.kbData.channels.length != 0 || window.kbData.wildcardChannels.length != 0){
+        examineChannels();
+    }
+    
     if(window.kbData.removeFromResults){
         if(location.pathname === "/"){
             examineFrontpage();
-            return;
         }
         else if(location.pathname === "/results"){
             examineResults();
-            return;
+        }
+        else if(location.pathname === "/feed/trending")
+        {
+            examineTrending();
+        }
+        else if(location.pathname === "/feed/subscriptions"){
+            examineSubscriptions();
         }
     }
+
     if(location.pathname === "/watch"){
         examineVideo();
     }
 });
+
+
 
 function observe(observable){
     observer.observe(observable, {
@@ -169,6 +340,7 @@ var ob = new MutationObserver(function (mutations, me) {
   // `me` is the MutationObserver instance
   var content = document.getElementById('content');
   if (content) {
+    window.isNewYouTube = document.getElementsByTagName("ytd-app").length != 0;
     observe(content);
     me.disconnect(); // stop observing
     return;

@@ -1,16 +1,20 @@
 # Keyword Blocker
 ## Block Youtube Videos based on specified keywords
 
-This Chrome extension can block youtube videos from view based on keywords you can set.
+This Chrome extension can block YouTube videos or channels from view based on keywords you can specify.
 It features a very basic password protection and the block message is user-customizable.
 
-Originally this was developed for a person who is easily scared and needed to be protected from certain youtube searches. Because there was no easy way to do this I developed this application.
-
-It is made for this person but published as an extension to possibly help other people who may have the same needs!
+Originally this was developed for a person who is easily scared and needed to be protected from certain YouTube searches. Because there was no easy way to do this I developed this extension.
 
 Get it in the [Chrome Webstore](https://chrome.google.com/webstore/detail/keyword-blocker/pbgacppomjfpheddhifkdkklddnolnpg)
 
 **Changelog:**
+   - **1.8**
+        * Added support for trending & subscription page
+        * Added support for blocking channels by name or keyword
+        * Added support for partial match of keywords
+        * Changed export/import of keywords to export/import of all the settings
+        * Added right click menu action on selected text for adding to keyword, channel, wildcard keyword or channel keyword list
    - **1.7.1**
         * Bug fix for blocking video
    - **1.7**
