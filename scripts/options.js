@@ -39,47 +39,67 @@ app.directive('fileReader', function() {
 });
 
 app.controller('OptionsController', function($scope){
-    chrome.storage.local.get(function(data){
-        $scope.localStorage = data;
-        if(data.keywords){
-            $scope.keywords = data.keywords;
-        }
-        else{
-            $scope.keywords = [];
-        }
-        if(data.password){
-            $scope.optionsPassword = data.password;
-        }
-        else{ 
-            $scope.optionsPassword = "";
-        }
+    $scope.loadLocalStorage = function(){
+        chrome.storage.local.get(function(data){
+            $scope.localStorage = data;
+            if(data.keywords){
+                $scope.keywords = data.keywords;
+            }
+            else{
+                $scope.keywords = [];
+            }
+            if(data.wildcardKeywords){
+                $scope.wildcardKeywords = data.wildcardKeywords;
+            }
+            else{
+                $scope.wildcardKeywords = [];
+            }
+            if(data.channels){
+                $scope.channels = data.channels;
+            }
+            else{
+                $scope.channels = [];
+            }
+            if(data.wildcardChannels){
+                $scope.wildcardChannels = data.wildcardChannels;
+            }
+            else{
+                $scope.wildcardChannels = [];
+            }
+            if(data.password){
+                $scope.optionsPassword = data.password;
+            }
+            else{ 
+                $scope.optionsPassword = "";
+            }
 
-        $scope.newOptionsPassword = $scope.optionsPassword;
-        if(data.popOver){
-            $scope.popOverText = data.popOver.text;
-            $scope.popOverImage = data.popOver.image;
-        }
-        else{
-            $scope.popOverText = 'Blocked';
-            $scope.popOverImage = 'https://i.imgur.com/sLmiP5n.png'
-        }
+            $scope.newOptionsPassword = $scope.optionsPassword;
+            if(data.popOver){
+                $scope.popOverText = data.popOver.text;
+                $scope.popOverImage = data.popOver.image;
+            }
+            else{
+                $scope.popOverText = 'Blocked';
+                $scope.popOverImage = 'https://i.imgur.com/sLmiP5n.png'
+            }
 
-        if(typeof data.removeFromResults != 'undefined'){
-            $scope.removeFromResults = data.removeFromResults;
-        }
-        else{
-            $scope.removeFromResults = true;
-        }
+            if(typeof data.removeFromResults != 'undefined'){
+                $scope.removeFromResults = data.removeFromResults;
+            }
+            else{
+                $scope.removeFromResults = true;
+            }
 
-        if(typeof data.checkDescription != 'undefined'){
-            $scope.checkDescription = data.checkDescription;
-        }
-        else{
-            $scope.checkDescription = true;
-        }
-        $scope.$apply();
-    });
-
+            if(typeof data.checkDescription != 'undefined'){
+                $scope.checkDescription = data.checkDescription;
+            }
+            else{
+                $scope.checkDescription = true;
+            }
+            $scope.$apply();
+        });
+    };
+    $scope.loadLocalStorage();
     $scope.passwordSaved = false;
     $scope.popOverSaved = false;
     $scope.fileContent = undefined;
@@ -87,14 +107,7 @@ app.controller('OptionsController', function($scope){
     $scope.$watch('fileContent', function(){
         if(!$scope.fileContent)
             return;
-        var data = $scope.fileContent.split('\n');
-        //remove header
-        data.shift();
-        data.forEach(function(keyword, index){
-            $scope.newKeyword = keyword;
-            $scope.addKeyword();
-            $scope.newKeyword = "";
-        });
+        $scope.importSettings(JSON.parse($scope.fileContent));
     });
 
     $scope.remove = function(keywordIndex){
@@ -102,20 +115,84 @@ app.controller('OptionsController', function($scope){
         $scope.saveLocalStorage();
     };
 
+    $scope.removeChannel = function(index){
+        $scope.channels.splice(index, 1);
+        $scope.saveLocalStorage();
+    };
+
+    $scope.removeWildcardChannel = function(index){
+        $scope.wildcardChannels.splice(index, 1);
+        $scope.saveLocalStorage();
+    };
+
+    $scope.removeWildcardKeyword = function(index){
+        $scope.wildcardKeywords.splice(index, 1);
+        $scope.saveLocalStorage();
+    }
+
     $scope.addKeyword = function(){
         if(!$scope.hasKeyword()){
             $scope.keywords.push($scope.newKeyword);
             $scope.saveLocalStorage();
             $scope.newKeyword = "";
         }
-        else{
-            console.log("Keyword already exists");
-        }
     };
+
+    $scope.addWildcardKeyword = function(){
+        if(!$scope.hasWildcardKeyword()){
+            $scope.wildcardKeywords.push($scope.newWildcardKeyword);
+            $scope.saveLocalStorage();
+            $scope.newWildcardKeyword = "";
+        }
+    }
 
     $scope.hasKeyword = function(){
         if ($scope.keywords){
             return $scope.keywords.indexOf($scope.newKeyword) > -1;
+        }
+        else{
+            return false;
+        }
+    };
+
+    $scope.hasWildcardKeyword = function(){
+        if ($scope.keywords){
+            return $scope.wildcardKeywords.indexOf($scope.newWildcardKeyword) > -1;
+        }
+        else{
+            return false;
+        }
+    };
+
+
+    $scope.addChannel = function(){
+        if(!$scope.hasChannel()){
+            $scope.channels.push($scope.newChannel);
+            $scope.saveLocalStorage();
+            $scope.newChannel = "";
+        }
+    };
+
+    $scope.hasChannel = function(){
+        if($scope.channels){
+            return $scope.channels.indexOf($scope.newChannel) > -1;
+        }
+        else{
+            return false;
+        }
+    };
+
+    $scope.addWildcardChannel = function(){
+        if(!$scope.hasWildcardChannel()){
+            $scope.wildcardChannels.push($scope.newWildcardChannel);
+            $scope.saveLocalStorage();
+            $scope.newWildcardChannel = "";
+        }
+    };
+
+    $scope.hasWildcardChannel = function(){
+        if($scope.channels){
+            return $scope.wildcardChannels.indexOf($scope.newWildcardChannel) > -1;
         }
         else{
             return false;
@@ -140,7 +217,10 @@ app.controller('OptionsController', function($scope){
 
     $scope.saveLocalStorage = function(){
         chrome.storage.local.set({
-            'keywords':$scope.keywords, 
+            'keywords':$scope.keywords,
+            'wildcardKeywords':$scope.wildcardKeywords,
+            'channels':$scope.channels,
+            'wildcardChannels':$scope.wildcardChannels,
             'password':$scope.optionsPassword,
             'removeFromResults':$scope.removeFromResults,
             'checkDescription':$scope.checkDescription,
@@ -155,20 +235,22 @@ app.controller('OptionsController', function($scope){
         );
     }
 
-    $scope.importKeywords = function(contents){
-
+    $scope.importSettings = function(settings){
+        console.log(settings);
+        chrome.storage.local.set(settings);
+        $scope.loadLocalStorage();
     }
 
-    $scope.exportKeywords = function(){
-        var data = $scope.keywords.slice();
-        data.unshift("Keyword");
-        data[0] = "data:text/csv;charset=utf-8," + data[0];
-        var csvContent = data.join('\n');
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "keywordblocker_keywords.csv");
-        document.body.appendChild(link); // Required for FF
-        link.click(); // This will download the data file named "keywordblocker_keywords.csv".
+    $scope.exportSettings = function(){
+        chrome.storage.local.get(function(data){
+            var data = JSON.stringify(data);
+            var vLink = document.createElement('a'),
+            vBlob = new Blob([data], {type: "octet/stream"}),
+            vName = 'keywordblocker_settings.json',
+            vUrl = window.URL.createObjectURL(vBlob);
+            vLink.setAttribute('href', vUrl);
+            vLink.setAttribute('download', vName );
+            vLink.click();
+        });
     }
 });

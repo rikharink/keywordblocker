@@ -31,11 +31,29 @@
             </div>
 
             <div ng-show="checkPassword()">
-                <div class="panel panel-default">
+                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-titel text-info">Blocked Keywords (Supports regular expressions)</h3>
+                        <h3 class="panel-titel text-info">Import or export all your keyword blocker settings.</h3>
                     </div>
                     <div class="panel-body">
+                        <div>
+                            <label class="btn btn-default btn-file">
+                                Import Settings <input type="file" class="form-control" file-reader="fileContent" accept=".json" style="display: none;" />
+                            </label>
+                            <button class="btn btn-default" type="button" ng-click="exportSettings()">Export Settings</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-titel text-info">Blocked Keywords (Case Insensitive &amp; Supports regular expressions)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            Block/remove video when word contains the keyword exactly. <br/>
+                            Example: if you add word and the title of the video is Keyword Blocker it will not be blocked. <br/>
+                            If you add Keyword and the title is Keyword Blocker it will be blocked.
+                        </p>
                         <ul class="list-group">
                            <li class="list-group-item" ng-repeat="keyword in keywords">
                                 <span class="badge ngClick" ng-click="remove($index)"><span class="glyphicon glyphicon-trash"></span></span>
@@ -49,24 +67,90 @@
                                 <button class="btn btn-default" type="button" ng-disabled="hasKeyword()" ng-click="addKeyword()"><span class="glyphicon glyphicon-plus"></span></button>
                             </span>
                         </div>
-                        <br />
-                        <div>
-                            <label class="btn btn-default btn-file">
-                                Import Keywords <input type="file" class="form-control" file-reader="fileContent" accept=".csv" style="display: none;" />
-                            </label>
-                            <button class="btn btn-default" type="button" ng-click="exportKeywords()">Export Keywords</button>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-titel text-info">Blocked Wildcard Keywords (Case Insensitive &amp; Supports regular expressions)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <p>
+                                Block/remove video when word contains the keyword. <br/>
+                                Example: if you add word and the title of the video is Keyword it will be blocked.
+                            </p>
+                           <li class="list-group-item" ng-repeat="keyword in wildcardKeywords">
+                                <span class="badge ngClick" ng-click="removeWildcardKeyword($index)"><span class="glyphicon glyphicon-trash"></span></span>
+                                {{keyword}}
+                            </li>
+                        </ul>                    
+
+                        <div class="input-group">
+                            <input type="text" ng-enter="addWildcardKeyword()" class="form-control" ng-model="newWildcardKeyword">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-disabled="hasWildcardKeyword()" ng-click="addWildcardKeyword()"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
                         </div>
                     </div>
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-titel text-info">Remove blocked results from frontpage/search</h3>
+                        <h3 class="panel-titel text-info">Blocked Channels (Case Insensitive &amp; Supports regular expressions)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            This blocks/removes the video from results if the channelname matches one of the names entered below <br/>
+                            Example: if the keyword is KeywordBlocker and the channelname is KeywordBlocker it will be blocked/removed. <br/>
+                            If the channelname is Keyword Blocker it won't be blocked/removed.
+                        </p>
+                        <ul class="list-group">
+                           <li class="list-group-item" ng-repeat="channel in channels">
+                                <span class="badge ngClick" ng-click="removeChannel($index)"><span class="glyphicon glyphicon-trash"></span></span>
+                                {{channel}}
+                            </li>
+                        </ul>                    
+
+                        <div class="input-group">
+                            <input type="text" ng-enter="addChannel()" class="form-control" ng-model="newChannel">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-disabled="hasChannel()" ng-click="addChannel()"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-titel text-info">Blocked Channel Keywords (Case Insensitive &amp; Supports regular expressions)</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+                            This blocks/removes the video from results if the channelname contains one of the keyword specified below in its name. <br/>
+                            Example: If the keyword is ock and the channelname is KeywordBlocker the video will be blocked/removed
+                        </p>
+                        <ul class="list-group">
+                           <li class="list-group-item" ng-repeat="channel in wildcardChannels">
+                                <span class="badge ngClick" ng-click="removeWildcardChannel($index)"><span class="glyphicon glyphicon-trash"></span></span>
+                                {{channel}}
+                            </li>
+                        </ul>                    
+
+                        <div class="input-group">
+                            <input type="text" ng-enter="addWildcardChannel()" class="form-control" ng-model="newWildcardChannel">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-disabled="hasWildcardChannel()" ng-click="addWildcardChannel()"><span class="glyphicon glyphicon-plus"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-titel text-info">Remove blocked results from frontpage/search/trending/subscriptions</h3>
                     </div>
                     <div class="panel-body"/
-                        <span>This will not display the block pop-over on the youtubefrontpage/searchresults but will remove video's which contain the blocked keywords in the title. Display of the block pop-over will still happen on individual video's</span>
+                        <span>This will not display the block pop-over on the YouTube frontpage/searchresults/trending/subscriptions pages but will remove video's which contain the blocked keywords in the title or is from a blocked channel. Display of the block pop-over will still happen on individual video's</span>
                         <form>
                             <label>
-                                <input type="checkbox" ng-model="removeFromResults" ng-change="saveLocalStorage()"> Remove blocked results from search/frontpage
+                                <input type="checkbox" ng-model="removeFromResults" ng-change="saveLocalStorage()"> Remove blocked results from search/frontpage/trending/subscriptions
                             </label>
                         </form>
                     </div>
@@ -141,6 +225,32 @@
                                 </button>
                                 <strong>Password saved!</strong>
                             </div>
+                        </p>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                   <div class="panel-heading">
+                        <h3 class="panel-titel text-info">Thanks</h3>
+                    </div>
+                    <div class="panel-body">
+                       <p>
+                           Thank you for using my extension! <br/>
+                           Keyword Blocker is Open Source and the source can be found <a href="https://github.com/Meidor/keywordblocker">here</a>.<br/>
+                           If you have some feedback please let me know on the <a href="https://chrome.google.com/webstore/detail/keyword-blocker/pbgacppomjfpheddhifkdkklddnolnpg">Chrome Webstore</a> or on my <a href="https://github.com/Meidor/keywordblocker/issues">Github page</a> <br/>
+                           Suggestions for new features or reports of problems with the extension are always welcome! <br/>
+                           I would really appreciate it if you would <a href="https://chrome.google.com/webstore/detail/keyword-blocker/pbgacppomjfpheddhifkdkklddnolnpg">rate</a> the extension!
+                        </p>
+                        <p>
+                            If you would like to buy me a coffee for my work:
+                            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                <input type="hidden" name="cmd" value="_s-xclick">
+                                <input type="hidden" name="hosted_button_id" value="9CC7CFBF9NCX4">
+                                <input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                                <img alt="" border="0" src="https://www.paypalobjects.com/nl_NL/i/scr/pixel.gif" width="1" height="1">
+                            </form>
+                            <br/>
+                            Kind regards, <br/>
+                            Rik
                         </p>
                     </div>
                 </div>
