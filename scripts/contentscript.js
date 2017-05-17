@@ -83,8 +83,11 @@ function removeNodeByClassNames(videoLink, classNames){
 function examineFrontpage(){
     var videoLinks = document.getElementsByTagName('a');
     videoLinks = [].slice.call(videoLinks).filter(isYoutubeLink);
+    var hasKeywords = window.kbData.keywords.length != 0;
+    var hasWildcardKeywords = window.kbData.wildcardKeywords.length != 0;
     videoLinks.forEach(function(videoLink, index, array){
-        if(window.blockRe.test(videoLink.title) || window.wildcardKeywordRe.test(videoLink.title)){
+        if((hasKeywords && window.blockRe.test(videoLink.title)) || (hasWildcardKeywords && window.wildcardKeywordRe.test(videoLink.title)))
+        {
             if(window.isNewYoutube){
                 removeNodeByTag(videoLink, 'ytd-grid-video-renderer');
             }
@@ -99,9 +102,10 @@ function examineResults(){
     var videoLinks = document.getElementsByTagName('a');
     
     videoLinks = [].slice.call(videoLinks).filter(isYoutubeLink);
-    
+    var hasKeywords = window.kbData.keywords.length != 0;
+    var hasWildcardKeywords = window.kbData.wildcardKeywords.length != 0;
     videoLinks.forEach(function(videoLink, index, array){
-        if(window.blockRe.test(videoLink.title)){
+        if((hasKeywords && window.blockRe.test(videoLink.title)) || hasWildcardKeywords && window.wildcardKeywordRe.test(videoLink.title)){
             if(window.isNewYoutube){
                 removeNodeByTag(videoLink, 'ytd-video-renderer');
             } else{ 
@@ -117,9 +121,10 @@ function examineResults(){
     }
 
     playlistLinks.forEach(function(playlist, index, arr){
-        if(window.blockRe.test(playlist.innerHTML) || window.wildcardKeywordRe.test(playlist.innerHTML))
-        if(window.isNewYoutube){
-            removeNodeByTag(playlist, "ytd-playlist-renderer");
+        if((hasKeywords && window.blockRe.test(playlist.innerHTML)) || (hasWildcardKeywords && window.wildcardKeywordRe.test(playlist.innerHTML))){
+            if(window.isNewYoutube){
+                removeNodeByTag(playlist, "ytd-playlist-renderer");
+            }
         }
     });
 }
@@ -128,6 +133,11 @@ function examineVideo(){
     var videoTitle = "";
     var descriptionText = "";
     var channelname = "";
+
+    var hasKeywords = window.kbData.keywords.length != 0;
+    var hasChannels = window.kbData.channels.length != 0;
+    var hasWildcardKeywords = window.kbData.wildcardKeywords.length != 0;
+    var hasWildcardChannels = window.kbData.wildcardChannels.length != 0;
 
     if(window.isNewYoutube){
         videoTitle = document.getElementsByTagName("h1")[0];
@@ -162,18 +172,21 @@ function examineVideo(){
         searchTerm = "";
     if((searchTerm && searchTerm.length != 0) || (videoTitle && videoTitle.length != 0) || (title && title.length != 0) || (channelname && channelname.length != 0)){
         var matchText = [searchTerm, videoTitle, title, window.kbData.checkDescription ? descriptionText : ""].join(" ");
-        var searchMatchedKeyword = window.blockRe.test(matchText) || window.wildcardKeywordRe.test(matchText);
-        var searchMatchedChannel = window.wildcardChannelRe.test(channelname) || window.channelRe.test(channelname);
+        var searchMatchedKeyword = (hasKeywords && window.blockRe.test(matchText)) || (hasWildcardKeywords && window.wildcardKeywordRe.test(matchText));
+        var searchMatchedChannel = (hasWildcardChannels && window.wildcardChannelRe.test(channelname)) || (hasChannels && window.channelRe.test(channelname));
         if(searchMatchedKeyword || searchMatchedChannel)
             loadPopup(window.kbData.popOver.text, window.kbData.popOver.image);
     }
 }
 
 function examineTrending(){
+    var hasKeywords = window.kbData.keywords.length != 0;
+    var hasWildcardKeywords = window.kbData.wildcardKeywords.length != 0;
+
     var videoLinks = document.getElementsByTagName('a');
     videoLinks = [].slice.call(videoLinks).filter(isYoutubeLink);
     videoLinks.forEach(function(videoLink, index, array){
-        if(window.blockRe.test(videoLink.title)){
+        if((hasKeywords && window.blockRe.test(videoLink.title)) || (hasWildcardKeywords && window.wildcardKeywordRe.test(videoLink.title))){
             if(window.isNewYoutube){
                 removeNodeByTag(videoLink, 'ytd-video-renderer');
             } else{ 
@@ -184,10 +197,13 @@ function examineTrending(){
 }
 
 function examineSubscriptions(){
+    var hasKeywords = window.kbData.keywords.length != 0;
+    var hasWildcardKeywords = window.kbData.wildcardKeywords.length != 0;
+
     var videoLinks = document.getElementsByTagName('a');
     videoLinks = [].slice.call(videoLinks).filter(isYoutubeLink);
     videoLinks.forEach(function(videoLink, index, array){
-        if(window.lockRe.test(videoLink.title)){
+        if((hasKeywords && window.blockRe.test(videoLink.title)) || (hasWildcardKeywords && window.wildcardKeywordRe.test(videoLink.title))){
             if(window.isNewYoutube){
                 removeNodeByTag(videoLink, 'ytd-grid-video-renderer');
             }
@@ -202,9 +218,13 @@ function examineChannels(){
     var channels = getChannels();
     var blockedChannels = window.kbData.channels;
     var blockedWildcardChannels = window.kbData.wildcardChannels;
+
+    var hasChannels = blockedChannels.length != 0;
+    var hasWildcardChannels = blockedWildcardChannels.length != 0;
+
     channels.forEach(function(channel, index, array){
         var channelname = channel.innerHTML;
-        if((blockedChannels.length != 0 && window.channelRe.test(channelname)) || (blockedWildcardChannels.length != 0 && window.wildcardChannelRe.test(channelname))){
+        if((hasChannels && window.channelRe.test(channelname)) || (hasWildcardChannels && window.wildcardChannelRe.test(channelname))){
             removeVideo(channel);
         }
     });
@@ -282,21 +302,20 @@ chrome.storage.local.get(function(data){
 
     var channels = data.channels.map(channel => "^" + channel + "$");
     var wildcardChannels = data.wildcardChannels.map(wildcardChannel => "(.)*" + wildcardChannel + "(.)*");
-    var channelRe = "(?:" + channels.join("|") + ")";
-    var wildcardChannelRe = "(?:" + wildcardChannels.join("|") + ")";
+    var cRe = "(?:" + channels.join("|") + ")";
+    var wcRe = "(?:" + wildcardChannels.join("|") + ")";
     var wildcardKeywords = data.wildcardKeywords.map(wk => "(.)*" + wk + "(.)*");
-    var wildcardKeywordRe = "(?:" + wildcardKeywords.join("|") + ")";
-    window.channelRe = new RegExp(channelRe, "i");
-    window.wildcardChannelRe = new RegExp(wildcardChannelRe, "i");
-    window.wildcardKeywordRe = new RegExp(wildcardKeywordRe, "i");
+    var wkRe = "(?:" + wildcardKeywords.join("|") + ")";
+    window.channelRe = new RegExp(cRe, "i");
+    window.wildcardChannelRe = new RegExp(wcRe, "i");
+    window.wildcardKeywordRe = new RegExp(wkRe, "i");
+
+    startObserving();
 })
 
 var observer = new MutationObserver(function(mutations, observer) {
     // fired when a mutation occurs
     if(!window.kbData) 
-        return;
-    var blockKeywords = window.kbData.keywords;
-    if(blockKeywords.length == 0)
         return;
     
     if(window.kbData.channels.length != 0 || window.kbData.wildcardChannels.length != 0){
@@ -335,20 +354,23 @@ function observe(observable){
     });
 }
 
-var ob = new MutationObserver(function (mutations, me) {
-  // `mutations` is an array of mutations that occurred
-  // `me` is the MutationObserver instance
-  var content = document.getElementById('content');
-  if (content) {
-    window.isNewYoutube = document.getElementsByTagName("ytd-app").length != 0;
-    observe(content);
-    me.disconnect(); // stop observing
-    return;
-  }
-});
 
-// start observing
-ob.observe(document, {
-  childList: true,
-  subtree: true
-});
+function startObserving(){
+    var ob = new MutationObserver(function (mutations, me) {
+    // `mutations` is an array of mutations that occurred
+    // `me` is the MutationObserver instance
+    var content = document.getElementById('content');
+    if (content) {
+        window.isNewYoutube = document.getElementsByTagName("ytd-app").length != 0;
+        observe(content);
+        me.disconnect(); // stop observing
+        return;
+    }
+    });
+
+    // start observing
+    ob.observe(document, {
+    childList: true,
+    subtree: true
+    });
+}

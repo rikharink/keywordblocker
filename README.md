@@ -9,6 +9,8 @@ Originally this was developed for a person who is easily scared and needed to be
 Get it in the [Chrome Webstore](https://chrome.google.com/webstore/detail/keyword-blocker/pbgacppomjfpheddhifkdkklddnolnpg)
 
 **Changelog:**
+   - **1.8.1 and 1.8.2**
+        * Bug fixes of new features
    - **1.8**
         * Added support for trending & subscription page
         * Added support for blocking channels by name or keyword
