@@ -5,7 +5,7 @@
 
 // document.addEventListener("mousedown", function(event){
 //     //right click
-//     if(event.button == 2) { 
+//     if(event.button == 2) {
 //         clickedEl = event.target;
 //     }
 // }, true);
@@ -43,7 +43,7 @@ function loadPopup(text, image){
         document.location = "https://www.youtube.com";
     });
     var vid = document.getElementsByTagName('video')[0];
-    
+
     if(vid) {
         vid.pause();
         vid.style.visibility = "hidden";
@@ -94,13 +94,13 @@ function examineFrontpage(){
             else{
                 removeNodeByClassNames(videoLink, 'yt-shelf-grid-item');
             }
-        }                    
+        }
     });
 }
 
 function examineResults(){
     var videoLinks = document.getElementsByTagName('a');
-    
+
     videoLinks = [].slice.call(videoLinks).filter(isYoutubeLink);
     var hasKeywords = window.kbData.keywords.length != 0;
     var hasWildcardKeywords = window.kbData.wildcardKeywords.length != 0;
@@ -108,7 +108,7 @@ function examineResults(){
         if((hasKeywords && window.blockRe.test(videoLink.title)) || hasWildcardKeywords && window.wildcardKeywordRe.test(videoLink.title)){
             if(window.isNewYoutube){
                 removeNodeByTag(videoLink, 'ytd-video-renderer');
-            } else{ 
+            } else{
                 removeNodeByClassNames(videoLink, 'yt-lockup yt-lockup-tile yt-lockup-video clearfix yt-uix-tile');
             }
         }
@@ -151,7 +151,7 @@ function examineVideo(){
             channelname = channelname.getElementsByTagName("a")[0]
             if(channelname)
                 channelname = channelname.text.toLowerCase();
-    } 
+    }
     else {
         videoTitle = document.getElementById("eow-title");
         if(videoTitle)
@@ -189,7 +189,7 @@ function examineTrending(){
         if((hasKeywords && window.blockRe.test(videoLink.title)) || (hasWildcardKeywords && window.wildcardKeywordRe.test(videoLink.title))){
             if(window.isNewYoutube){
                 removeNodeByTag(videoLink, 'ytd-video-renderer');
-            } else{ 
+            } else{
                 removeNodeByClassNames(videoLink, 'expanded-shelf-content-item-wrapper');
             }
         }
@@ -210,7 +210,7 @@ function examineSubscriptions(){
             else{
                 removeNodeByClassNames(videoLink, 'yt-shelf-grid-item');
             }
-        }                    
+        }
     });
 }
 
@@ -228,6 +228,43 @@ function examineChannels(){
             removeVideo(channel);
         }
     });
+}
+
+function examineRelated() {
+    if(window.isNewYoutube){
+        var hasKeywords = window.kbData.keywords.length != 0;
+        var hasChannels = window.kbData.channels.length != 0;
+        var hasWildcardKeywords = window.kbData.wildcardKeywords.length != 0;
+        var hasWildcardChannels = window.kbData.wildcardChannels.length != 0;
+
+        var videoLinks = document.querySelectorAll("a.ytd-compact-video-renderer");
+        videoLinks.forEach(function(videoLink, index, array){
+        var videoLinks = document.querySelectorAll("a.ytd-compact-video-renderer")
+                var title = videoLink.getElementsByTagName("span")[0].title;
+                var channelname = videoLink.getElementsByTagName("yt-formatted-string")[0]
+                if(channelname)
+                    channelname = channelname.innerText.toLowerCase();
+            if (
+                (hasKeywords && window.blockRe.test(title)) ||
+                (hasWildcardKeywords && window.wildcardKeywordRe.test(title)) ||
+                (hasWildcardChannels && window.wildcardChannelRe.test(channelname)) ||
+                (hasChannels && window.channelRe.test(channelname))
+            ){
+                removeNodeByClassNames(videoLink, 'style-scope ytd-watch-next-secondary-results-renderer')
+            }
+        });
+
+        //playlist
+        var videoLinks = document.querySelectorAll("a.ytd-compact-playlist-renderer");
+        videoLinks.forEach(function(videoLink, index, array){
+            var channelname = videoLink.getElementsByTagName("yt-formatted-string")[0]
+                if(channelname)
+                    channelname = channelname.innerText.toLowerCase();
+            if ((hasWildcardChannels && window.wildcardChannelRe.test(channelname)) || (hasChannels && window.channelRe.test(channelname)) ){
+                removeNodeByClassNames(videoLink, 'style-scope ytd-watch-next-secondary-results-renderer')
+            }
+        });
+    }
 }
 
 function removeVideo(video){
@@ -254,7 +291,7 @@ function removeVideo(video){
         {
             if(window.isNewYoutube){
                 removeNodeByTag(video, "ytd-video-renderer");
-            } 
+            }
             else{
                 removeNodeByClassNames(video, "expanded-shelf-content-item-wrapper");
             }
@@ -297,7 +334,7 @@ chrome.storage.local.get(function(data){
     var beginRe = "(?:-|\\s|\\W|^)";
     var endRe = "(?:-|\\s|\\W|$)";
     var keywordRe = "(?:" + blockKeywords.join("|") + ")";
-    
+
     window.blockRe = new RegExp(beginRe + keywordRe + endRe, "i");
 
     var channels = data.channels.map(channel => "^" + channel + "$");
@@ -315,13 +352,13 @@ chrome.storage.local.get(function(data){
 
 var observer = new MutationObserver(function(mutations, observer) {
     // fired when a mutation occurs
-    if(!window.kbData) 
+    if(!window.kbData)
         return;
-    
+
     if(window.kbData.channels.length != 0 || window.kbData.wildcardChannels.length != 0){
         examineChannels();
     }
-    
+
     if(window.kbData.removeFromResults){
         if(location.pathname === "/"){
             examineFrontpage();
@@ -340,6 +377,7 @@ var observer = new MutationObserver(function(mutations, observer) {
 
     if(location.pathname === "/watch"){
         examineVideo();
+        examineRelated();
     }
 });
 
