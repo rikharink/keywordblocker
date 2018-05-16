@@ -3,14 +3,14 @@ const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const { CheckerPlugin, TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const {
+    CheckerPlugin,
+    TsConfigPathsPlugin
+} = require('awesome-typescript-loader');
 const rxPaths = require('rxjs/_esm5/path-mapping');
 const isProd = process.env.NODE_ENV === "production";
-
-const extractSass = new ExtractTextPlugin({
-    filename: path.join("styles", "[name].css")
-});
 
 const config = {
     entry: {
@@ -23,25 +23,43 @@ const config = {
         path: path.join(__dirname, "dist"),
         filename: "[name].bundle.js"
     },
-    devtool: isProd ? "hidden-source-map" : "cheap-eval-source-map",
+    devtool: isProd ? false : "cheap-eval-source-map",
+    optimization: {
+        usedExports: true,
+        concatenateModules: true,
+        occurrenceOrder: true,
+        minimizer: [
+            new UglifyJsPlugin({
+                sourceMap: false,
+                parallel: true,
+                uglifyOptions: {
+                    compress: {
+                        passes: 3,
+                    }
+                }
+            })
+        ]
+    },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
                 loader: "awesome-typescript-loader"
             },
             {
-                enforce: "pre", test: /\.js$/,
+                enforce: "pre",
+                test: /\.js$/,
                 exclude: /node_modules/,
                 loader: "source-map-loader",
             },
             {
                 test: /\.scss$/,
                 exclude: /node_modules/,
-                use: extractSass.extract({
-                    use: [{
-                        loader: "css-loader"
+
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
                     },
                     {
                         loader: "postcss-loader",
@@ -60,15 +78,15 @@ const config = {
                     },
                     {
                         loader: "sass-loader"
-                    }]
-                })
+                    }
+                ]
+
             },
         ]
     },
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".scss"],
-        alias: Object.assign(rxPaths(), 
-        {
+        alias: Object.assign(rxPaths(), {
             '@fortawesome/fontawesome-free-solid$': '@fortawesome/fontawesome-free-solid/shakable.es.js',
             '@fortawesome/fontawesome-free-brands$': '@fortawesome/fontawesome-free-brands/shakable.es.js',
         }),
@@ -84,23 +102,22 @@ const config = {
             }
         }),
         new CopyWebpackPlugin([{
-            from: path.join(__dirname, "src", "manifest.json"),
-            transform: function (content, path) {
-                // generates the manifest file using the package.json informations
-                return Buffer.from(JSON.stringify({
-                    description: process.env.npm_package_description,
-                    version: process.env.npm_package_version,
-                    ...JSON.parse(content.toString())
-                }))
+                from: path.join(__dirname, "src", "manifest.json"),
+                transform: function (content, path) {
+                    // generates the manifest file using the package.json informations
+                    return Buffer.from(JSON.stringify({
+                        description: process.env.npm_package_description,
+                        version: process.env.npm_package_version,
+                        ...JSON.parse(content.toString())
+                    }))
+                },
+                to: path.join(__dirname, "dist", "manifest.json")
             },
-            to: path.join(__dirname, "dist", "manifest.json")
-        },
-        {
-            from: path.join(__dirname, "src", "img"),
-            to: path.join(__dirname, "dist", "img")
-        }
+            {
+                from: path.join(__dirname, "src", "img"),
+                to: path.join(__dirname, "dist", "img")
+            }
         ]),
-        extractSass,
         new HtmlWebpackPlugin({
             template: path.join(__dirname, "src", "popup.html"),
             filename: "popup.html",
@@ -116,27 +133,18 @@ const config = {
             filename: "background.html",
             chunks: ["background"]
         }),
-        new CheckerPlugin()
+        new CheckerPlugin(),
+        new MiniCssExtractPlugin({
+            filename: path.join("styles", "[name].css")
+        })
     ]
 };
 
 if (isProd) {
-    const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-    const uglifyJs = new UglifyJsPlugin({
-        sourceMap: true,
-        parallel: true,
-        uglifyOptions: {
-            compress: {
-                passes: 3,
-            }
-        }
-    });
     const bundleAnalyzer = new BundleAnalyzerPlugin();
-    const moduleConcatenation = new webpack.optimize.ModuleConcatenationPlugin();
-    config.plugins.push(moduleConcatenation, uglifyJs, bundleAnalyzer);
-}
-else {
+    config.plugins.push(bundleAnalyzer);
+} else {
     const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
     const chromeExtensionReloader = new ChromeExtensionReloader({
         port: 9090,
