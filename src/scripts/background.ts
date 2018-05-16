@@ -1,0 +1,1 @@
+import "chrome-extension-async";

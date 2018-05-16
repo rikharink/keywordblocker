@@ -1,0 +1,23 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended",
+        "rxjs-tslint-rules"
+    ],
+    "jsRules": {},
+    "rules": {
+        "rxjs-no-add": {
+            "severity": "error"
+        },
+        "rxjs-no-operator": {
+            "severity": "error"
+        },
+        "rxjs-no-patched": {
+            "severity": "error"
+        },
+        "rxjs-no-wholesale": {
+            "severity": "error"
+        }
+    },
+    "rulesDirectory": []
+}
