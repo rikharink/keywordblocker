@@ -18,6 +18,7 @@
     "cross-env": "^5.1.5",
     "css-loader": "^0.28.11",
     "cssnano": "^3.10.0",
+    "eslint": "^4.19.1",
     "fork-ts-checker-webpack-plugin": "^0.4.1",
     "happypack": "^5.0.0",
     "hard-source-webpack-plugin": "^0.7.0-alpha.0",
