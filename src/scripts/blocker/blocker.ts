@@ -1,8 +1,6 @@
 import { BlockItem, Settings } from "@options/models/settings";
-import { fromEvent } from "rxjs/observable/fromEvent";
-import { interval } from "rxjs/observable/interval";
-import { merge } from "rxjs/observable/merge";
-import { take } from "rxjs/operators/take";
+import { fromEvent, interval, merge } from "rxjs";
+import { take } from "rxjs/operators";
 
 export class Blocker {
     public readonly videoNodeNames = [
@@ -79,6 +77,7 @@ export class Blocker {
     }
 
     public remove(node: HTMLElement): void {
+        // TODO: Make this a real condition
         if (true) {
             node.style.pointerEvents = "none";
             node.style.userSelect = "none";

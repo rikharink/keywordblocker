@@ -30,13 +30,18 @@ const config = {
         occurrenceOrder: true,
         minimizer: [
             new UglifyJsPlugin({
-                sourceMap: false,
-                parallel: true,
                 uglifyOptions: {
+                    compress: true,
+                    ecma: 6,
+                    output: {
+                        comments: false
+                    },
                     compress: {
-                        passes: 3,
+                        dead_code: true,
+                        drop_console: true,
                     }
-                }
+                },
+                sourceMap: false
             })
         ]
     },

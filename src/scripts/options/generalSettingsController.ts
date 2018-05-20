@@ -1,11 +1,6 @@
 import { Settings } from "@options/models/settings";
-import { Observable } from "rxjs/Observable";
-import { from } from "rxjs/observable/from";
-import { fromEvent } from "rxjs/observable/fromEvent";
-import { debounceTime } from "rxjs/operators/debounceTime";
-import { filter } from "rxjs/operators/filter";
-import { mergeMap } from "rxjs/operators/mergeMap";
-import { pluck } from "rxjs/operators/pluck";
+import { from, fromEvent, Observable } from "rxjs";
+import { debounceTime, filter, mergeMap, pluck } from "rxjs/operators";
 
 export class GeneralSettignsController {
     private settings: Settings;

@@ -1,9 +1,6 @@
 import { BlockItem, Settings } from "@options/models/settings";
-import { Observable} from "rxjs/Observable";
-import { fromEvent } from "rxjs/observable/fromEvent";
-import { filter } from "rxjs/operators/filter";
-import { map } from "rxjs/operators/map";
-import { pluck } from "rxjs/operators/pluck";
+import { fromEvent, Observable} from "rxjs";
+import { filter, map, pluck } from "rxjs/operators";
 
 export abstract class BlockItemSettingsController {
     protected settings: Settings;
