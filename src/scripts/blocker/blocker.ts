@@ -47,7 +47,6 @@ export class Blocker {
     }
 
     public checkForBlockedVideos(): void {
-        console.log("BLOCK SPAM?");
         const title = document.querySelector("h1.title");
         const description = document.getElementById("description");
         if (title && this.isKeywordBlocked(title.textContent)) {
@@ -57,10 +56,6 @@ export class Blocker {
         if (this.settings.checkDescription && description && this.isKeywordBlocked(description.textContent)) {
             this.hideVideo();
             this.showPopup();
-        }
-
-        if (!this.settings.removeFromResults) {
-            return;
         }
 
         const videos = this.getVideos();

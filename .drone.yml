@@ -4,3 +4,25 @@ pipeline:
     commands:
       - npm install
       - npm run dist
+  bundle:
+    image: alpine:latest
+    commands:
+      - apk --update add zip
+      - zip -r keywordblocker.zip dist/*
+    when:
+      event: push
+      branch: [master, develop]
+  acceptance:
+    image: alpine:latest
+    commands:
+      - apk --update add curl jq
+    when:
+      event: push
+      branch: develop
+  deploy:
+    image: alpine:latest
+    commands:
+      - apk --update add curl jq
+    when:
+      event: push
+      branch: master

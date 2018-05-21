@@ -1,13 +1,13 @@
-import { Settings } from "@options/models/settings";
+import { Settings, BlockAction } from "@options/models/settings";
 import { from, fromEvent, Observable } from "rxjs";
 import { debounceTime, filter, mergeMap, pluck } from "rxjs/operators";
+import { YouTubePage } from "@blocker/youtube";
 
 export class GeneralSettignsController {
     private settings: Settings;
     private providedPassword: string;
 
     private passwordInput: HTMLInputElement = document.getElementById("password") as HTMLInputElement;
-    private removeFromResults: HTMLInputElement = document.getElementById("remove-from-results") as HTMLInputElement;
     private checkDescription: HTMLInputElement = document.getElementById("check-description") as HTMLInputElement;
     private blockDialogText: HTMLInputElement = document.getElementById("block-dialog-text") as HTMLInputElement;
     private blockDialogImage: HTMLInputElement = document.getElementById("block-dialog-image") as HTMLInputElement;
@@ -62,15 +62,13 @@ export class GeneralSettignsController {
         if (this.settings.checkDescription) {
             this.checkDescription.checked = true;
         }
-        if (this.settings.removeFromResults) {
-            this.removeFromResults.checked = true;
-        }
+        this.displayBlockOptions():
         this.displayBlockDialogPreview();
     }
 
     private watchGeneralSettings(): void {
         this.watchPasswordField();
-        this.watchRemoveFromResults();
+        this.watchBlockOptions();
         this.watchCheckDescription();
         this.watchBlockDialog();
         this.watchImportSettings();
@@ -88,13 +86,56 @@ export class GeneralSettignsController {
             });
     }
 
-    private watchRemoveFromResults(): void {
-        fromEvent(this.removeFromResults, "click")
-            .pipe(pluck("target"))
-            .subscribe(async (checkbox: HTMLInputElement) => {
-                this.settings.removeFromResults = checkbox.checked;
-                await this.settings.save();
+    private watchBlockOptions(): void {
+        fromEvent(document.getElementsByClassName("segmented-control"), "click")
+            .pipe(
+                filter((x) => x.target instanceof HTMLLabelElement),
+                pluck("target"),
+                pluck("dataset"))
+            .subscribe(async (dataset: { value: string, subject: string }) => {
+                const value = dataset.value;
+                const subject = dataset.subject;
+                await this.blockOptionChanged(subject, value);
             });
+    }
+
+    private async blockOptionChanged(subject: string, value: string): Promise<void> {
+        const blockAction: BlockAction = this.getBlockAction(value);
+        const page: YouTubePage = this.getYouTubePage(subject);
+        this.settings.blockOptions.set(page, blockAction);
+        await this.settings.save();
+    }
+
+    private getBlockAction(action: string): BlockAction {
+        switch (action) {
+            case "Block":
+                return BlockAction.Block;
+            case "Remove":
+                return BlockAction.Remove;
+            case "Redirect":
+                return BlockAction.Redirect;
+            default:
+                return BlockAction.Nothing;
+        }
+    }
+
+    private getYouTubePage(page: string): YouTubePage {
+        switch (page) {
+            case "Channel":
+                return YouTubePage.Channel;
+            case "Frontapge":
+                return YouTubePage.Frontpage;
+            case "Search":
+                return YouTubePage.Search;
+            case "Subscriptions":
+                return YouTubePage.Subscriptions;
+            case "Trending":
+                return YouTubePage.Trending;
+            case "Video":
+                return YouTubePage.Video;
+            default:
+                return YouTubePage.Undetermined;
+        }
     }
 
     private watchCheckDescription(): void {
@@ -125,6 +166,10 @@ export class GeneralSettignsController {
                 await this.settings.save();
                 this.displayBlockDialogPreview();
             });
+    }
+
+    private displayBlockOptions(): void {
+        const blockOptions = this.settings.blockOptions;
     }
 
     private displayBlockDialogPreview(): void {

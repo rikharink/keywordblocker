@@ -1,8 +1,12 @@
 @import "./common";
 @import "~formbase/src/styles/main";
 @import "./blockdialog";
+@import "./segmented";
 
-$tabs-base-color: #cc181e;
+$tabs-base-color: $color-accent;
+.title-label {
+    font-weight: bold;
+}
 
 .block-dialog-container{
     width: unset;

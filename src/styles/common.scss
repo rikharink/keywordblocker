@@ -1,14 +1,12 @@
 @import '~normalize-scss/sass/normalize';
 @import './palette';
-
 @include normalize();
-
 *,
 *::before,
 *::after {
     box-sizing: border-box;
 }
 
-body{
-    font-family: 'sans-serif';
+body {
+    font-family: sans-serif;
 }

@@ -1,8 +1,18 @@
 import { BlockDialog } from "@options/models/blockDialog";
 import { BlockItem } from "@options/models/blockItem";
+import { BlockOverlay} from "@options/models/blockOverlay";
 export { BlockItem } from "@options/models/blockItem";
 export { BlockDialog } from "@options/models/blockDialog";
+export { BlockOverlay} from "@options/models/blockOverlay";
+import { YouTubePage } from "@blocker/youtube";
 import "chrome-extension-async";
+
+export enum BlockAction {
+    Nothing = 0,
+    Block = 1,
+    Remove = 2,
+    Redirect = 3,
+}
 
 export class Settings {
     public static async load(): Promise<Settings> {
@@ -19,7 +29,13 @@ export class Settings {
             const settings = new Settings();
             settings.blockDialog = new BlockDialog(storedSettings.blockDialog.text, storedSettings.blockDialog.image);
             settings.checkDescription = storedSettings.checkDescription;
-            settings.removeFromResults = storedSettings.removeFromResults;
+            Object.keys(storedSettings.blockOptions).forEach((key: string) => {
+                const k: number = parseInt(key, 10);
+                const v: number = parseInt(storedSettings.blockOptions[key], 10);
+                const page: YouTubePage = k as YouTubePage;
+                const action: BlockAction = v as BlockAction;
+                settings.blockOptions.set(page, action);
+            });
             settings.password = storedSettings.password;
             settings.channels = storedSettings.channels
                 .map((x: any) => new BlockItem(x.keyword, x.blockPartialMatch));
@@ -35,8 +51,13 @@ export class Settings {
 
     private static convertOldSettings(oldSettings: { [key: string]: any }): Settings {
         const settings = new Settings();
-        if (oldSettings.removeFromResults) {
-            settings.removeFromResults = oldSettings.removeFromResults;
+        if (typeof oldSettings.removeFromResults !== "undefined") {
+            const blockSetting = oldSettings.removeFromResults ? BlockAction.Block : BlockAction.Nothing;
+            settings.blockOptions.set(YouTubePage.Frontpage, blockSetting);
+            settings.blockOptions.set(YouTubePage.Search, blockSetting);
+            settings.blockOptions.set(YouTubePage.Trending, blockSetting);
+            settings.blockOptions.set(YouTubePage.Subscriptions, blockSetting);
+            settings.blockOptions.set(YouTubePage.Channel, blockSetting);
         }
         if (oldSettings.checkDescription) {
             settings.checkDescription = oldSettings.checkDescription;
@@ -75,7 +96,15 @@ export class Settings {
     public keywords: BlockItem[] = [];
     public channels: BlockItem[] = [];
     public blockDialog: BlockDialog = new BlockDialog("Blocked!", "https://i.imgur.com/sLmiP5n.png");
-    public removeFromResults: boolean = true;
+    public blockOverlay: BlockOverlay = new BlockOverlay("Blocked", "#CC181E");
+    public blockOptions: Map<YouTubePage, BlockAction> = new Map<YouTubePage, BlockAction>([
+        [YouTubePage.Frontpage, BlockAction.Block],
+        [YouTubePage.Search, BlockAction.Block],
+        [YouTubePage.Subscriptions, BlockAction.Block],
+        [YouTubePage.Trending, BlockAction.Block],
+        [YouTubePage.Channel, BlockAction.Block],
+        [YouTubePage.Video, BlockAction.Block],
+    ]);
     public checkDescription: boolean = true;
     public settingsVersion: number = 2;
 
