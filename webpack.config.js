@@ -146,9 +146,9 @@ const config = {
 };
 
 if (isProd) {
-    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-    const bundleAnalyzer = new BundleAnalyzerPlugin();
-    config.plugins.push(bundleAnalyzer);
+    // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+    // const bundleAnalyzer = new BundleAnalyzerPlugin();
+    // config.plugins.push(bundleAnalyzer);
 } else {
     const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
     const chromeExtensionReloader = new ChromeExtensionReloader({
