@@ -10,7 +10,7 @@ export enum YouTubePage {
 
 export function getYouTubePage(): YouTubePage {
     const path = window.location.pathname;
-    if (path === "") {
+    if (path === "" || path === "/") {
         return YouTubePage.Frontpage;
     } else if (path === "/feed/trending") {
         return YouTubePage.Trending;

@@ -1,10 +1,12 @@
 import { BlockDialog } from "@options/models/blockDialog";
 import { BlockItem } from "@options/models/blockItem";
-import { BlockOverlay} from "@options/models/blockOverlay";
+import { BlockOverlay } from "@options/models/blockOverlay";
 export { BlockItem } from "@options/models/blockItem";
 export { BlockDialog } from "@options/models/blockDialog";
-export { BlockOverlay} from "@options/models/blockOverlay";
+export { BlockOverlay } from "@options/models/blockOverlay";
 import { YouTubePage } from "@blocker/youtube";
+import { BlockOption } from "@options/models/blockOption";
+export { BlockOption } from "@options/models/blockOption";
 import "chrome-extension-async";
 
 export enum BlockAction {
@@ -28,19 +30,16 @@ export class Settings {
             const storedSettings = localStorageData;
             const settings = new Settings();
             settings.blockDialog = new BlockDialog(storedSettings.blockDialog.text, storedSettings.blockDialog.image);
+            settings.blockOverlay = new BlockOverlay(storedSettings.blockOverlay.text,
+                storedSettings.blockOverlay.color);
             settings.checkDescription = storedSettings.checkDescription;
-            Object.keys(storedSettings.blockOptions).forEach((key: string) => {
-                const k: number = parseInt(key, 10);
-                const v: number = parseInt(storedSettings.blockOptions[key], 10);
-                const page: YouTubePage = k as YouTubePage;
-                const action: BlockAction = v as BlockAction;
-                settings.blockOptions.set(page, action);
-            });
             settings.password = storedSettings.password;
             settings.channels = storedSettings.channels
                 .map((x: any) => new BlockItem(x.keyword, x.blockPartialMatch));
             settings.keywords = storedSettings.keywords
                 .map((x: any) => new BlockItem(x.keyword, x.blockPartialMatch));
+            settings.blockOptions = storedSettings.blockOptions
+                .map((x: any) => new BlockOption(x.page, x.action));
             return settings;
         } else if (Object.keys(localStorageData).length === 0) {
             return new Settings();
@@ -53,11 +52,12 @@ export class Settings {
         const settings = new Settings();
         if (typeof oldSettings.removeFromResults !== "undefined") {
             const blockSetting = oldSettings.removeFromResults ? BlockAction.Block : BlockAction.Nothing;
-            settings.blockOptions.set(YouTubePage.Frontpage, blockSetting);
-            settings.blockOptions.set(YouTubePage.Search, blockSetting);
-            settings.blockOptions.set(YouTubePage.Trending, blockSetting);
-            settings.blockOptions.set(YouTubePage.Subscriptions, blockSetting);
-            settings.blockOptions.set(YouTubePage.Channel, blockSetting);
+            settings.setBlockOption(YouTubePage.Frontpage, blockSetting);
+            settings.setBlockOption(YouTubePage.Search, blockSetting);
+            settings.setBlockOption(YouTubePage.Trending, blockSetting);
+            settings.setBlockOption(YouTubePage.Subscriptions, blockSetting);
+            settings.setBlockOption(YouTubePage.Channel, blockSetting);
+            settings.setBlockOption(YouTubePage.Video, blockSetting);
         }
         if (oldSettings.checkDescription) {
             settings.checkDescription = oldSettings.checkDescription;
@@ -97,14 +97,7 @@ export class Settings {
     public channels: BlockItem[] = [];
     public blockDialog: BlockDialog = new BlockDialog("Blocked!", "https://i.imgur.com/sLmiP5n.png");
     public blockOverlay: BlockOverlay = new BlockOverlay("Blocked", "#CC181E");
-    public blockOptions: Map<YouTubePage, BlockAction> = new Map<YouTubePage, BlockAction>([
-        [YouTubePage.Frontpage, BlockAction.Block],
-        [YouTubePage.Search, BlockAction.Block],
-        [YouTubePage.Subscriptions, BlockAction.Block],
-        [YouTubePage.Trending, BlockAction.Block],
-        [YouTubePage.Channel, BlockAction.Block],
-        [YouTubePage.Video, BlockAction.Block],
-    ]);
+    public blockOptions: BlockOption[] = [];
     public checkDescription: boolean = true;
     public settingsVersion: number = 2;
 
@@ -112,6 +105,25 @@ export class Settings {
     }
 
     public async save(): Promise<void> {
+        console.log("SAVING");
         await chrome.storage.local.set(this);
+    }
+
+    public setBlockOption(page: YouTubePage, action: BlockAction): void {
+        const index = this.blockOptions.findIndex((i) => i.page === page);
+        if (index === -1) {
+            this.blockOptions.push(new BlockOption(page, action));
+        } else {
+            this.blockOptions[index].action = action;
+        }
+        console.log(this.blockOptions);
+    }
+
+    public getBlockAction(page: YouTubePage): BlockAction {
+        const index = this.blockOptions.findIndex((i) => i.page === page);
+        if (index !== -1) {
+            return this.blockOptions[index].action;
+        }
+        return BlockAction.Nothing;
     }
 }

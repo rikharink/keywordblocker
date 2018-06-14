@@ -1,4 +1,5 @@
-import { BlockItem, Settings } from "@options/models/settings";
+import { getYouTubePage, YouTubePage } from "@blocker/youtube";
+import { BlockAction, BlockItem, Settings } from "@options/models/settings";
 import { fromEvent, interval, merge } from "rxjs";
 import { take } from "rxjs/operators";
 
@@ -7,6 +8,9 @@ export class Blocker {
         "YTD-GRID-VIDEO-RENDERER",
         "YTD-VIDEO-RENDERER",
         "YTD-COMPACT-VIDEO-RENDERER",
+        "YTD-PLAYLIST-RENDERER",
+        "YTD-MOVIE-RENDERER",
+        "YTD-CHANNEL-RENDERER",
     ];
     private settings: Settings;
     private partialMatchKeywords: string[];
@@ -49,49 +53,59 @@ export class Blocker {
     public checkForBlockedVideos(): void {
         const title = document.querySelector("h1.title");
         const description = document.getElementById("description");
-        if (title && this.isKeywordBlocked(title.textContent)) {
-            this.hideVideo();
-            this.showPopup();
-        }
-        if (this.settings.checkDescription && description && this.isKeywordBlocked(description.textContent)) {
-            this.hideVideo();
-            this.showPopup();
+        const page = getYouTubePage();
+        const action = this.settings.getBlockAction(page);
+        if (page === YouTubePage.Video) {
+            if (action === BlockAction.Block) {
+                if (title && this.isKeywordBlocked(title.textContent)) {
+                    this.hideVideo();
+                    this.showPopup();
+                }
+                if (this.settings.checkDescription && description && this.isKeywordBlocked(description.textContent)) {
+                    this.hideVideo();
+                    this.showPopup();
+                }
+            } else if (action === BlockAction.Redirect) {
+                this.hideVideo();
+                window.location.assign("https://www.youtube.com");
+            }
         }
 
         const videos = this.getVideos();
         videos.filter((video) => {
             const videoTitle = video.querySelector("#video-title");
+            const channelTitle = video.querySelector<HTMLSpanElement>("#channel-title span");
             const channel = video.querySelector("#metadata a");
-            if (this.settings.channels.length > 0 && channel) {
-                return this.isChannelBlocked(channel.textContent);
+            let blocked = false;
+
+            if (this.settings.channels.length > 0 && (channel || channelTitle)) {
+                if (channelTitle) {
+                    blocked = blocked || this.isChannelBlocked(channelTitle.textContent);
+                }
+                if (channel) {
+                    blocked = blocked || this.isChannelBlocked(channel.textContent);
+                }
             }
             if (this.settings.keywords.length > 0 && videoTitle) {
-                return this.isKeywordBlocked(videoTitle.getAttribute("title"));
+                blocked = blocked || this.isKeywordBlocked(videoTitle.getAttribute("title"));
             }
+            return blocked;
         }).map((x) => this.remove(x));
     }
 
     public remove(node: HTMLElement): void {
-        // TODO: Make this a real condition
-        if (true) {
+        const page = getYouTubePage();
+        const action = this.settings.getBlockAction(getYouTubePage());
+        if (action === BlockAction.Block) {
             node.style.pointerEvents = "none";
             node.style.userSelect = "none";
             node.style.position = "relative";
-            if (!node.querySelector(".result-blocker")) {
-                node.appendChild(this.getBlockResultNode());
+            if (!node.querySelector(".block-overlay")) {
+                node.appendChild(this.settings.blockOverlay.getElement());
             }
-        } else {
+        } else if (action === BlockAction.Remove) {
             node.remove();
         }
-    }
-
-    public getBlockResultNode(): HTMLElement {
-        const blocker = document.createElement("div");
-        blocker.classList.add("result-blocker");
-        const blocked = document.createElement("p");
-        blocked.textContent = this.settings.blockDialog.text;
-        blocker.appendChild(blocked);
-        return blocker;
     }
 
     public showPopup(): void {

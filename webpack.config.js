@@ -23,7 +23,7 @@ const config = {
         path: path.join(__dirname, "dist"),
         filename: "[name].bundle.js"
     },
-    devtool: isProd ? false : "cheap-eval-source-map",
+    devtool: "eval-source-map",
     optimization: {
         usedExports: true,
         concatenateModules: true,
@@ -41,7 +41,7 @@ const config = {
                         drop_console: true,
                     }
                 },
-                sourceMap: false
+                sourceMap: true
             })
         ]
     },
