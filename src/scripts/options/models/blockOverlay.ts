@@ -9,6 +9,11 @@ export class BlockOverlay {
 
     public getElement(): HTMLElement {
         const blockOverlayContainer = document.createElement("div");
+        blockOverlayContainer.classList.add("block-overlay");
+        blockOverlayContainer.style.setProperty("background", this.color);
+        const text = document.createElement("p");
+        text.innerText = this.text;
+        blockOverlayContainer.appendChild(text);
         return blockOverlayContainer;
     }
 }
