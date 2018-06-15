@@ -1,8 +1,7 @@
-import { getYouTubePage, YouTubePage } from "@blocker/youtube";
+import { getYouTubePage, isChannel, YouTubePage } from "@blocker/youtube";
 import { BlockAction, BlockItem, Settings } from "@options/models/settings";
 import { fromEvent, interval, merge } from "rxjs";
-import { take } from "rxjs/operators";
-
+import { filter, pluck } from "rxjs/operators";
 export class Blocker {
     public readonly videoNodeNames = [
         "YTD-GRID-VIDEO-RENDERER",
@@ -21,6 +20,7 @@ export class Blocker {
     private wholeMatchKeywordsRegExp: RegExp;
     private partialMatchChannelsRegExp: RegExp;
     private wholeMatchChannelsRegExp: RegExp;
+    private clickedChannel: string;
 
     public async init(): Promise<void> {
         this.settings = await Settings.load();
@@ -48,6 +48,8 @@ export class Blocker {
 
         const partialChannelRegExp = this.partialMatchChannels.map((x) => "(.)*" + x + "(.)*").join("|");
         this.partialMatchChannelsRegExp = new RegExp(`(?:${partialChannelRegExp})`, "i");
+        this.watchRightClick();
+        this.watchRequestListeners();
     }
 
     public checkForBlockedVideos(): void {
@@ -94,7 +96,6 @@ export class Blocker {
     }
 
     public remove(node: HTMLElement): void {
-        const page = getYouTubePage();
         const action = this.settings.getBlockAction(getYouTubePage());
         if (action === BlockAction.Block) {
             node.style.pointerEvents = "none";
@@ -159,5 +160,40 @@ export class Blocker {
             videos.push(...document.getElementsByTagName(tag));
         }
         return videos.map((x) => x as HTMLElement);
+    }
+
+    public watchRightClick(): void {
+        fromEvent(document, "mousedown")
+            .pipe(
+                filter((event: MouseEvent) => event.button === 2),
+                pluck("target"),
+                filter<HTMLAnchorElement>((t) => t instanceof HTMLAnchorElement),
+                filter((t) => isChannel(t.pathname)),
+        )
+            .subscribe((channel) => {
+                this.clickedChannel = channel.textContent;
+            });
+    }
+
+    public watchRequestListeners(): void {
+        chrome.runtime.onMessage.addListener(async (request, _, sendResponse) => {
+            await sendResponse(true);
+            if (request === "blockChannel") {
+                await this.addChannel(this.clickedChannel, false);
+                console.log(this.settings.channels);
+                this.checkForBlockedVideos();
+            } else if (request === "checkForBlocks") {
+                this.settings = await Settings.load();
+                this.checkForBlockedVideos();
+            }
+        });
+    }
+
+    public async addChannel(channel: string, blockPartial: boolean): Promise<void> {
+        const channelArray = this.settings.channels.map((x: BlockItem) => x.keyword);
+        if (channelArray && channelArray.indexOf(channel) === -1) {
+            this.settings.channels.push(new BlockItem(channel, blockPartial));
+            await this.settings.save();
+        }
     }
 }
