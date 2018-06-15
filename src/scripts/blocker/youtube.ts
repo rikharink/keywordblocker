@@ -20,15 +20,15 @@ export function getYouTubePage(): YouTubePage {
         return YouTubePage.Search;
     } else if (path === "/watch") {
         return YouTubePage.Video;
-    } else if (isChannel()) {
+    } else if (isChannel(window.location.pathname)) {
         return YouTubePage.Channel;
     } else {
         return YouTubePage.Undetermined;
     }
 }
 
-function isChannel(): boolean {
-    const path = window.location.pathname.split("/");
+export function isChannel(location: string): boolean {
+    const path = location.split("/").filter((x) => x !== "");
     if (path.length < 2) {
         return false;
     }

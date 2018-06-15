@@ -105,7 +105,6 @@ export class Settings {
     }
 
     public async save(): Promise<void> {
-        console.log("SAVING");
         await chrome.storage.local.set(this);
     }
 
@@ -116,7 +115,6 @@ export class Settings {
         } else {
             this.blockOptions[index].action = action;
         }
-        console.log(this.blockOptions);
     }
 
     public getBlockAction(page: YouTubePage): BlockAction {
