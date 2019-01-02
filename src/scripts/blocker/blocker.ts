@@ -23,6 +23,12 @@ export class Blocker {
     private clickedChannel: string;
 
     public async init(): Promise<void> {
+        await this.loadSettings();
+        this.watchRightClick();
+        this.watchRequestListeners();
+    }
+
+    public async loadSettings(): Promise<void> {
         this.settings = await Settings.load();
         this.wholeMatchKeywords = this.settings.keywords
             .filter((keyword) => !keyword.blockPartialMatch)
@@ -48,8 +54,6 @@ export class Blocker {
 
         const partialChannelRegExp = this.partialMatchChannels.map((x) => "(.)*" + x + "(.)*").join("|");
         this.partialMatchChannelsRegExp = new RegExp(`(?:${partialChannelRegExp})`, "i");
-        this.watchRightClick();
-        this.watchRequestListeners();
     }
 
     public checkForBlockedVideos(): void {
@@ -167,11 +171,19 @@ export class Blocker {
             .pipe(
                 filter((event: MouseEvent) => event.button === 2),
                 pluck("target"),
-                filter<HTMLAnchorElement>((t) => t instanceof HTMLAnchorElement),
-                filter((t) => isChannel(t.pathname)),
-        )
-            .subscribe((channel) => {
-                this.clickedChannel = channel.textContent;
+                filter<HTMLElement>((t) => t instanceof HTMLElement
+                    && t.closest("ytd-grid-video-renderer") !== null),
+            )
+            .subscribe((t) => {
+                const videoGridRenderer = t.closest("ytd-grid-video-renderer");
+                if (!videoGridRenderer) {
+                    return;
+                }
+                const channelLink = videoGridRenderer.querySelector<HTMLAnchorElement>("#byline > a");
+                if (!channelLink || !isChannel(channelLink.pathname)) {
+                    return;
+                }
+                this.clickedChannel = channelLink.textContent;
             });
     }
 
@@ -180,10 +192,10 @@ export class Blocker {
             await sendResponse(true);
             if (request === "blockChannel") {
                 await this.addChannel(this.clickedChannel, false);
-                console.log(this.settings.channels);
+                await this.loadSettings();
                 this.checkForBlockedVideos();
             } else if (request === "checkForBlocks") {
-                this.settings = await Settings.load();
+                await this.loadSettings();
                 this.checkForBlockedVideos();
             }
         });

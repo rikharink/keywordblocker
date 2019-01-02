@@ -14,9 +14,10 @@ class Background {
         await chrome.contextMenus.create({
             contexts: ["selection"],
             documentUrlPatterns: patterns,
-            onclick: (info) => {
+            onclick: async (info, tab) => {
                 if (info.selectionText) {
                     this.addKeyword(info.selectionText, false);
+                    await chrome.tabs.sendMessage(tab.id, "checkForBlocks");
                 }
             },
             title: "Add selection as blocked keyword",
@@ -25,9 +26,10 @@ class Background {
         await chrome.contextMenus.create({
             contexts: ["selection"],
             documentUrlPatterns: patterns,
-            onclick: (info) => {
+            onclick: async (info, tab) => {
                 if (info.selectionText) {
                     this.addKeyword(info.selectionText, true);
+                    await chrome.tabs.sendMessage(tab.id, "checkForBlocks");
                 }
             },
             title: "Add selection as blocked wildcard keyword",
@@ -36,9 +38,10 @@ class Background {
         chrome.contextMenus.create({
             contexts: ["selection"],
             documentUrlPatterns: patterns,
-            onclick: (info) => {
+            onclick: async (info, tab) => {
                 if (info.selectionText) {
                     this.addChannel(info.selectionText, false);
+                    await chrome.tabs.sendMessage(tab.id, "checkForBlocks");
                 }
             },
             title: "Add selection as blocked channel",
@@ -47,9 +50,10 @@ class Background {
         chrome.contextMenus.create({
             contexts: ["selection"],
             documentUrlPatterns: patterns,
-            onclick: (info) => {
+            onclick: async (info, tab) => {
                 if (info.selectionText) {
                     this.addChannel(info.selectionText, true);
+                    await chrome.tabs.sendMessage(tab.id, "checkForBlocks");
                 }
             },
             title: "Add selection as blocked channel keyword",
@@ -59,12 +63,13 @@ class Background {
             contexts: ["link"],
             documentUrlPatterns: patterns,
             onclick: async (_, tab) => {
-                chrome.tabs.sendMessage(tab.id, "blockChannel");
+                await chrome.tabs.sendMessage(tab.id, "blockChannel");
             },
             targetUrlPatterns: [
                 "*://www.youtube.com/user/*",
                 "*://www.youtube.com/channel/*",
                 "*://www.youtube.com/c/*",
+                "*://www.youtube.com/watch?v=*",
             ],
             title: "Block channel",
         });
