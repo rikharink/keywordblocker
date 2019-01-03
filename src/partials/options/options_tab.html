@@ -1,0 +1,143 @@
+<li class="tab">
+    <input type="radio" name="tabs" id="tab1" checked />
+    <label class="tab-label" for="tab1" role="tab" aria-selected="true" aria-controls="panel1" tabindex="0">Options</label>
+    <div id="tab-content1" class="tab-content" role="tabpanel" aria-labelledby="description" aria-hidden="false">
+        <div class="form" id="general-options">
+            <fieldset>
+                <legend>Import &amp; Export</legend>
+                <button id="import-settings">Import Settings</button>
+                <input type="file" id="import" name="import-settings" accept="*.json">
+                <button id="export-settings">Export Settings</button>
+            </fieldset>
+            <fieldset>
+                <legend>General Options</legend>
+                <p>
+                    <label for="password">
+                        <span>Password</span>
+                    </label>
+                    <input type="text" id="password" class="input" name="password">
+                </p>
+            </fieldset>
+            <fieldset>
+                <legend>Block Options</legend>
+                <p>
+                    Explain Block Options
+                </p>
+                <p>
+                    <div class="control">
+                        <input type="checkbox" id="check-description" class="control__input" name="checkDescription">
+                        <label for="check-description" class="control__label">
+                            <span>Check video description for keywords</span>
+                        </label>
+                    </div>
+                </p>
+                <div class="block-option">
+                    <label for="frontpage-block-options" class="title-label">Frontpage</label>
+                    <div class="segmented-control" id="frontpage-block-options">
+                        <input type="radio" name="sc-1-1" id="sc-1-1-1" checked>
+                        <input type="radio" name="sc-1-1" id="sc-1-1-2">
+                        <input type="radio" name="sc-1-1" id="sc-1-1-3">
+                        <label for="sc-1-1-1" data-value="Nothing" data-subject="Frontpage">Nothing</label>
+                        <label for="sc-1-1-2" data-value="Block" data-subject="Frontpage">Block</label>
+                        <label for="sc-1-1-3" data-value="Remove" data-subject="Frontpage">Remove</label>
+                    </div>
+                </div>
+                <div class="block-option">
+                    <label for="search-block-options" class="title-label">Search</label>
+                    <div class="segmented-control" id="search-block-options">
+                        <input type="radio" name="sc-1-2" id="sc-1-2-1" checked>
+                        <input type="radio" name="sc-1-2" id="sc-1-2-2">
+                        <input type="radio" name="sc-1-2" id="sc-1-2-3">
+                        <label for="sc-1-2-1" data-value="Nothing" data-subject="Search">Nothing</label>
+                        <label for="sc-1-2-2" data-value="Block" data-subject="Search">Block</label>
+                        <label for="sc-1-2-3" data-value="Remove" data-subject="Search">Remove</label>
+                    </div>
+                </div>
+                <div class="block-option">
+                    <label for="trending-block-options" class="title-label">Trending</label>
+                    <div class="segmented-control" id="trending-block-options">
+                        <input type="radio" name="sc-1-3" id="sc-1-3-1" checked>
+                        <input type="radio" name="sc-1-3" id="sc-1-3-2">
+                        <input type="radio" name="sc-1-3" id="sc-1-3-3">
+                        <label for="sc-1-3-1" data-value="Nothing" data-subject="Trending">Nothing</label>
+                        <label for="sc-1-3-2" data-value="Block" data-subject="Trending">Block</label>
+                        <label for="sc-1-3-3" data-value="Remove" data-subject="Trending">Remove</label>
+                    </div>
+                </div>
+                <div class="block-option">
+                    <label for="subscriptions-block-options" class="title-label">Subscriptions</label>
+                    <div class="segmented-control" id="subscriptions-block-options">
+                        <input type="radio" name="sc-1-4" id="sc-1-4-1" checked>
+                        <input type="radio" name="sc-1-4" id="sc-1-4-2">
+                        <input type="radio" name="sc-1-4" id="sc-1-4-3">
+                        <label for="sc-1-4-1" data-value="Nothing" data-subject="Subscriptions">Nothing</label>
+                        <label for="sc-1-4-2" data-value="Block" data-subject="Subscriptions">Block</label>
+                        <label for="sc-1-4-3" data-value="Remove" data-subject="Subscriptions">Remove</label>
+                    </div>
+                </div>
+                <div class="block-option">
+                    <label for="channel-block-options" class="title-label">Channel</label>
+                    <div class="segmented-control" id="channel-block-options">
+                        <input type="radio" name="sc-1-5" id="sc-1-5-1" checked>
+                        <input type="radio" name="sc-1-5" id="sc-1-5-2">
+                        <input type="radio" name="sc-1-5" id="sc-1-5-3">
+                        <label for="sc-1-5-1" data-value="Nothing" data-subject="Channel">Nothing</label>
+                        <label for="sc-1-5-2" data-value="Block" data-subject="Channel">Block</label>
+                        <label for="sc-1-5-3" data-value="Remove" data-subject="Channel">Remove</label>
+                    </div>
+                </div>
+                <div class="block-option">
+                    <label for="video-block-options" class="title-label">Video</label>
+                    <div class="segmented-control" id="video-block-options">
+                        <input type="radio" name="sc-1-6" id="sc-1-6-1" checked>
+                        <input type="radio" name="sc-1-6" id="sc-1-6-2">
+                        <input type="radio" name="sc-1-6" id="sc-1-6-3">
+                        <label for="sc-1-6-1" data-value="Nothing" data-subject="Video">Nothing</label>
+                        <label for="sc-1-6-2" data-value="Block" data-subject="Video">Block</label>
+                        <label for="sc-1-6-3" data-value="Redirect" data-subject="Video">Redirect</label>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Block Dialog</legend>
+                <p>
+                    <label for="block-dialog-text" class="title-label">
+                        <span>Text</span>
+                    </label>
+                    <input type="text" id="block-dialog-text" class="input" name="block-dialog-text">
+                </p>
+                <p>
+                    <label for="block-dialog-image" class="title-label">
+                        <span>Image</span>
+                    </label>
+                    <input type="url" id="block-dialog-image" class="input" name="block-dialog-image">
+                </p>
+                <fieldset>
+                    <legend>Preview</legend>
+                    <div id="block-dialog-preview">
+                    </div>
+                </fieldset>
+            </fieldset>
+            <fieldset>
+                <legend>Block Overlay</legend>
+                <p>
+                    <label for="block-overlay-text" class="title-label">
+                        <span>Text</span>
+                    </label>
+                    <input type="text" id="block-overlay-text" class="input" name="block-overlay-text">
+                </p>
+                <p>
+                    <label for="block-overlay-color" class="title-label">
+                        <span>Color</span>
+                    </label>
+                    <input type="color" id="block-overlay-color" class="input" name="block-verlay-color">
+                </p>
+                <fieldset>
+                    <legend>Preview</legend>
+                    <div id="block-overlay-preview">
+                    </div>
+                </fieldset>
+            </fieldset>
+        </div>
+    </div>
+</li>
