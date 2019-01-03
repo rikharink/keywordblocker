@@ -40,6 +40,7 @@ export class Settings {
                 .map((x: any) => new BlockItem(x.keyword, x.blockPartialMatch));
             settings.blockOptions = storedSettings.blockOptions
                 .map((x: any) => new BlockOption(x.page, x.action));
+            settings.oldSettingsBackup = storedSettings.oldSettingsBackup;
             return settings;
         } else if (Object.keys(localStorageData).length === 0) {
             return new Settings();
@@ -50,6 +51,7 @@ export class Settings {
 
     private static convertOldSettings(oldSettings: { [key: string]: any }): Settings {
         const settings = new Settings();
+        settings.oldSettingsBackup = JSON.stringify(oldSettings);
         if (typeof oldSettings.removeFromResults !== "undefined") {
             const blockSetting = oldSettings.removeFromResults ? BlockAction.Block : BlockAction.Nothing;
             settings.setBlockOption(YouTubePage.Frontpage, blockSetting);
@@ -100,6 +102,7 @@ export class Settings {
     public blockOptions: BlockOption[] = [];
     public checkDescription: boolean = true;
     public settingsVersion: number = 2;
+    public oldSettingsBackup: string = "";
 
     private constructor() {
     }
