@@ -1,0 +1,32 @@
+<li class="tab">
+    <input type="radio" name="tabs" id="tab2" />
+    <label class="tab-label" for="tab2" role="tab" aria-selected="false" aria-controls="panel2" tabindex="0">Keywords</label>
+    <div id="tab-content2" class="tab-content" role="tabpanel" aria-labelledby="specification" aria-hidden="true">
+        <div class="description">
+            <p>
+                Here you can add keywords that should be blocked by Keyword Blocker.
+                Normally Keyword Blocker only blocks videos if they find the keyword as a sepate word in the video title and/or description.
+                Using the wildcard mode enables blocking when the keyword is found inside a bigger word.
+            </p>
+            <p>
+                For example if you add test as a blocked keyword a video named "Test Video" will be blocked.
+                But videos named testing won't be blocked since test is part of testing and not a word on it's own.
+                Be carefull with enabling wildcard mode because some words might be perfectly fine as a part of word but not on their own.
+            </p>
+            <p>
+                Keyword blocking is case insensitive and regular expressions are supported for advanced users.
+            </p>
+        </div>
+        <table class="keyword-table">
+            <thead>
+                <tr>
+                    <th class="column-keyword">Keyword</th>
+                    <th class="column-block-partial">Wildcard</th>
+                    <th class="column-delete"></th>
+                </tr>
+            </thead>
+            <tbody id="keywords">
+            </tbody>
+        </table>
+    </div>
+</li>
