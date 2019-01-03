@@ -87,7 +87,7 @@ export class Settings {
             }
         }
         if (oldSettings.wildcardChannels) {
-            for (const oldChannel of oldSettings.channels) {
+            for (const oldChannel of oldSettings.wildcardChannels) {
                 settings.channels.push(new BlockItem(oldChannel, true));
             }
         }
