@@ -85,7 +85,10 @@ const config = {
                         loader: "sass-loader"
                     }
                 ]
-
+            },
+            {
+                test: /\.html$/,
+                loader: 'html-loader'
             },
         ]
     },
@@ -124,17 +127,17 @@ const config = {
             }
         ]),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "src", "popup.html"),
+            template: path.join(__dirname, "src", "popup.ejs"),
             filename: "popup.html",
             chunks: ["popup"]
         }),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "src", "options.html"),
+            template: path.join(__dirname, "src", "options.ejs"),
             filename: "options.html",
             chunks: ["options"]
         }),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, "src", "background.html"),
+            template: path.join(__dirname, "src", "background.ejs"),
             filename: "background.html",
             chunks: ["background"]
         }),
