@@ -1,6 +1,28 @@
 @import "./common";
 
+body {
+    padding: 32px;
+}
+
+.popup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: ghostwhite;
+    text-align: center;
+}
+
+h1 {
+    font-size: 16pt;
+}
+
 .btn {
     padding: 8px;
     margin: 8px;
+    font-size: 14pt;
+    border: 0;
+    border-radius: 4px;
+    background-color: $color-accent;
+    color: white;
 }

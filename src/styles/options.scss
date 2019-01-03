@@ -175,17 +175,23 @@ $tabs-base-color: $color-accent;
 
     .password-wrapper {
         padding: 32px;
+        border: 1px solid black;
         border-radius: 7px;
-        background-color: darken(white, 15%);
+        background-color: white;
         width: 420px;
 
+        .title {
+            padding: 0 0 32px 0;
+        }
+
         .password {
-            text-indent: 12px;
+            text-indent: 14px;
             width: 100%;
             height: 48px;
         }
 
-        .password-error{
+        #password-error{
+            font-size: 14pt;
             color: red;
         }
     }
