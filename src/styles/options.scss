@@ -75,7 +75,7 @@ $tabs-base-color: $color-accent;
         position: absolute;
         top: 53px;
         left: 0;
-        background: darken(white, 15);
+        background: white;
     }
     [id^="tab"]:checked+.tab-label {
         top: 0;
