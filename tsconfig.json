@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "noImplicitAny": true,
+        "sourceMap": true,
+        "rootDir": "src",
+        "outDir": "dist",
+        "noEmitOnError": true,
+        "moduleResolution": "node",
+        "baseUrl": "./src/scripts",
+        "paths": {
+            "@options/*": ["options/*"],
+            "@options/models/*": ["options/models/*"],
+            "@blocker/*": ["blocker/*"],
+            "@styles/*" :["../styles/*"],
+            "@logger/*" :["logger/*"],
+            "chrome-extension-async": ["../../node_modules/chrome-extension-async/chrome-extension-async.d.ts"]
+        },
+    },
+    "files": [
+        "./src/scripts/background.ts",
+        "./src/scripts/content_script.ts",
+        "./src/scripts/options.ts",
+        "./src/scripts/popup.ts"
+    ],
+    "exclude": [
+        "/node_modules/"
+    ]
+}
