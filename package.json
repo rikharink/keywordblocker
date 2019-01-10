@@ -1,6 +1,6 @@
 {
   "name": "keywordblocker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Web Extension to block unwanted videos and channels",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
