@@ -9,9 +9,9 @@ Originally this was developed for a person who is easily scared and needed to be
 Get it in the [Chrome Webstore](https://chrome.google.com/webstore/detail/keyword-blocker/pbgacppomjfpheddhifkdkklddnolnpg)
 
 **Changelog:**
-  - ** 2.0.1
+  - **2.0.1**
      * Fixed a bug where the option page turns blank
-  - **2.0.0
+  - **2.0.0**
     * Complete rewrite for better maintainability
     * Added support for blocking videos with an overlay instead of removing them
     * Improved right click to block functionality
