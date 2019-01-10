@@ -9,6 +9,9 @@ Originally this was developed for a person who is easily scared and needed to be
 Get it in the [Chrome Webstore](https://chrome.google.com/webstore/detail/keyword-blocker/pbgacppomjfpheddhifkdkklddnolnpg)
 
 **Changelog:**
+  - **2.0.2**
+     * Firefox compatibility
+     * Improved webpack config for smaller extension size
   - **2.0.1**
      * Fixed a bug where the option page turns blank
   - **2.0.0**
