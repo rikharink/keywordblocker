@@ -4,7 +4,8 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
+
 const {
     CheckerPlugin,
     TsConfigPathsPlugin
@@ -23,26 +24,13 @@ const config = {
         path: path.join(__dirname, "dist"),
         filename: "[name].bundle.js"
     },
-    devtool: "eval-source-map",
+    devtool: !isProd ? "eval-source-map" : undefined,
     optimization: {
         usedExports: true,
         concatenateModules: true,
         occurrenceOrder: true,
         minimizer: [
-            new UglifyJsPlugin({
-                uglifyOptions: {
-                    compress: true,
-                    ecma: 6,
-                    output: {
-                        comments: false
-                    },
-                    compress: {
-                        dead_code: true,
-                        drop_console: true,
-                    }
-                },
-                sourceMap: true
-            })
+            new BabelMinifyPlugin()
         ]
     },
     module: {
@@ -153,16 +141,16 @@ if (isProd) {
     // const bundleAnalyzer = new BundleAnalyzerPlugin();
     // config.plugins.push(bundleAnalyzer);
 } else {
-    const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
-    const chromeExtensionReloader = new ChromeExtensionReloader({
-        port: 9090,
-        reloadPage: true,
-        entries: {
-            contentScript: "content_script",
-            background: "background"
-        }
-    });
-    config.plugins.push(chromeExtensionReloader);
+    // const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
+    // const chromeExtensionReloader = new ChromeExtensionReloader({
+    //     port: 9090,
+    //     reloadPage: true,
+    //     entries: {
+    //         contentScript: "content_script",
+    //         background: "background"
+    //     }
+    // });
+    // config.plugins.push(chromeExtensionReloader);
 }
 
 module.exports = config;

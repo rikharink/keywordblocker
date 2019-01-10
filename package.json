@@ -1,18 +1,20 @@
 {
   "name": "keywordblocker",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Web Extension to block unwanted videos and channels",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development webpack --mode development --watch",
     "dist": "cross-env NODE_ENV=production webpack --mode production",
-    "firefox": "web-ext run -s dist",
+    "firefox": "web-ext run -s dist --firefox=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\"",
+    "firefox:build": "web-ext build -s dist",
     "lint": "tslint -p tsconfig.json"
   },
   "author": "Rik Harink",
   "license": "MIT",
   "devDependencies": {
     "awesome-typescript-loader": "^5.2.1",
+    "babel-minify-webpack-plugin": "^0.3.1",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^4.6.0",
     "cross-env": "^5.2.0",
