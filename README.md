@@ -7,6 +7,8 @@ It features a very basic password protection and the block message is user-custo
 Originally this was developed for a person who is easily scared and needed to be protected from certain YouTube searches. Because there was no easy way to do this I developed this extension.
 
 Get it in the [Chrome Webstore](https://chrome.google.com/webstore/detail/keyword-blocker/pbgacppomjfpheddhifkdkklddnolnpg)
+Or for [Firefox]
+(https://addons.mozilla.org/en-US/firefox/addon/keyword-blocker/)
 
 ## Build instructions
 - checkout the repository and run npm install
