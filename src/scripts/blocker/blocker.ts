@@ -10,6 +10,7 @@ export class Blocker {
         "YTD-PLAYLIST-RENDERER",
         "YTD-MOVIE-RENDERER",
         "YTD-CHANNEL-RENDERER",
+        "YTD-VIDEO-OWNER-RENDERER",
     ];
     private settings: Settings;
     private partialMatchKeywords: string[];
@@ -82,14 +83,18 @@ export class Blocker {
             const videoTitle = video.querySelector("#video-title");
             const channelTitle = video.querySelector<HTMLSpanElement>("#channel-title span");
             const channel = video.querySelector("#metadata a");
+            const owner = video.querySelector<HTMLAnchorElement>("#owner-name a");
             let blocked = false;
 
-            if (this.settings.channels.length > 0 && (channel || channelTitle)) {
+            if (this.settings.channels.length > 0 && (channel || channelTitle || owner)) {
                 if (channelTitle) {
-                    blocked = blocked || this.isChannelBlocked(channelTitle.textContent);
+                    blocked = blocked || this.isChannelBlocked(channelTitle.textContent.trim());
                 }
                 if (channel) {
-                    blocked = blocked || this.isChannelBlocked(channel.textContent);
+                    blocked = blocked || this.isChannelBlocked(channel.textContent.trim());
+                }
+                if (owner) {
+                    blocked = blocked || this.isChannelBlocked(owner.textContent.trim());
                 }
             }
             if (this.settings.keywords.length > 0 && videoTitle) {
@@ -149,9 +154,7 @@ export class Blocker {
 
     public isKeywordBlocked(toCheck: string): boolean {
         if (this.partialMatchKeywords.length > 0) {
-            if (toCheck.search(this.partialMatchKeywordsRegExp) !== -1) {
-                return true;
-            }
+            return toCheck.search(this.partialMatchKeywordsRegExp) !== -1;
         }
         if (this.wholeMatchKeywords.length > 0) {
             return toCheck.search(this.wholeMatchKeywordsRegExp) !== -1;

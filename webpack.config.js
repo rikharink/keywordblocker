@@ -24,7 +24,7 @@ const config = {
         path: path.join(__dirname, "dist"),
         filename: "[name].bundle.js"
     },
-    devtool: !isProd ? "eval-source-map" : undefined,
+    devtool: !isProd ? "inline-cheap-source-map" : undefined,
     optimization: {
         usedExports: true,
         concatenateModules: true,
@@ -91,7 +91,9 @@ const config = {
         ]
     },
     plugins: [
-        new CleanWebpackPlugin(["dist"]),
+        new CleanWebpackPlugin({
+            cleanStaleWebpackAssets: false
+        }),
         new webpack.DefinePlugin({
             'process.env': {
                 'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
@@ -137,20 +139,20 @@ const config = {
 };
 
 if (isProd) {
-    // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-    // const bundleAnalyzer = new BundleAnalyzerPlugin();
-    // config.plugins.push(bundleAnalyzer);
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+    const bundleAnalyzer = new BundleAnalyzerPlugin();
+    config.plugins.push(bundleAnalyzer);
 } else {
-    // const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
-    // const chromeExtensionReloader = new ChromeExtensionReloader({
-    //     port: 9090,
-    //     reloadPage: true,
-    //     entries: {
-    //         contentScript: "content_script",
-    //         background: "background"
-    //     }
-    // });
-    // config.plugins.push(chromeExtensionReloader);
+    const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
+    const chromeExtensionReloader = new ChromeExtensionReloader({
+        port: 9090,
+        reloadPage: true,
+        entries: {
+            contentScript: "content_script",
+            background: "background"
+        }
+    });
+    config.plugins.push(chromeExtensionReloader);
 }
 
 module.exports = config;
