@@ -1,8 +1,7 @@
 # Keyword Blocker
 
 ## Block Youtube Videos based on specified keywords
-
-![keywordblocker](keywordblocker.png =250x250)
+<img src="keywordblocker.png" width="250px" height="250px">
 
 This web extension can block YouTube videos or channels from view based on keywords you can specify.
 It features a very basic password protection and the block message is user-customizable.
