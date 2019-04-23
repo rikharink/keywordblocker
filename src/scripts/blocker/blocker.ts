@@ -2,6 +2,7 @@ import { getYouTubePage, isChannel, YouTubePage } from "@blocker/youtube";
 import { BlockAction, BlockItem, Settings } from "@options/models/settings";
 import { fromEvent, interval, merge } from "rxjs";
 import { filter, pluck } from "rxjs/operators";
+import { Action } from "rxjs/internal/scheduler/Action";
 export class Blocker {
     public readonly videoNodeNames = [
         "YTD-GRID-VIDEO-RENDERER",
@@ -63,18 +64,19 @@ export class Blocker {
         const page = getYouTubePage();
         const action = this.settings.getBlockAction(page);
         if (page === YouTubePage.Video) {
-            if (action === BlockAction.Block) {
-                if (title && this.isKeywordBlocked(title.textContent)) {
-                    this.hideVideo();
-                    this.showPopup();
-                }
-                if (this.settings.checkDescription && description && this.isKeywordBlocked(description.textContent)) {
-                    this.hideVideo();
-                    this.showPopup();
-                }
-            } else if (action === BlockAction.Redirect) {
+            const titleBlocked = title && this.isKeywordBlocked(title.textContent.trim());
+            const descriptionBlocked =
+                description
+                && this.settings.checkDescription
+                && this.isKeywordBlocked(description.textContent.trim());
+            const videoBlocked = titleBlocked || descriptionBlocked;
+            if (videoBlocked) {
                 this.hideVideo();
-                window.location.assign("https://www.youtube.com");
+                if (action === BlockAction.Block) {
+                    this.showPopup();
+                } else if (action === BlockAction.Redirect) {
+                    window.location.assign("https://www.youtube.com");
+                }
             }
         }
 
@@ -84,9 +86,10 @@ export class Blocker {
             const channelTitle = video.querySelector<HTMLSpanElement>("#channel-title span");
             const channel = video.querySelector("#metadata a");
             const owner = video.querySelector<HTMLAnchorElement>("#owner-name a");
+            const byline = video.querySelector("#byline");
             let blocked = false;
 
-            if (this.settings.channels.length > 0 && (channel || channelTitle || owner)) {
+            if (this.settings.channels.length > 0 && (channel || channelTitle || owner || byline)) {
                 if (channelTitle) {
                     blocked = blocked || this.isChannelBlocked(channelTitle.textContent.trim());
                 }
@@ -95,6 +98,9 @@ export class Blocker {
                 }
                 if (owner) {
                     blocked = blocked || this.isChannelBlocked(owner.textContent.trim());
+                }
+                if (byline) {
+                    blocked = blocked || this.isChannelBlocked(byline.textContent.trim());
                 }
             }
             if (this.settings.keywords.length > 0 && videoTitle) {
@@ -175,18 +181,25 @@ export class Blocker {
                 filter((event: MouseEvent) => event.button === 2),
                 pluck("target"),
                 filter<HTMLElement>((t) => t instanceof HTMLElement
-                    && t.closest("ytd-grid-video-renderer") !== null),
+                    && (t.closest("ytd-grid-video-renderer") !== null
+                        || t.closest("ytd-compact-video-renderer") != null)),
             )
             .subscribe((t) => {
                 const videoGridRenderer = t.closest("ytd-grid-video-renderer");
-                if (!videoGridRenderer) {
+                const compactVideoRenderer = t.closest("ytd-compact-video-renderer");
+
+                if (!(videoGridRenderer || compactVideoRenderer)) {
                     return;
                 }
-                const channelLink = videoGridRenderer.querySelector<HTMLAnchorElement>("#byline > a");
-                if (!channelLink || !isChannel(channelLink.pathname)) {
-                    return;
+                if (videoGridRenderer) {
+                    const channel = videoGridRenderer.querySelector<HTMLAnchorElement>("#byline > a");
+                    if (channel && isChannel(channel.pathname)) {
+                        this.clickedChannel = channel.textContent.trim();
+                    }
+                } else if (compactVideoRenderer) {
+                    const channel = compactVideoRenderer.querySelector<HTMLAnchorElement>("#byline");
+                    this.clickedChannel = channel.textContent.trim();
                 }
-                this.clickedChannel = channelLink.textContent;
             });
     }
 
@@ -194,9 +207,11 @@ export class Blocker {
         chrome.runtime.onMessage.addListener(async (request, _, sendResponse) => {
             await sendResponse(true);
             if (request === "blockChannel") {
-                await this.addChannel(this.clickedChannel, false);
-                await this.loadSettings();
-                this.checkForBlockedVideos();
+                if (this.clickedChannel) {
+                    await this.addChannel(this.clickedChannel, false);
+                    await this.loadSettings();
+                    this.checkForBlockedVideos();
+                }
             } else if (request === "checkForBlocks") {
                 await this.loadSettings();
                 this.checkForBlockedVideos();

@@ -13,6 +13,7 @@ export class GeneralSettignsController {
     private blockDialogPreview: Element = document.getElementById("block-dialog-preview");
     private blockOverlayText: HTMLInputElement = document.getElementById("block-overlay-text") as HTMLInputElement;
     private blockOverlayColor: HTMLInputElement = document.getElementById("block-overlay-color") as HTMLInputElement;
+    private blockOverlayOpacity: HTMLInputElement = document.getElementById("block-overlay-opacity") as HTMLInputElement;
     private blockOverlayPreview: Element = document.getElementById("block-overlay-preview");
     private importSettings: Element = document.getElementById("import-settings");
     private exportSettings: Element = document.getElementById("export-settings");
@@ -62,6 +63,7 @@ export class GeneralSettignsController {
         this.blockDialogImage.value = this.settings.blockDialog.image;
         this.blockDialogText.value = this.settings.blockDialog.text;
         this.blockOverlayColor.value = this.settings.blockOverlay.color;
+        this.blockOverlayOpacity.value = this.settings.blockOverlay.opacity.toString();
         this.blockOverlayText.value = this.settings.blockOverlay.text;
         if (this.settings.checkDescription) {
             this.checkDescription.checked = true;
@@ -210,11 +212,19 @@ export class GeneralSettignsController {
         fromEvent(this.blockOverlayColor, "input").pipe(
             pluck("target"),
             pluck("value"))
-        .subscribe(async (value: string) => {
-            this.settings.blockOverlay.color = value;
-            await this.settings.save();
-            this.displayBlockOverlayPreview();
-        });
+            .subscribe(async (value: string) => {
+                this.settings.blockOverlay.color = value;
+                await this.settings.save();
+                this.displayBlockOverlayPreview();
+            });
+        fromEvent(this.blockOverlayOpacity, "change").pipe(
+            pluck("target"),
+            pluck("value"))
+            .subscribe(async (value: string) => {
+                this.settings.blockOverlay.opacity = parseFloat(value);
+                await this.settings.save();
+                this.displayBlockOverlayPreview();
+            });
     }
 
     private displayBlockOverlayPreview(): void {

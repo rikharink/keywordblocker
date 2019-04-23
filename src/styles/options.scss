@@ -5,15 +5,16 @@
 @import "./segmented";
 
 $tabs-base-color: $color-accent;
+
 .title-label {
     font-weight: bold;
 }
 
-.block-dialog-container{
+.block-dialog-container {
     width: unset;
     height: unset;
 
-    p{
+    p {
         font-size: 1.5em !important;
     }
 }
@@ -23,12 +24,18 @@ $tabs-base-color: $color-accent;
     justify-content: center;
     align-items: flex-start;
     min-height: 100vh;
+
     button {
         height: 48px;
         padding: 0 16px;
     }
+
     input {
         height: 48px;
+    }
+
+    input[type="range"] {
+        -webkit-appearance: slider-horizontal;
     }
 }
 
@@ -38,15 +45,18 @@ $tabs-base-color: $color-accent;
     position: relative;
     margin: 24px 0 0 10px;
     text-align: left;
+
     .tab {
         float: left;
         display: block;
     }
+
     input[type="radio"] {
         position: absolute;
         top: 0;
         left: -9999px;
     }
+
     .tab-label {
         display: block;
         padding: 14px 21px;
@@ -60,10 +70,12 @@ $tabs-base-color: $color-accent;
         position: relative;
         top: 4px;
         transition: all 0.2s ease-in-out;
+
         &:hover {
             background: darken($tabs-base-color, 10);
         }
     }
+
     .tab-content {
         z-index: 2;
         display: none;
@@ -77,11 +89,13 @@ $tabs-base-color: $color-accent;
         left: 0;
         background: white;
     }
+
     [id^="tab"]:checked+.tab-label {
         top: 0;
         padding-top: 17px;
         background: darken($tabs-base-color, 15);
     }
+
     [id^="tab"]:checked~[id^="tab-content"] {
         display: block;
     }
@@ -98,52 +112,65 @@ $tabs-base-color: $color-accent;
     width: 100%;
     table-layout: fixed;
     white-space: nowrap;
+
     .center-cell-content {
         text-align: center;
         vertical-align: middle;
     }
+
     .column-keyword {
         width: 70%;
     }
+
     .column-block-partial {
         width: 15%;
     }
+
     .column-delete {
         width: 15%;
     }
+
     thead {
         background-color: $table-header-background;
         color: $dark-background-text-color;
+
         th {
             height: 48px;
             padding: $cell-padding;
+
             &:second-child {
                 width: 50%;
             }
         }
     }
+
     tbody {
         tr {
             &:nth-child(even) {
                 background-color: $table-row-even;
             }
+
             &:nth-child(odd) {
                 background-color: $table-row-odd;
             }
+
             &:second-child {
                 width: 50%;
             }
         }
+
         td {
             padding: $cell-padding;
         }
     }
+
     .keyword {
         width: 100%;
         text-indent: 12px;
         height: 48px;
         width: 100%;
     }
+
     .button {
         height: 48px;
         width: 48px;
@@ -152,16 +179,18 @@ $tabs-base-color: $color-accent;
         background: none;
         outline: none;
         cursor: pointer;
+
         &:hover {
             color: lighten(black, 20%);
         }
     }
+
     .block-partial {
         cursor: pointer;
     }
 }
 
-#options-menu{
+#options-menu {
     display: none;
 }
 
@@ -190,7 +219,7 @@ $tabs-base-color: $color-accent;
             height: 48px;
         }
 
-        #password-error{
+        #password-error {
             font-size: 14pt;
             color: red;
         }

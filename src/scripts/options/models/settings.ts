@@ -29,9 +29,10 @@ export class Settings {
         if (localStorageData.settingsVersion === 2) {
             const storedSettings = localStorageData;
             const settings = new Settings();
+            const blockOverlayOpacity = storedSettings.blockOverlay.opacity ? storedSettings.blockOverlay.opacity : 1;
             settings.blockDialog = new BlockDialog(storedSettings.blockDialog.text, storedSettings.blockDialog.image);
             settings.blockOverlay = new BlockOverlay(storedSettings.blockOverlay.text,
-                storedSettings.blockOverlay.color);
+                storedSettings.blockOverlay.color, blockOverlayOpacity);
             settings.checkDescription = storedSettings.checkDescription;
             settings.password = storedSettings.password;
             settings.channels = storedSettings.channels
@@ -98,7 +99,7 @@ export class Settings {
     public keywords: BlockItem[] = [];
     public channels: BlockItem[] = [];
     public blockDialog: BlockDialog = new BlockDialog("Blocked!", "https://i.imgur.com/sLmiP5n.png");
-    public blockOverlay: BlockOverlay = new BlockOverlay("Blocked", "#CC181E");
+    public blockOverlay: BlockOverlay = new BlockOverlay("Blocked", "#CC181E", 1);
     public blockOptions: BlockOption[] = [];
     public checkDescription: boolean = true;
     public settingsVersion: number = 2;

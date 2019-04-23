@@ -1,6 +1,7 @@
 <li class="tab">
     <input type="radio" name="tabs" id="tab1" checked />
-    <label class="tab-label" for="tab1" role="tab" aria-selected="true" aria-controls="panel1" tabindex="0">Options</label>
+    <label class="tab-label" for="tab1" role="tab" aria-selected="true" aria-controls="panel1"
+        tabindex="0">Options</label>
     <div id="tab-content1" class="tab-content" role="tabpanel" aria-labelledby="description" aria-hidden="false">
         <div class="form" id="general-options">
             <fieldset>
@@ -21,9 +22,11 @@
             <fieldset>
                 <legend>Block Options</legend>
                 <p>
-                    Here you can configure the specific action that should be taken on a given page when a video matches a keyword or channel on your blocklists.
-                    Block displays an overlay over the video but doesn't remove it from the results. 
-                    Remove does remove the video but this can cause a big performance degredation because YouTube keeps loading new videos after removal.
+                    Here you can configure the specific action that should be taken on a given page when a video matches
+                    a keyword or channel on your blocklists.
+                    Block displays an overlay over the video but doesn't remove it from the results.
+                    Remove does remove the video but this can cause a big performance degredation because YouTube keeps
+                    loading new videos after removal.
                     So some caution is necessary with the remove option.
                 </p>
                 <p>
@@ -104,7 +107,8 @@
             <fieldset>
                 <legend>Block Dialog</legend>
                 <p>
-                    Here you can configure the appearence of the block dialog that occurs on a video page that matches a keyword or channel.
+                    Here you can configure the appearence of the block dialog that occurs on a video page that matches a
+                    keyword or channel.
                 </p>
                 <p>
                     <label for="block-dialog-text" class="title-label">
@@ -127,7 +131,8 @@
             <fieldset>
                 <legend>Block Overlay</legend>
                 <p>
-                    Here you can configure the appearence of the block overlay that appears when you use the block option instead of remove.
+                    Here you can configure the appearence of the block overlay that appears when you use the block
+                    option instead of remove.
                 </p>
                 <p>
                     <label for="block-overlay-text" class="title-label">
@@ -139,7 +144,14 @@
                     <label for="block-overlay-color" class="title-label">
                         <span>Color</span>
                     </label>
-                    <input type="color" id="block-overlay-color" class="input" name="block-verlay-color">
+                    <input type="color" id="block-overlay-color" class="input" name="block-overlay-color">
+                </p>
+                <p>
+                    <label for="block-overlay-opacity" class="title-label">
+                        <span>Opacity</span>
+                    </label>
+                    <input type="range" id="block-overlay-opacity" class="input" name="block-overlay-opacity" min="0.0"
+                        max="1.0" step="0.01">
                 </p>
                 <fieldset>
                     <legend>Preview</legend>
