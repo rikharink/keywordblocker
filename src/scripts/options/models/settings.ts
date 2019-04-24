@@ -98,7 +98,7 @@ export class Settings {
     public password: string = "";
     public keywords: BlockItem[] = [];
     public channels: BlockItem[] = [];
-    public blockDialog: BlockDialog = new BlockDialog("Blocked!", "https://i.imgur.com/sLmiP5n.png");
+    public blockDialog: BlockDialog = new BlockDialog("Blocked!", "https://keywordblocker.nl/img/keywordblocker.png");
     public blockOverlay: BlockOverlay = new BlockOverlay("Blocked", "#CC181E", 1);
     public blockOptions: BlockOption[] = [];
     public checkDescription: boolean = true;
