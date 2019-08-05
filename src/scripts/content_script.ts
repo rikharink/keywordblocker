@@ -1,5 +1,5 @@
-import * as fontawesome from "@fortawesome/fontawesome";
-import { faTimesCircle } from "@fortawesome/fontawesome-free-regular";
+import { dom, library } from "@fortawesome/fontawesome-svg-core";
+import { faTimesCircle } from "@fortawesome/free-regular-svg-icons";
 import { interval } from "rxjs";
 import { debounce } from "ts-debounce";
 import "../styles/content_script.scss";
@@ -40,4 +40,5 @@ blocker.init().then(() => {
             });
 });
 
-fontawesome.library.add(faTimesCircle);
+library.add(faTimesCircle);
+dom.watch();
