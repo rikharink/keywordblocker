@@ -1,5 +1,5 @@
-import { BlockItemSettingsController } from "@options/blockItemSettingsController";
-import { BlockItem, Settings } from "@options/models/settings";
+import { BlockItemSettingsController } from "./blockItemSettingsController";
+import { BlockItem, Settings } from "./models/settings";
 
 export class ChannelSettingsController extends BlockItemSettingsController {
     constructor(settings: Settings) {

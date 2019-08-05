@@ -2,16 +2,12 @@ const webpack = require("webpack");
 const path = require("path");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
-
 const {
-    CheckerPlugin,
-    TsConfigPathsPlugin
-} = require('awesome-typescript-loader');
-const rxPaths = require('rxjs/_esm5/path-mapping');
-const isProd = process.env.NODE_ENV === "production";
+    CleanWebpackPlugin
+} = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserJSPlugin = require('terser-webpack-plugin');
 
 const config = {
     entry: {
@@ -24,20 +20,28 @@ const config = {
         path: path.join(__dirname, "dist"),
         filename: "[name].bundle.js"
     },
-    devtool: !isProd ? "inline-cheap-source-map" : undefined,
+    resolve: {
+        // Add `.ts` and `.tsx` as a resolvable extension.
+        extensions: [".ts", ".js"]
+    },
+    devtool: this.mode === 'development' ? 'eval-source-map' : '',
     optimization: {
         usedExports: true,
         concatenateModules: true,
         occurrenceOrder: true,
         minimizer: [
-            new BabelMinifyPlugin()
+            new TerserJSPlugin({
+                parallel: true,
+                sourceMap: true,
+            }),
+            new OptimizeCSSAssetsPlugin({})
         ]
     },
     module: {
         rules: [{
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
-                loader: "awesome-typescript-loader"
+                loader: "ts-loader"
             },
             {
                 enforce: "pre",
@@ -61,9 +65,6 @@ const config = {
                                 ctx: {
                                     cssnext: {
                                         warnForDuplicates: false
-                                    },
-                                    cssnano: {
-                                        preset: 'default'
                                     }
                                 }
                             }
@@ -78,16 +79,6 @@ const config = {
                 test: /\.html$/,
                 loader: 'html-loader'
             },
-        ]
-    },
-    resolve: {
-        extensions: [".ts", ".tsx", ".js", ".scss"],
-        alias: Object.assign(rxPaths(), {
-            '@fortawesome/fontawesome-free-solid$': '@fortawesome/fontawesome-free-solid/shakable.es.js',
-            '@fortawesome/fontawesome-free-brands$': '@fortawesome/fontawesome-free-brands/shakable.es.js',
-        }),
-        plugins: [
-            new TsConfigPathsPlugin()
         ]
     },
     plugins: [
@@ -131,28 +122,29 @@ const config = {
             filename: "background.html",
             chunks: ["background"]
         }),
-        new CheckerPlugin(),
         new MiniCssExtractPlugin({
             filename: path.join("styles", "[name].css")
         })
     ]
 };
 
-if (isProd) {
-    // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-    // const bundleAnalyzer = new BundleAnalyzerPlugin();
-    // config.plugins.push(bundleAnalyzer);
-} else {
-    const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
-    const chromeExtensionReloader = new ChromeExtensionReloader({
-        port: 9090,
-        reloadPage: true,
-        entries: {
-            contentScript: "content_script",
-            background: "background"
-        }
-    });
-    config.plugins.push(chromeExtensionReloader);
-}
-
-module.exports = config;
+module.exports = (_, argv) => {
+    config.mode = argv.mode;
+    if (config.mode === "production") {
+        // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+        // const bundleAnalyzer = new BundleAnalyzerPlugin();
+        // config.plugins.push(bundleAnalyzer);
+    } else {
+        const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
+        const chromeExtensionReloader = new ChromeExtensionReloader({
+            port: 9090,
+            reloadPage: true,
+            entries: {
+                contentScript: "content_script",
+                background: "background"
+            }
+        });
+        config.plugins.push(chromeExtensionReloader);
+    }
+    return config;
+};

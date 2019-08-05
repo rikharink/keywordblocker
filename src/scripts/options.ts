@@ -1,11 +1,11 @@
 import * as fontawesome from "@fortawesome/fontawesome";
 import { faTimesCircle } from "@fortawesome/fontawesome-free-regular";
 import { faPlus, faTrashAlt } from "@fortawesome/fontawesome-free-solid";
-import { ChannelSettingsController } from "@options/channelSettingsController";
-import { GeneralSettignsController } from "@options/generalSettingsController";
-import { KeywordSettingsController } from "@options/keywordSettingsController";
-import { Settings } from "@options/models/settings";
-import "@styles/options";
+import "../styles/options.scss";
+import { ChannelSettingsController } from "./options/channelSettingsController";
+import { GeneralSettignsController } from "./options/generalSettingsController";
+import { KeywordSettingsController } from "./options/keywordSettingsController";
+import { Settings } from "./options/models/settings";
 
 class Options {
     public settings: Settings;

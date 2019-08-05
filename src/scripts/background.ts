@@ -1,5 +1,5 @@
-import { BlockItem, Settings } from "@options/models/settings";
 import "chrome-extension-async";
+import { BlockItem, Settings } from "./options/models/settings";
 
 class Background {
     private settings: Settings;

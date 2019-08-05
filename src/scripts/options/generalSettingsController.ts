@@ -1,7 +1,7 @@
-import { YouTubePage } from "@blocker/youtube";
-import { BlockAction, Settings } from "@options/models/settings";
 import { from, fromEvent, Observable } from "rxjs";
 import { debounceTime, filter, mergeMap, pluck } from "rxjs/operators";
+import { YouTubePage } from "../blocker/youtube";
+import { BlockAction, Settings } from "./models/settings";
 
 export class GeneralSettignsController {
     private settings: Settings;

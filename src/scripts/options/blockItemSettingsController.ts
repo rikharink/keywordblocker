@@ -1,6 +1,6 @@
-import { BlockItem, Settings } from "@options/models/settings";
-import { fromEvent, Observable} from "rxjs";
+import { fromEvent } from "rxjs";
 import { filter, map, pluck } from "rxjs/operators";
+import { BlockItem, Settings } from "./models/settings";
 
 export abstract class BlockItemSettingsController {
     protected settings: Settings;
@@ -43,7 +43,7 @@ export abstract class BlockItemSettingsController {
     }
 
     protected watchBlockPartialBlockItem(checkboxes: NodeListOf<Element>,
-                                         action: (checkbox: HTMLInputElement) => Promise<void>): void {
+        action: (checkbox: HTMLInputElement) => Promise<void>): void {
         for (const checkbox of checkboxes) {
             fromEvent(checkbox, "click")
                 .pipe(pluck("target"))

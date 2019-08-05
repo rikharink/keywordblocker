@@ -1,9 +1,9 @@
-import { Blocker } from "@blocker/blocker";
 import * as fontawesome from "@fortawesome/fontawesome";
 import { faTimesCircle } from "@fortawesome/fontawesome-free-regular";
-import "@styles/content_script.scss";
 import { interval } from "rxjs";
 import { debounce } from "ts-debounce";
+import "../styles/content_script.scss";
+import { Blocker } from "./blocker/blocker";
 
 const blocker = new Blocker();
 const debounceTime = 250;

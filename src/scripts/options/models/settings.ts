@@ -1,12 +1,12 @@
-import { BlockDialog } from "@options/models/blockDialog";
-import { BlockItem } from "@options/models/blockItem";
-import { BlockOverlay } from "@options/models/blockOverlay";
-export { BlockItem } from "@options/models/blockItem";
-export { BlockDialog } from "@options/models/blockDialog";
-export { BlockOverlay } from "@options/models/blockOverlay";
-import { YouTubePage } from "@blocker/youtube";
-import { BlockOption } from "@options/models/blockOption";
-export { BlockOption } from "@options/models/blockOption";
+import { BlockDialog } from "./blockDialog";
+import { BlockItem } from "./blockItem";
+import { BlockOverlay } from "./blockOverlay";
+export { BlockItem } from "./blockItem";
+export { BlockDialog } from "./blockDialog";
+export { BlockOverlay } from "./blockOverlay";
+import { YouTubePage } from "../../blocker/youtube";
+import { BlockOption } from "./blockOption";
+export { BlockOption } from "./blockOption";
 import "chrome-extension-async";
 
 export enum BlockAction {

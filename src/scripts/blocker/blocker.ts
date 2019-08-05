@@ -1,8 +1,7 @@
-import { getYouTubePage, isChannel, YouTubePage } from "@blocker/youtube";
-import { BlockAction, BlockItem, Settings } from "@options/models/settings";
 import { fromEvent, interval, merge } from "rxjs";
 import { filter, pluck } from "rxjs/operators";
-import { Action } from "rxjs/internal/scheduler/Action";
+import { BlockAction, BlockItem, Settings } from "../options/models/settings";
+import { getYouTubePage, isChannel, YouTubePage } from "./youtube";
 export class Blocker {
     public readonly videoNodeNames = [
         "YTD-GRID-VIDEO-RENDERER",
