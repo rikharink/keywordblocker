@@ -34,8 +34,8 @@ jobs:
       - run:
           name: "Install dependencies"
           command: |
-            apt get update
-            apt get install zip
+            apt-get update
+            apt-get install zip
             npm install
       - save_cache:
           paths:
