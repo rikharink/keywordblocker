@@ -23,6 +23,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:10.16.1-buster
+    working_directory: ~/app
     steps:
       - checkout
       # Download and cache dependencies
@@ -45,9 +46,10 @@ jobs:
           name: "Package extension"
           command: |
             npm run dist
-            zip -r dist.zip dist
+            cd dist
+            zip -r ../dist.zip *
       - persist_to_workspace:
-          root: /home/circleci
+          root: /home/circleci/app
           paths:
             - dist.zip
   publish:
