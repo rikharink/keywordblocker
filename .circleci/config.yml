@@ -22,7 +22,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: alpine:3.10
+      - image: circleci/nodejs:10.16.1-buster
     steps:
       - checkout
       # Download and cache dependencies
@@ -34,8 +34,8 @@ jobs:
       - run:
           name: "Install dependencies"
           command: |
-            apk add --no-cache zip
-            apk add --update --no-cache npm
+            apt get update
+            apt get install zip
             npm install
       - save_cache:
           paths:
