@@ -35,7 +35,7 @@ jobs:
           name: "Install dependencies"
           command: |
             apk add --no-cache zip
-            apk add --no-cache npm
+            apk add --update --no-cache nodejs npm
             npm install
       - save_cache:
           paths:
