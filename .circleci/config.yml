@@ -47,7 +47,7 @@ jobs:
             npm run dist
             zip -r dist.zip dist
       - persist_to_workspace:
-          root: /root/project
+          root: /home/circleci
           paths:
             - dist.zip
   publish:
