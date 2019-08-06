@@ -22,7 +22,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cibuilds/chrome-extension:latest
+      - image: alpine:3.10
     steps:
       - checkout
       # Download and cache dependencies
@@ -35,7 +35,7 @@ jobs:
           name: "Install dependencies"
           command: |
             apk add --no-cache zip
-            apk add --update --no-cache nodejs npm
+            apk add --update --no-cache npm
             npm install
       - save_cache:
           paths:
