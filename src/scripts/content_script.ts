@@ -4,8 +4,9 @@ import { interval } from "rxjs";
 import { debounce } from "ts-debounce";
 import "../styles/content_script.scss";
 import { Blocker } from "./blocker/blocker";
+import container from "./inversify.config";
 
-const blocker = new Blocker();
+const blocker = container.get<Blocker>(Blocker);
 const debounceTime = 250;
 const mutationObserver = new MutationObserver(debounce(handleUpdate, debounceTime));
 const ignoredChanges: string[] = ["YTD-MOVING-THUMBNAIL-RENDERER", "svg", "PAPER-TOOLTIP", "#text"];

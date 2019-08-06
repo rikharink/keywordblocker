@@ -1,10 +1,19 @@
+import { inject, injectable } from "inversify";
 import { BlockItemSettingsController } from "./blockItemSettingsController";
-import { BlockItem, Settings } from "./models/settings";
-
+import { BlockItem, Settings, SettingsProvider } from "./models/settings";
+@injectable()
 export class ChannelSettingsController extends BlockItemSettingsController {
-    constructor(settings: Settings) {
-        super(settings);
-        this.displayChannels();
+    private settings: Settings;
+    private settingsProvider: SettingsProvider;
+
+    constructor(@inject("SettingsProvider") settingsProvider: SettingsProvider) {
+        super();
+        this.settingsProvider = settingsProvider;
+    }
+
+    public async initialize(): Promise<void> {
+        this.settings = await this.settingsProvider();
+        await this.displayChannels();
     }
 
     private displayChannels(): void {

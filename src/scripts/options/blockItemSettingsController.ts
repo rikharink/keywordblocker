@@ -1,13 +1,12 @@
+import { injectable } from "inversify";
 import { fromEvent } from "rxjs";
 import { filter, map, pluck } from "rxjs/operators";
-import { BlockItem, Settings } from "./models/settings";
+import { BlockItem } from "./models/settings";
+import { ISettingsController } from "./settingsController";
 
-export abstract class BlockItemSettingsController {
-    protected settings: Settings;
-
-    constructor(settings: Settings) {
-        this.settings = settings;
-    }
+@injectable()
+export abstract class BlockItemSettingsController implements ISettingsController {
+    public abstract initialize(): Promise<void>;
 
     protected displayBlockItems(items: BlockItem[], element: HTMLElement, inputRowId: string, placeholder: string) {
         element.innerHTML = "";
@@ -42,8 +41,7 @@ export abstract class BlockItemSettingsController {
         }
     }
 
-    protected watchBlockPartialBlockItem(checkboxes: NodeListOf<Element>,
-        action: (checkbox: HTMLInputElement) => Promise<void>): void {
+    protected watchBlockPartialBlockItem(checkboxes: NodeListOf<Element>, action: (checkbox: HTMLInputElement) => Promise<void>): void {
         for (const checkbox of checkboxes) {
             fromEvent(checkbox, "click")
                 .pipe(pluck("target"))

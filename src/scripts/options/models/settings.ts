@@ -8,6 +8,9 @@ import { YouTubePage } from "../../blocker/youtube";
 import { BlockOption } from "./blockOption";
 export { BlockOption } from "./blockOption";
 import "chrome-extension-async";
+import { injectable } from "inversify";
+
+export type SettingsProvider = () => Promise<Settings>;
 
 export enum BlockAction {
     Nothing = 0,
@@ -16,11 +19,8 @@ export enum BlockAction {
     Redirect = 3,
 }
 
+@injectable()
 export class Settings {
-    public static async load(): Promise<Settings> {
-        return Settings.fromLocalStorage(await chrome.storage.local.get());
-    }
-
     public static fromImportedSettings(importedSettings: { [key: string]: any }): Settings {
         return this.fromLocalStorage(importedSettings);
     }
@@ -106,6 +106,10 @@ export class Settings {
     public oldSettingsBackup: string = "";
 
     private constructor() {
+    }
+
+    public async load(): Promise<Settings> {
+        return Settings.fromLocalStorage(await chrome.storage.local.get());
     }
 
     public async save(): Promise<void> {

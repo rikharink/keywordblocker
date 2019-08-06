@@ -1,28 +1,36 @@
+import { inject, injectable } from "inversify";
 import { from, fromEvent, Observable } from "rxjs";
 import { debounceTime, filter, mergeMap, pluck } from "rxjs/operators";
 import { YouTubePage } from "../blocker/youtube";
-import { BlockAction, Settings } from "./models/settings";
+import { BlockAction, Settings, SettingsProvider } from "./models/settings";
+import { ISettingsController } from "./settingsController";
 
-export class GeneralSettignsController {
+@injectable()
+export class GeneralSettingsController implements ISettingsController {
     private settings: Settings;
+    private settingsProvider: SettingsProvider;
     private providedPassword: string;
-    private passwordInput: HTMLInputElement = document.getElementById("password") as HTMLInputElement;
-    private checkDescription: HTMLInputElement = document.getElementById("check-description") as HTMLInputElement;
-    private blockDialogText: HTMLInputElement = document.getElementById("block-dialog-text") as HTMLInputElement;
-    private blockDialogImage: HTMLInputElement = document.getElementById("block-dialog-image") as HTMLInputElement;
-    private blockDialogPreview: Element = document.getElementById("block-dialog-preview");
-    private blockOverlayText: HTMLInputElement = document.getElementById("block-overlay-text") as HTMLInputElement;
-    private blockOverlayColor: HTMLInputElement = document.getElementById("block-overlay-color") as HTMLInputElement;
-    private blockOverlayOpacity: HTMLInputElement = document.getElementById("block-overlay-opacity") as HTMLInputElement;
-    private blockOverlayPreview: Element = document.getElementById("block-overlay-preview");
-    private importSettings: Element = document.getElementById("import-settings");
-    private exportSettings: Element = document.getElementById("export-settings");
-    private importFileInput: HTMLInputElement = document.getElementById("import") as HTMLInputElement;
+    private passwordInput = document.getElementById("password") as HTMLInputElement;
+    private checkDescription = document.getElementById("check-description") as HTMLInputElement;
+    private blockDialogText = document.getElementById("block-dialog-text") as HTMLInputElement;
+    private blockDialogImage = document.getElementById("block-dialog-image") as HTMLInputElement;
+    private blockDialogPreview = document.getElementById("block-dialog-preview");
+    private blockOverlayText = document.getElementById("block-overlay-text") as HTMLInputElement;
+    private blockOverlayColor = document.getElementById("block-overlay-color") as HTMLInputElement;
+    private blockOverlayOpacity = document.getElementById("block-overlay-opacity") as HTMLInputElement;
+    private blockOverlayPreview = document.getElementById("block-overlay-preview");
+    private importSettings = document.getElementById("import-settings");
+    private exportSettings = document.getElementById("export-settings");
+    private importFileInput = document.getElementById("import") as HTMLInputElement;
 
-    constructor(settings: Settings) {
-        this.settings = settings;
+    constructor(@inject("SettingsProvider") settingsProvider: SettingsProvider) {
+        this.settingsProvider = settingsProvider;
+    }
+
+    public async initialize(): Promise<void> {
+        this.settings = await this.settingsProvider();
         if (this.checkPassword()) {
-            this.showSettigns();
+            this.showSettings();
         } else {
             this.askForPassword();
         }
@@ -44,14 +52,14 @@ export class GeneralSettignsController {
                 this.providedPassword = password;
                 if (this.checkPassword()) {
                     passwordMenu.style.display = "none";
-                    this.showSettigns();
+                    this.showSettings();
                 } else {
                     document.getElementById("password-error").innerText = "Password incorrect";
                 }
             });
     }
 
-    private showSettigns(): void {
+    private showSettings(): void {
         this.displayGeneralSettings();
         this.watchGeneralSettings();
     }
@@ -177,7 +185,6 @@ export class GeneralSettignsController {
     }
 
     private displayBlockOptions(): void {
-        const blockOptions = this.settings.blockOptions;
         const frontpageBlockItem = document.getElementById("frontpage-block-options");
         const searchBlockItem = document.getElementById("search-block-options");
         const trendingBlockItem = document.getElementById("trending-block-options");

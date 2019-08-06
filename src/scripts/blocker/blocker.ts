@@ -1,7 +1,9 @@
+import { injectable, inject } from "inversify";
 import { fromEvent, interval, merge } from "rxjs";
 import { filter, pluck } from "rxjs/operators";
-import { BlockAction, BlockItem, Settings } from "../options/models/settings";
+import { BlockAction, BlockItem, Settings, SettingsProvider } from "../options/models/settings";
 import { getYouTubePage, isChannel, YouTubePage } from "./youtube";
+@injectable()
 export class Blocker {
     public readonly videoNodeNames = [
         "YTD-GRID-VIDEO-RENDERER",
@@ -13,6 +15,7 @@ export class Blocker {
         "YTD-VIDEO-OWNER-RENDERER",
     ];
     private settings: Settings;
+    private settingsProvider: SettingsProvider;
     private partialMatchKeywords: string[];
     private wholeMatchKeywords: string[];
     private partialMatchChannels: string[];
@@ -23,6 +26,10 @@ export class Blocker {
     private wholeMatchChannelsRegExp: RegExp;
     private clickedChannel: string;
 
+    constructor(@inject("SettingsProvider")settingsProvider: SettingsProvider) {
+        this.settingsProvider = settingsProvider;
+    }
+
     public async init(): Promise<void> {
         await this.loadSettings();
         this.watchRightClick();
@@ -30,7 +37,7 @@ export class Blocker {
     }
 
     public async loadSettings(): Promise<void> {
-        this.settings = await Settings.load();
+        this.settings = await this.settingsProvider();
         this.wholeMatchKeywords = this.settings.keywords
             .filter((keyword) => !keyword.blockPartialMatch)
             .map((x) => x.keyword);
