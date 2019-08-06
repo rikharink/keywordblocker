@@ -131,9 +131,9 @@ const config = {
 module.exports = (_, argv) => {
     config.mode = argv.mode;
     if (config.mode === "production") {
-        const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-        const bundleAnalyzer = new BundleAnalyzerPlugin();
-        config.plugins.push(bundleAnalyzer);
+        // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+        // const bundleAnalyzer = new BundleAnalyzerPlugin();
+        // config.plugins.push(bundleAnalyzer);
     } else {
         const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
         const chromeExtensionReloader = new ChromeExtensionReloader({
