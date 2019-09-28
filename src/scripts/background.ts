@@ -1,17 +1,14 @@
 import "chrome-extension-async";
-import container from "./inversify.config";
-import { BlockItem, Settings, SettingsProvider } from "./options/models/settings";
+import { BlockItem, Settings } from "./options/models/settings";
 
-class Background {
+export class Background {
     private settings: Settings;
-    private settingsProvider: SettingsProvider;
 
-    constructor(settingsProvider: SettingsProvider) {
-        this.settingsProvider = settingsProvider;
+    constructor(settings: Settings) {
+        this.settings = settings;
     }
 
     public async initialize(): Promise<void> {
-        this.settings = await this.settingsProvider();
         this.setupContextMenus();
     }
 
@@ -99,4 +96,6 @@ class Background {
     }
 }
 
-container.get<Background>(Background).initialize();
+new Settings().load().then(settings => {
+    new Background(settings).initialize();
+});

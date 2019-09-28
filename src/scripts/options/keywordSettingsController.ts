@@ -1,19 +1,15 @@
 import { BlockItemSettingsController } from "./blockItemSettingsController";
-import { BlockItem, Settings, SettingsProvider } from "./models/settings";
-import { inject, injectable } from "inversify";
+import { BlockItem, Settings } from "./models/settings";
 
-@injectable()
 export class KeywordSettingsController extends BlockItemSettingsController {
     private settings: Settings;
-    private settingsProvider: SettingsProvider;
 
-    constructor(@inject("SettingsProvider") settingsProvider: SettingsProvider) {
+    constructor(settings: Settings) {
         super();
-        this.settingsProvider = settingsProvider;
+        this.settings = settings;
     }
 
     public async initialize(): Promise<void> {
-        this.settings = await this.settingsProvider();
         this.displayKeywords();
     }
 

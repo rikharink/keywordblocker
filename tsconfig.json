@@ -8,7 +8,6 @@
         "noEmitOnError": true,
         "moduleResolution": "node",
         "types": [
-            "reflect-metadata"
         ],
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
@@ -17,6 +16,6 @@
             "chrome-extension-async": [
                 "../../node_modules/chrome-extension-async/chrome-extension-async.d.ts"
             ]
-        },
+        }
     }
 }

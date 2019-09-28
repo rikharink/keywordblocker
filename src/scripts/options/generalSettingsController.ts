@@ -1,14 +1,11 @@
-import { inject, injectable } from "inversify";
 import { from, fromEvent, Observable } from "rxjs";
 import { debounceTime, filter, mergeMap, pluck } from "rxjs/operators";
 import { YouTubePage } from "../blocker/youtube";
-import { BlockAction, Settings, SettingsProvider } from "./models/settings";
+import { BlockAction, Settings } from "./models/settings";
 import { ISettingsController } from "./settingsController";
 
-@injectable()
 export class GeneralSettingsController implements ISettingsController {
     private settings: Settings;
-    private settingsProvider: SettingsProvider;
     private providedPassword: string;
     private passwordInput = document.getElementById("password") as HTMLInputElement;
     private checkDescription = document.getElementById("check-description") as HTMLInputElement;
@@ -23,12 +20,11 @@ export class GeneralSettingsController implements ISettingsController {
     private exportSettings = document.getElementById("export-settings");
     private importFileInput = document.getElementById("import") as HTMLInputElement;
 
-    constructor(@inject("SettingsProvider") settingsProvider: SettingsProvider) {
-        this.settingsProvider = settingsProvider;
+    constructor(settings: Settings) {
+        this.settings = settings;
     }
 
     public async initialize(): Promise<void> {
-        this.settings = await this.settingsProvider();
         if (this.checkPassword()) {
             this.showSettings();
         } else {

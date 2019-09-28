@@ -1,10 +1,8 @@
-import { injectable } from "inversify";
 import { fromEvent } from "rxjs";
 import { filter, map, pluck } from "rxjs/operators";
 import { BlockItem } from "./models/settings";
 import { ISettingsController } from "./settingsController";
 
-@injectable()
 export abstract class BlockItemSettingsController implements ISettingsController {
     public abstract initialize(): Promise<void>;
 
@@ -35,9 +33,7 @@ export abstract class BlockItemSettingsController implements ISettingsController
                 map((el: HTMLElement) => el.closest(".keyword-row")),
                 pluck("dataset"),
                 pluck("index"))
-                .subscribe(async (index: number) => {
-                    await action(index);
-                });
+                .subscribe(async (index: number) => await action(index));
         }
     }
 
@@ -45,9 +41,7 @@ export abstract class BlockItemSettingsController implements ISettingsController
         for (const checkbox of checkboxes) {
             fromEvent(checkbox, "click")
                 .pipe(pluck("target"))
-                .subscribe(async (blockPartial: HTMLInputElement) => {
-                    await action(blockPartial);
-                });
+                .subscribe(async (blockPartial: HTMLInputElement) => await action(blockPartial));
         }
     }
 
