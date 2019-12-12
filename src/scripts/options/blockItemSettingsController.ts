@@ -1,13 +1,18 @@
-import { fromEvent } from "rxjs";
-import { filter, map, pluck } from "rxjs/operators";
-import { BlockItem } from "./models/settings";
-import { ISettingsController } from "./settingsController";
+import { fromEvent } from 'rxjs';
+import { filter, map, pluck } from 'rxjs/operators';
+import { BlockItem } from './models/settings';
+import { SettingsController } from './settingsController';
 
-export abstract class BlockItemSettingsController implements ISettingsController {
+export abstract class BlockItemSettingsController implements SettingsController {
     public abstract initialize(): Promise<void>;
 
-    protected displayBlockItems(items: BlockItem[], element: HTMLElement, inputRowId: string, placeholder: string) {
-        element.innerHTML = "";
+    protected displayBlockItems(
+        items: BlockItem[],
+        element: HTMLElement,
+        inputRowId: string,
+        placeholder: string,
+    ): void {
+        element.innerHTML = '';
         let i = 0;
         for (const item of items) {
             const el = item.getElement();
@@ -19,54 +24,58 @@ export abstract class BlockItemSettingsController implements ISettingsController
     }
 
     protected watchAddBlockItem(row: HTMLElement, button: HTMLElement, action: () => Promise<void>): void {
-        fromEvent(button, "click")
-            .subscribe(() => action());
-        fromEvent(row, "keyup")
-            .pipe(filter((ev: KeyboardEvent) => ev.key === "Enter"))
+        fromEvent(button, 'click').subscribe(() => action());
+        fromEvent(row, 'keyup')
+            .pipe(filter((ev: KeyboardEvent) => ev.key === 'Enter'))
             .subscribe(() => action());
     }
 
     protected watchRemoveBlockItem(buttons: NodeListOf<Element>, action: (index: number) => Promise<void>): void {
         for (const button of buttons) {
-            fromEvent(button, "click").pipe(
-                pluck("target"),
-                map((el: HTMLElement) => el.closest(".keyword-row")),
-                pluck("dataset"),
-                pluck("index"))
+            fromEvent(button, 'click')
+                .pipe(
+                    pluck('target'),
+                    map((el: HTMLElement) => el.closest('.keyword-row')),
+                    pluck('dataset'),
+                    pluck('index'),
+                )
                 .subscribe(async (index: number) => await action(index));
         }
     }
 
-    protected watchBlockPartialBlockItem(checkboxes: NodeListOf<Element>, action: (checkbox: HTMLInputElement) => Promise<void>): void {
+    protected watchBlockPartialBlockItem(
+        checkboxes: NodeListOf<Element>,
+        action: (checkbox: HTMLInputElement) => Promise<void>,
+    ): void {
         for (const checkbox of checkboxes) {
-            fromEvent(checkbox, "click")
-                .pipe(pluck("target"))
+            fromEvent(checkbox, 'click')
+                .pipe(pluck('target'))
                 .subscribe(async (blockPartial: HTMLInputElement) => await action(blockPartial));
         }
     }
 
     private getInputRow(id: string, placeholder: string): HTMLElement {
-        const inputRow = document.createElement("tr");
+        const inputRow = document.createElement('tr');
         inputRow.id = id;
-        const keywordInputCell = document.createElement("td");
-        const keywordInput = document.createElement("input");
-        keywordInput.type = "text";
-        keywordInput.classList.add("keyword");
+        const keywordInputCell = document.createElement('td');
+        const keywordInput = document.createElement('input');
+        keywordInput.type = 'text';
+        keywordInput.classList.add('keyword');
         keywordInput.placeholder = placeholder;
         keywordInput.autofocus = true;
         keywordInputCell.appendChild(keywordInput);
-        const blockPartialCell = document.createElement("td");
-        blockPartialCell.classList.add("center-cell-content");
-        const blockPartial = document.createElement("input");
-        blockPartial.type = "checkbox";
-        blockPartial.classList.add("block-partial");
+        const blockPartialCell = document.createElement('td');
+        blockPartialCell.classList.add('center-cell-content');
+        const blockPartial = document.createElement('input');
+        blockPartial.type = 'checkbox';
+        blockPartial.classList.add('block-partial');
         blockPartialCell.appendChild(blockPartial);
-        const addButtonCell = document.createElement("td");
-        addButtonCell.classList.add("center-cell-content");
-        const addButton = document.createElement("button");
-        addButton.classList.add("button");
-        const addButtonIcon = document.createElement("i");
-        addButtonIcon.classList.add("fas", "fa-plus");
+        const addButtonCell = document.createElement('td');
+        addButtonCell.classList.add('center-cell-content');
+        const addButton = document.createElement('button');
+        addButton.classList.add('button');
+        const addButtonIcon = document.createElement('i');
+        addButtonIcon.classList.add('fas', 'fa-plus');
         addButton.appendChild(addButtonIcon);
         addButtonCell.appendChild(addButton);
         inputRow.appendChild(keywordInputCell);

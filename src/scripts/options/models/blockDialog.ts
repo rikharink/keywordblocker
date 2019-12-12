@@ -8,15 +8,15 @@ export class BlockDialog {
     }
 
     public getElement(): HTMLElement {
-        const blockDialogContainer = document.createElement("div");
-        blockDialogContainer.id = "block-modal";
-        blockDialogContainer.classList.add("block-dialog-container");
-        const blockDialog = document.createElement("div");
-        blockDialog.classList.add("block-dialog");
-        const img = document.createElement("img");
-        const text = document.createElement("p");
-        const close = document.createElement("i");
-        close.classList.add("far", "fa-times-circle", "close");
+        const blockDialogContainer = document.createElement('div');
+        blockDialogContainer.id = 'block-modal';
+        blockDialogContainer.classList.add('block-dialog-container');
+        const blockDialog = document.createElement('div');
+        blockDialog.classList.add('block-dialog');
+        const img = document.createElement('img');
+        const text = document.createElement('p');
+        const close = document.createElement('i');
+        close.classList.add('far', 'fa-times-circle', 'close');
         img.src = this.image;
         text.innerText = this.text;
         blockDialog.appendChild(img);

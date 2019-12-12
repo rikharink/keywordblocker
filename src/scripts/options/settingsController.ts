@@ -1,3 +1,3 @@
-export interface ISettingsController {
+export interface SettingsController {
     initialize(): Promise<void>;
 }

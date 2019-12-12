@@ -1,24 +1,24 @@
-import { from, fromEvent, Observable } from "rxjs";
-import { debounceTime, filter, mergeMap, pluck } from "rxjs/operators";
-import { YouTubePage } from "../blocker/youtube";
-import { BlockAction, Settings } from "./models/settings";
-import { ISettingsController } from "./settingsController";
+import { from, fromEvent, Observable } from 'rxjs';
+import { debounceTime, filter, mergeMap, pluck } from 'rxjs/operators';
+import { YouTubePage } from '../blocker/youtube';
+import { BlockAction, Settings } from './models/settings';
+import { SettingsController } from './settingsController';
 
-export class GeneralSettingsController implements ISettingsController {
+export class GeneralSettingsController implements SettingsController {
     private settings: Settings;
     private providedPassword: string;
-    private passwordInput = document.getElementById("password") as HTMLInputElement;
-    private checkDescription = document.getElementById("check-description") as HTMLInputElement;
-    private blockDialogText = document.getElementById("block-dialog-text") as HTMLInputElement;
-    private blockDialogImage = document.getElementById("block-dialog-image") as HTMLInputElement;
-    private blockDialogPreview = document.getElementById("block-dialog-preview");
-    private blockOverlayText = document.getElementById("block-overlay-text") as HTMLInputElement;
-    private blockOverlayColor = document.getElementById("block-overlay-color") as HTMLInputElement;
-    private blockOverlayOpacity = document.getElementById("block-overlay-opacity") as HTMLInputElement;
-    private blockOverlayPreview = document.getElementById("block-overlay-preview");
-    private importSettings = document.getElementById("import-settings");
-    private exportSettings = document.getElementById("export-settings");
-    private importFileInput = document.getElementById("import") as HTMLInputElement;
+    private passwordInput = document.getElementById('password') as HTMLInputElement;
+    private checkDescription = document.getElementById('check-description') as HTMLInputElement;
+    private blockDialogText = document.getElementById('block-dialog-text') as HTMLInputElement;
+    private blockDialogImage = document.getElementById('block-dialog-image') as HTMLInputElement;
+    private blockDialogPreview = document.getElementById('block-dialog-preview');
+    private blockOverlayText = document.getElementById('block-overlay-text') as HTMLInputElement;
+    private blockOverlayColor = document.getElementById('block-overlay-color') as HTMLInputElement;
+    private blockOverlayOpacity = document.getElementById('block-overlay-opacity') as HTMLInputElement;
+    private blockOverlayPreview = document.getElementById('block-overlay-preview');
+    private importSettings = document.getElementById('import-settings');
+    private exportSettings = document.getElementById('export-settings');
+    private importFileInput = document.getElementById('import') as HTMLInputElement;
 
     constructor(settings: Settings) {
         this.settings = settings;
@@ -37,20 +37,18 @@ export class GeneralSettingsController implements ISettingsController {
     }
 
     private askForPassword(): void {
-        const passwordMenu = document.getElementById("password-menu");
-        passwordMenu.style.display = "flex";
+        const passwordMenu = document.getElementById('password-menu');
+        passwordMenu.style.display = 'flex';
 
-        fromEvent(document.getElementById("password-input"), "keyup").pipe(
-            pluck("target"),
-            pluck("value"),
-            debounceTime(500))
+        fromEvent(document.getElementById('password-input'), 'keyup')
+            .pipe(pluck('target'), pluck('value'), debounceTime(500))
             .subscribe((password: string) => {
                 this.providedPassword = password;
                 if (this.checkPassword()) {
-                    passwordMenu.style.display = "none";
+                    passwordMenu.style.display = 'none';
                     this.showSettings();
                 } else {
-                    document.getElementById("password-error").innerText = "Password incorrect";
+                    document.getElementById('password-error').innerText = 'Password incorrect';
                 }
             });
     }
@@ -61,8 +59,8 @@ export class GeneralSettingsController implements ISettingsController {
     }
 
     private displayGeneralSettings(): void {
-        const optionsMenu = document.getElementById("options-menu");
-        optionsMenu.style.display = "flex";
+        const optionsMenu = document.getElementById('options-menu');
+        optionsMenu.style.display = 'flex';
         this.passwordInput.value = this.settings.password;
         this.blockDialogImage.value = this.settings.blockDialog.image;
         this.blockDialogText.value = this.settings.blockDialog.text;
@@ -88,10 +86,8 @@ export class GeneralSettingsController implements ISettingsController {
     }
 
     private watchPasswordField(): void {
-        fromEvent(this.passwordInput, "keyup").pipe(
-            pluck("target"),
-            pluck("value"),
-            debounceTime(500))
+        fromEvent(this.passwordInput, 'keyup')
+            .pipe(pluck('target'), pluck('value'), debounceTime(500))
             .subscribe(async (newPassword: string) => {
                 this.settings.password = newPassword;
                 await this.settings.save();
@@ -99,12 +95,13 @@ export class GeneralSettingsController implements ISettingsController {
     }
 
     private watchBlockOptions(): void {
-        fromEvent(document.getElementsByClassName("segmented-control"), "click")
+        fromEvent(document.getElementsByClassName('segmented-control'), 'click')
             .pipe(
-                filter((x) => x.target instanceof HTMLLabelElement),
-                pluck("target"),
-                pluck("dataset"))
-            .subscribe(async (dataset: { value: string, subject: string }) => {
+                filter(x => x.target instanceof HTMLLabelElement),
+                pluck('target'),
+                pluck('dataset'),
+            )
+            .subscribe(async (dataset: { value: string; subject: string }) => {
                 const value = dataset.value;
                 const subject = dataset.subject;
                 await this.blockOptionChanged(subject, value);
@@ -120,11 +117,11 @@ export class GeneralSettingsController implements ISettingsController {
 
     private getBlockAction(action: string): BlockAction {
         switch (action) {
-            case "Block":
+            case 'Block':
                 return BlockAction.Block;
-            case "Remove":
+            case 'Remove':
                 return BlockAction.Remove;
-            case "Redirect":
+            case 'Redirect':
                 return BlockAction.Redirect;
             default:
                 return BlockAction.Nothing;
@@ -133,17 +130,17 @@ export class GeneralSettingsController implements ISettingsController {
 
     private getYouTubePage(page: string): YouTubePage {
         switch (page) {
-            case "Channel":
+            case 'Channel':
                 return YouTubePage.Channel;
-            case "Frontpage":
+            case 'Frontpage':
                 return YouTubePage.Frontpage;
-            case "Search":
+            case 'Search':
                 return YouTubePage.Search;
-            case "Subscriptions":
+            case 'Subscriptions':
                 return YouTubePage.Subscriptions;
-            case "Trending":
+            case 'Trending':
                 return YouTubePage.Trending;
-            case "Video":
+            case 'Video':
                 return YouTubePage.Video;
             default:
                 return YouTubePage.Undetermined;
@@ -151,8 +148,8 @@ export class GeneralSettingsController implements ISettingsController {
     }
 
     private watchCheckDescription(): void {
-        fromEvent(this.checkDescription, "click")
-            .pipe(pluck("target"))
+        fromEvent(this.checkDescription, 'click')
+            .pipe(pluck('target'))
             .subscribe(async (checkbox: HTMLInputElement) => {
                 this.settings.checkDescription = checkbox.checked;
                 await this.settings.save();
@@ -160,19 +157,15 @@ export class GeneralSettingsController implements ISettingsController {
     }
 
     private watchBlockDialog(): void {
-        fromEvent(this.blockDialogText, "keyup").pipe(
-            pluck("target"),
-            pluck("value"),
-            debounceTime(500))
+        fromEvent(this.blockDialogText, 'keyup')
+            .pipe(pluck('target'), pluck('value'), debounceTime(500))
             .subscribe(async (value: string) => {
                 this.settings.blockDialog.text = value;
                 await this.settings.save();
                 this.displayBlockDialogPreview();
             });
-        fromEvent(this.blockDialogImage, "keyup").pipe(
-            pluck("target"),
-            pluck("value"),
-            debounceTime(500))
+        fromEvent(this.blockDialogImage, 'keyup')
+            .pipe(pluck('target'), pluck('value'), debounceTime(500))
             .subscribe(async (value: string) => {
                 this.settings.blockDialog.image = value;
                 await this.settings.save();
@@ -181,12 +174,12 @@ export class GeneralSettingsController implements ISettingsController {
     }
 
     private displayBlockOptions(): void {
-        const frontpageBlockItem = document.getElementById("frontpage-block-options");
-        const searchBlockItem = document.getElementById("search-block-options");
-        const trendingBlockItem = document.getElementById("trending-block-options");
-        const subscriptionsBlockItem = document.getElementById("subscriptions-block-options");
-        const channelBlockItem = document.getElementById("channel-block-options");
-        const videoBlockItem = document.getElementById("video-block-options");
+        const frontpageBlockItem = document.getElementById('frontpage-block-options');
+        const searchBlockItem = document.getElementById('search-block-options');
+        const trendingBlockItem = document.getElementById('trending-block-options');
+        const subscriptionsBlockItem = document.getElementById('subscriptions-block-options');
+        const channelBlockItem = document.getElementById('channel-block-options');
+        const videoBlockItem = document.getElementById('video-block-options');
         this.displaySegmentedOption(frontpageBlockItem, this.settings.getBlockAction(YouTubePage.Frontpage));
         this.displaySegmentedOption(searchBlockItem, this.settings.getBlockAction(YouTubePage.Search));
         this.displaySegmentedOption(trendingBlockItem, this.settings.getBlockAction(YouTubePage.Trending));
@@ -197,32 +190,28 @@ export class GeneralSettingsController implements ISettingsController {
 
     private displaySegmentedOption(element: HTMLElement, action: BlockAction): void {
         const actionName = BlockAction[action];
-        Array.from(element.getElementsByTagName("input")).forEach((i) => i.checked = false);
-        const label = element.querySelector("label[data-value=" + actionName + "]").getAttribute("for");
-        (element.querySelector("#" + label) as HTMLInputElement).checked = true;
+        Array.from(element.getElementsByTagName('input')).forEach(i => (i.checked = false));
+        const label = element.querySelector('label[data-value=' + actionName + ']').getAttribute('for');
+        (element.querySelector('#' + label) as HTMLInputElement).checked = true;
     }
 
     private watchBlockOverlay(): void {
-        fromEvent(this.blockOverlayText, "keyup").pipe(
-            pluck("target"),
-            pluck("value"),
-            debounceTime(500))
+        fromEvent(this.blockOverlayText, 'keyup')
+            .pipe(pluck('target'), pluck('value'), debounceTime(500))
             .subscribe(async (value: string) => {
                 this.settings.blockOverlay.text = value;
                 await this.settings.save();
                 this.displayBlockOverlayPreview();
             });
-        fromEvent(this.blockOverlayColor, "input").pipe(
-            pluck("target"),
-            pluck("value"))
+        fromEvent(this.blockOverlayColor, 'input')
+            .pipe(pluck('target'), pluck('value'))
             .subscribe(async (value: string) => {
                 this.settings.blockOverlay.color = value;
                 await this.settings.save();
                 this.displayBlockOverlayPreview();
             });
-        fromEvent(this.blockOverlayOpacity, "change").pipe(
-            pluck("target"),
-            pluck("value"))
+        fromEvent(this.blockOverlayOpacity, 'change')
+            .pipe(pluck('target'), pluck('value'))
             .subscribe(async (value: string) => {
                 this.settings.blockOverlay.opacity = parseFloat(value);
                 await this.settings.save();
@@ -232,36 +221,38 @@ export class GeneralSettingsController implements ISettingsController {
 
     private displayBlockOverlayPreview(): void {
         const preview = this.settings.blockOverlay.getElement();
-        preview.style.setProperty("position", "unset");
-        preview.style.setProperty("top", "unset");
-        preview.style.setProperty("left", "unset");
-        preview.style.setProperty("width", "100%");
-        preview.style.setProperty("height", "100px");
-        this.blockOverlayPreview
-            .replaceChild(preview, this.blockOverlayPreview.childNodes[0]);
+        preview.style.setProperty('position', 'unset');
+        preview.style.setProperty('top', 'unset');
+        preview.style.setProperty('left', 'unset');
+        preview.style.setProperty('width', '100%');
+        preview.style.setProperty('height', '100px');
+        this.blockOverlayPreview.replaceChild(preview, this.blockOverlayPreview.childNodes[0]);
     }
 
     private displayBlockDialogPreview(): void {
-        this.blockDialogPreview
-            .replaceChild(this.settings.blockDialog.getElement(),
-                this.blockDialogPreview.childNodes[0]);
+        this.blockDialogPreview.replaceChild(
+            this.settings.blockDialog.getElement(),
+            this.blockDialogPreview.childNodes[0],
+        );
     }
 
     private watchImportSettings(): void {
-        fromEvent(this.importFileInput, "change").pipe(
-            mergeMap((event: Event) => from((event.target as HTMLInputElement).files)),
-            filter((file: File) => file.type.match("application/json") !== null),
-            mergeMap((file: File) => {
-                const fileReader = new FileReader();
-                const observable = Observable.create((observer: any) => {
-                    fileReader.onload = () => {
-                        observer.next(fileReader.result);
-                        observer.complete();
-                    };
-                });
-                fileReader.readAsText(file);
-                return observable;
-            }))
+        fromEvent(this.importFileInput, 'change')
+            .pipe(
+                mergeMap((event: Event) => from((event.target as HTMLInputElement).files)),
+                filter((file: File) => file.type.match('application/json') !== null),
+                mergeMap((file: File) => {
+                    const fileReader = new FileReader();
+                    const observable = new Observable<string | ArrayBuffer>(o => {
+                        fileReader.onload = (): void => {
+                            o.next(fileReader.result);
+                            o.complete();
+                        };
+                    });
+                    fileReader.readAsText(file);
+                    return observable;
+                }),
+            )
             .subscribe(async (contents: string) => {
                 const importedSettings = JSON.parse(contents);
                 this.settings = Settings.fromImportedSettings(importedSettings);
@@ -269,17 +260,17 @@ export class GeneralSettingsController implements ISettingsController {
                 location.reload();
             });
 
-        fromEvent(this.importSettings, "click").subscribe(() => {
+        fromEvent(this.importSettings, 'click').subscribe(() => {
             this.importFileInput.click();
         });
     }
 
     private watchExportSettings(): void {
-        fromEvent(this.exportSettings, "click").subscribe(() => {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.settings));
-            const downloadAnchorNode = document.createElement("a");
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "keywordblocker-settings.json");
+        fromEvent(this.exportSettings, 'click').subscribe(() => {
+            const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(this.settings));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute('href', dataStr);
+            downloadAnchorNode.setAttribute('download', 'keywordblocker-settings.json');
             downloadAnchorNode.click();
             downloadAnchorNode.remove();
         });

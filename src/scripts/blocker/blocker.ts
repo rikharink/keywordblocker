@@ -1,16 +1,17 @@
-import { fromEvent, interval, merge } from "rxjs";
-import { filter, pluck } from "rxjs/operators";
-import { BlockAction, BlockItem, Settings } from "../options/models/settings";
-import { getYouTubePage, isChannel, YouTubePage } from "./youtube";
+import { fromEvent, interval, merge } from 'rxjs';
+import { filter, pluck } from 'rxjs/operators';
+import { BlockAction, BlockItem, Settings } from '../options/models/settings';
+import { getYouTubePage, isChannel, YouTubePage } from './youtube';
 export class Blocker {
     public readonly videoNodeNames = [
-        "YTD-GRID-VIDEO-RENDERER",
-        "YTD-VIDEO-RENDERER",
-        "YTD-COMPACT-VIDEO-RENDERER",
-        "YTD-PLAYLIST-RENDERER",
-        "YTD-MOVIE-RENDERER",
-        "YTD-CHANNEL-RENDERER",
-        "YTD-VIDEO-OWNER-RENDERER",
+        'YTD-GRID-VIDEO-RENDERER',
+        'YTD-VIDEO-RENDERER',
+        'YTD-COMPACT-VIDEO-RENDERER',
+        'YTD-RICH-GRID-VIDEO-RENDERER',
+        'YTD-PLAYLIST-RENDERER',
+        'YTD-MOVIE-RENDERER',
+        'YTD-CHANNEL-RENDERER',
+        'YTD-VIDEO-OWNER-RENDERER',
     ];
     private settings: Settings;
     private partialMatchKeywords: string[];
@@ -35,94 +36,94 @@ export class Blocker {
 
     public async loadSettings(): Promise<void> {
         this.wholeMatchKeywords = this.settings.keywords
-            .filter((keyword) => !keyword.blockPartialMatch)
-            .map((x) => x.keyword);
+            .filter(keyword => !keyword.blockPartialMatch)
+            .map(x => x.keyword);
         this.partialMatchKeywords = this.settings.keywords
-            .filter((keyword) => keyword.blockPartialMatch)
-            .map((x) => x.keyword);
+            .filter(keyword => keyword.blockPartialMatch)
+            .map(x => x.keyword);
         this.wholeMatchChannels = this.settings.channels
-            .filter((channel) => !channel.blockPartialMatch)
-            .map((x) => x.keyword);
+            .filter(channel => !channel.blockPartialMatch)
+            .map(x => x.keyword);
         this.partialMatchChannels = this.settings.channels
-            .filter((channel) => channel.blockPartialMatch)
-            .map((x) => x.keyword);
+            .filter(channel => channel.blockPartialMatch)
+            .map(x => x.keyword);
 
-        const begin = "(?:-|\\s|\\W|^)";
-        const end = "(?:-|\\s|\\W|$)";
-        this.wholeMatchKeywordsRegExp = new RegExp(`${begin}(?:${this.wholeMatchKeywords.join("|")})${end}`, "i");
+        const begin = '(?:-|\\s|\\W|^)';
+        const end = '(?:-|\\s|\\W|$)';
+        this.wholeMatchKeywordsRegExp = new RegExp(`${begin}(?:${this.wholeMatchKeywords.join('|')})${end}`, 'i');
 
-        const partialKeywordRegExp = this.partialMatchKeywords.map((x) => "(.)*" + x + "(.)*").join("|");
-        this.partialMatchKeywordsRegExp = new RegExp(`(?:${partialKeywordRegExp})`, "i");
+        const partialKeywordRegExp = this.partialMatchKeywords.map(x => '(.)*' + x + '(.)*').join('|');
+        this.partialMatchKeywordsRegExp = new RegExp(`(?:${partialKeywordRegExp})`, 'i');
 
-        this.wholeMatchChannelsRegExp = new RegExp(`^(?:${this.wholeMatchChannels.join("|")})$`, "i");
+        this.wholeMatchChannelsRegExp = new RegExp(`^(?:${this.wholeMatchChannels.join('|')})$`, 'i');
 
-        const partialChannelRegExp = this.partialMatchChannels.map((x) => "(.)*" + x + "(.)*").join("|");
-        this.partialMatchChannelsRegExp = new RegExp(`(?:${partialChannelRegExp})`, "i");
+        const partialChannelRegExp = this.partialMatchChannels.map(x => '(.)*' + x + '(.)*').join('|');
+        this.partialMatchChannelsRegExp = new RegExp(`(?:${partialChannelRegExp})`, 'i');
     }
 
     public checkForBlockedVideos(): void {
-        console.log("Checking for blocked videos...");
-        const title = document.querySelector("h1.title");
-        const description = document.getElementById("description");
+        console.log('Checking for blocked videos...');
+        const title = document.querySelector('h1.title');
+        const description = document.getElementById('description');
         const page = getYouTubePage();
         const action = this.settings.getBlockAction(page);
         if (page === YouTubePage.Video) {
             const titleBlocked = title && this.isKeywordBlocked(title.textContent.trim());
             const descriptionBlocked =
-                description
-                && this.settings.checkDescription
-                && this.isKeywordBlocked(description.textContent.trim());
+                description && this.settings.checkDescription && this.isKeywordBlocked(description.textContent.trim());
             const videoBlocked = titleBlocked || descriptionBlocked;
             if (videoBlocked) {
-                if(action !== BlockAction.Nothing) {
+                if (action !== BlockAction.Nothing) {
                     this.hideVideo();
                 }
                 console.log(action);
                 if (action === BlockAction.Block) {
                     this.showPopup();
                 } else if (action === BlockAction.Redirect) {
-                    window.location.assign("https://www.youtube.com");
+                    window.location.assign('https://www.youtube.com');
                 }
             }
         }
 
         const videos = this.getVideos();
-        videos.filter((video) => {
-            const videoTitle = video.querySelector("#video-title");
-            const channelTitle = video.querySelector<HTMLSpanElement>("#channel-title span");
-            const channel = video.querySelector("#metadata a");
-            const owner = video.querySelector<HTMLAnchorElement>("#owner-name a");
-            const byline = video.querySelector("#byline");
-            let blocked = false;
+        videos
+            .filter(video => {
+                const videoTitle = video.querySelector<HTMLElement>('#video-title');
+                const channelTitle = video.querySelector<HTMLSpanElement>('#channel-title span');
+                const channel = video.querySelector('#metadata a');
+                const owner = video.querySelector<HTMLAnchorElement>('#owner-name a');
+                const byline = video.querySelector('#byline');
+                let blocked = false;
 
-            if (this.settings.channels.length > 0 && (channel || channelTitle || owner || byline)) {
-                if (channelTitle) {
-                    blocked = blocked || this.isChannelBlocked(channelTitle.textContent.trim());
+                if (this.settings.channels.length > 0 && (channel || channelTitle || owner || byline)) {
+                    if (channelTitle) {
+                        blocked = blocked || this.isChannelBlocked(channelTitle.textContent.trim());
+                    }
+                    if (channel) {
+                        blocked = blocked || this.isChannelBlocked(channel.textContent.trim());
+                    }
+                    if (owner) {
+                        blocked = blocked || this.isChannelBlocked(owner.textContent.trim());
+                    }
+                    if (byline) {
+                        blocked = blocked || this.isChannelBlocked(byline.textContent.trim());
+                    }
                 }
-                if (channel) {
-                    blocked = blocked || this.isChannelBlocked(channel.textContent.trim());
+                if (this.settings.keywords.length > 0 && videoTitle) {
+                    blocked = blocked || this.isKeywordBlocked(videoTitle.innerText);
                 }
-                if (owner) {
-                    blocked = blocked || this.isChannelBlocked(owner.textContent.trim());
-                }
-                if (byline) {
-                    blocked = blocked || this.isChannelBlocked(byline.textContent.trim());
-                }
-            }
-            if (this.settings.keywords.length > 0 && videoTitle) {
-                blocked = blocked || this.isKeywordBlocked(videoTitle.getAttribute("title"));
-            }
-            return blocked;
-        }).map((x) => this.remove(x));
+                return blocked;
+            })
+            .map(x => this.remove(x));
     }
 
     public remove(node: HTMLElement): void {
         const action = this.settings.getBlockAction(getYouTubePage());
         if (action === BlockAction.Block) {
-            node.style.pointerEvents = "none";
-            node.style.userSelect = "none";
-            node.style.position = "relative";
-            if (!node.querySelector(".block-overlay")) {
+            node.style.pointerEvents = 'none';
+            node.style.userSelect = 'none';
+            node.style.position = 'relative';
+            if (!node.querySelector('.block-overlay')) {
                 node.appendChild(this.settings.blockOverlay.getElement());
             }
         } else if (action === BlockAction.Remove) {
@@ -131,26 +132,25 @@ export class Blocker {
     }
 
     public showPopup(): void {
-        document.body.innerHTML = "";
+        document.body.innerHTML = '';
         document.body.appendChild(this.settings.blockDialog.getElement());
-        const containerEle = document.querySelector(".block-dialog-container");
-        const closeEle = document.querySelector(".close");
-        const container = fromEvent(containerEle, "click");
-        const close = fromEvent(closeEle, "click");
-        merge(container, close).subscribe(() => window.location.assign("https://www.youtube.com"));
+        const containerEle = document.querySelector('.block-dialog-container');
+        const closeEle = document.querySelector('.close');
+        const container = fromEvent(containerEle, 'click');
+        const close = fromEvent(closeEle, 'click');
+        merge(container, close).subscribe(() => window.location.assign('https://www.youtube.com'));
     }
 
     public hideVideo(): void {
-        const subscription = interval(100)
-            .subscribe(() => {
-                const video = document.querySelector("video");
-                const app = document.querySelector("ytd-app");
-                if (video && app) {
-                    video.pause();
-                    app.remove();
-                    subscription.unsubscribe();
-                }
-            });
+        const subscription = interval(100).subscribe(() => {
+            const video = document.querySelector('video');
+            const app = document.querySelector('ytd-app');
+            if (video && app) {
+                video.pause();
+                app.remove();
+                subscription.unsubscribe();
+            }
+        });
     }
 
     public isChannelBlocked(channel: string): boolean {
@@ -178,32 +178,35 @@ export class Blocker {
         for (const tag of this.videoNodeNames) {
             videos.push(...document.getElementsByTagName(tag));
         }
-        return videos.map((x) => x as HTMLElement);
+        return videos.map(x => x as HTMLElement);
     }
 
     public watchRightClick(): void {
-        fromEvent(document, "mousedown")
+        fromEvent(document, 'mousedown')
             .pipe(
                 filter((event: MouseEvent) => event.button === 2),
-                pluck("target"),
-                filter<HTMLElement>((t) => t instanceof HTMLElement
-                    && (t.closest("ytd-grid-video-renderer") !== null
-                        || t.closest("ytd-compact-video-renderer") != null)),
+                pluck('target'),
+                filter<HTMLElement>(
+                    t =>
+                        t instanceof HTMLElement &&
+                        (t.closest('ytd-grid-video-renderer') !== null ||
+                            t.closest('ytd-compact-video-renderer') != null),
+                ),
             )
-            .subscribe((t) => {
-                const videoGridRenderer = t.closest("ytd-grid-video-renderer");
-                const compactVideoRenderer = t.closest("ytd-compact-video-renderer");
+            .subscribe(t => {
+                const videoGridRenderer = t.closest('ytd-grid-video-renderer');
+                const compactVideoRenderer = t.closest('ytd-compact-video-renderer');
 
                 if (!(videoGridRenderer || compactVideoRenderer)) {
                     return;
                 }
                 if (videoGridRenderer) {
-                    const channel = videoGridRenderer.querySelector<HTMLAnchorElement>("#byline > a");
+                    const channel = videoGridRenderer.querySelector<HTMLAnchorElement>('#byline > a');
                     if (channel && isChannel(channel.pathname)) {
                         this.clickedChannel = channel.textContent.trim();
                     }
                 } else if (compactVideoRenderer) {
-                    const channel = compactVideoRenderer.querySelector<HTMLAnchorElement>("#byline");
+                    const channel = compactVideoRenderer.querySelector<HTMLAnchorElement>('#byline');
                     this.clickedChannel = channel.textContent.trim();
                 }
             });
@@ -212,13 +215,13 @@ export class Blocker {
     public watchRequestListeners(): void {
         chrome.runtime.onMessage.addListener(async (request, _, sendResponse) => {
             await sendResponse(true);
-            if (request === "blockChannel") {
+            if (request === 'blockChannel') {
                 if (this.clickedChannel) {
                     await this.addChannel(this.clickedChannel, false);
                     await this.loadSettings();
                     this.checkForBlockedVideos();
                 }
-            } else if (request === "checkForBlocks") {
+            } else if (request === 'checkForBlocks') {
                 await this.loadSettings();
                 this.checkForBlockedVideos();
             }

@@ -1,5 +1,5 @@
-import { YouTubePage } from "../../blocker/youtube";
-import { BlockAction } from "./settings";
+import { YouTubePage } from '../../blocker/youtube';
+import { BlockAction } from './settings';
 
 export class BlockOption {
     public page: YouTubePage;

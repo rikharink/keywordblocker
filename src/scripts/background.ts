@@ -1,5 +1,5 @@
-import "chrome-extension-async";
-import { BlockItem, Settings } from "./options/models/settings";
+import 'chrome-extension-async';
+import { BlockItem, Settings } from './options/models/settings';
 
 export class Background {
     private settings: Settings;
@@ -13,69 +13,69 @@ export class Background {
     }
 
     public async setupContextMenus(): Promise<void> {
-        const patterns = ["*://www.youtube.com/*"];
+        const patterns = ['*://www.youtube.com/*'];
 
         await chrome.contextMenus.create({
-            contexts: ["selection"],
+            contexts: ['selection'],
             documentUrlPatterns: patterns,
             onclick: async (info, tab) => {
                 if (info.selectionText) {
                     this.addKeyword(info.selectionText, false);
-                    await chrome.tabs.sendMessage(tab.id, "checkForBlocks");
+                    await chrome.tabs.sendMessage(tab.id, 'checkForBlocks');
                 }
             },
-            title: "Add selection as blocked keyword",
+            title: 'Add selection as blocked keyword',
         });
 
         await chrome.contextMenus.create({
-            contexts: ["selection"],
+            contexts: ['selection'],
             documentUrlPatterns: patterns,
             onclick: async (info, tab) => {
                 if (info.selectionText) {
                     this.addKeyword(info.selectionText, true);
-                    await chrome.tabs.sendMessage(tab.id, "checkForBlocks");
+                    await chrome.tabs.sendMessage(tab.id, 'checkForBlocks');
                 }
             },
-            title: "Add selection as blocked wildcard keyword",
+            title: 'Add selection as blocked wildcard keyword',
         });
 
         chrome.contextMenus.create({
-            contexts: ["selection"],
+            contexts: ['selection'],
             documentUrlPatterns: patterns,
             onclick: async (info, tab) => {
                 if (info.selectionText) {
                     this.addChannel(info.selectionText, false);
-                    await chrome.tabs.sendMessage(tab.id, "checkForBlocks");
+                    await chrome.tabs.sendMessage(tab.id, 'checkForBlocks');
                 }
             },
-            title: "Add selection as blocked channel",
+            title: 'Add selection as blocked channel',
         });
 
         chrome.contextMenus.create({
-            contexts: ["selection"],
+            contexts: ['selection'],
             documentUrlPatterns: patterns,
             onclick: async (info, tab) => {
                 if (info.selectionText) {
                     this.addChannel(info.selectionText, true);
-                    await chrome.tabs.sendMessage(tab.id, "checkForBlocks");
+                    await chrome.tabs.sendMessage(tab.id, 'checkForBlocks');
                 }
             },
-            title: "Add selection as blocked channel keyword",
+            title: 'Add selection as blocked channel keyword',
         });
 
         chrome.contextMenus.create({
-            contexts: ["link"],
+            contexts: ['link'],
             documentUrlPatterns: patterns,
             onclick: async (_, tab) => {
-                await chrome.tabs.sendMessage(tab.id, "blockChannel");
+                await chrome.tabs.sendMessage(tab.id, 'blockChannel');
             },
             targetUrlPatterns: [
-                "*://www.youtube.com/user/*",
-                "*://www.youtube.com/channel/*",
-                "*://www.youtube.com/c/*",
-                "*://www.youtube.com/watch?v=*",
+                '*://www.youtube.com/user/*',
+                '*://www.youtube.com/channel/*',
+                '*://www.youtube.com/c/*',
+                '*://www.youtube.com/watch?v=*',
             ],
-            title: "Block channel",
+            title: 'Block channel',
         });
     }
 
