@@ -22,7 +22,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:10.16.1-buster
+      - image: circleci/node:12.14.1-buster
     working_directory: ~/app
     steps:
       - checkout
