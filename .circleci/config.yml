@@ -31,23 +31,23 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-        keys:
-          - v2-2-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v2-2-dependencies-
+          keys:
+            - v2-2-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v2-2-dependencies-
       - run:
-        name: "Install dependencies"
-        command: |
-          sudo apt-get update
-          npm install
+          name: "Install dependencies"
+          command: |
+            sudo apt-get update
+            npm install
       - save_cache:
-        paths:
-          - node_modules
-        key: v2.2-dependencies-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+          key: v2.2-dependencies-{{ checksum "package.json" }}
       - run:
-        name: "Run tests"
-        command: |
-          npm test
+          name: "Run tests"
+          command: |
+            npm test
   build:
     docker:
       - image: circleci/node:12.14.1-buster
