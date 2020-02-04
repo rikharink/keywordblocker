@@ -74,6 +74,7 @@ jobs:
           name: "Package extension"
           command: |
             npm run dist
+            npm run firefox:build
             cd dist
             zip -r ../dist.zip *
       - persist_to_workspace:
@@ -82,6 +83,8 @@ jobs:
             - dist.zip
       - store_artifacts:
           path: /home/circleci/app/dist.zip
+      - store_artifacts:
+          path: /home/circleci/app/web-ext-artifacts/
   publish:
     docker:
       - image: cibuilds/chrome-extension:latest
