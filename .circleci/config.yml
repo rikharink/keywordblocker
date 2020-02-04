@@ -80,6 +80,8 @@ jobs:
           root: /home/circleci/app
           paths:
             - dist.zip
+      - store_artifacts:
+          path: /home/circleci/app/dist.zip
   publish:
     docker:
       - image: cibuilds/chrome-extension:latest
