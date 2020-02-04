@@ -102,7 +102,11 @@ export class Settings {
     public oldSettingsBackup = '';
 
     public async load(): Promise<Settings> {
-        return Settings.fromLocalStorage(await chrome.storage.local.get());
+        return Settings.fromLocalStorage(await this.getLocalStorage());
+    }
+
+    private async getLocalStorage(): Promise<{ [key: string]: any }> {
+        return await chrome.storage.local.get();
     }
 
     public async save(): Promise<void> {

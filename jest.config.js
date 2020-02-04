@@ -1,4 +1,10 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+    projects: [
+        {
+            displayName: 'test',
+            preset: 'ts-jest',
+            testEnvironment: 'node',
+            testMatch: ['**/?(*.)+(spec|test).[t]s'],
+        },
+    ],
 };
