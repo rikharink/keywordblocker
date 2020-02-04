@@ -7,9 +7,9 @@ workflows:
   main:
     jobs:
       - test:
-        filters:
-          tags:
-            only: /.*/
+          filters:
+            tags:
+              only: /.*/
       - build:
           filters:
             tags:
