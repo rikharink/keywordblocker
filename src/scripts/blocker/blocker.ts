@@ -64,7 +64,7 @@ export class Blocker {
     public checkForBlockedVideos(): void {
         const title = document.querySelector('h1.title');
         const description = document.getElementById('description');
-        const page = getYouTubePage();
+        const page = getYouTubePage(window.location.pathname);
         const action = this.settings.getBlockAction(page);
         if (page === YouTubePage.Video) {
             const titleBlocked = title && this.isKeywordBlocked(title.textContent.trim());
@@ -116,7 +116,7 @@ export class Blocker {
     }
 
     public remove(node: HTMLElement): void {
-        const action = this.settings.getBlockAction(getYouTubePage());
+        const action = this.settings.getBlockAction(getYouTubePage(window.location.pathname));
         if (action === BlockAction.Block) {
             node.style.pointerEvents = 'none';
             node.style.userSelect = 'none';

@@ -3,7 +3,7 @@
     "version": "2.2.1",
     "description": "Web Extension to block unwanted videos and channels",
     "scripts": {
-        "test": "echo \"Warn: no test specified\" && exit 0",
+        "test": "jest",
         "dev": "webpack --mode development --watch",
         "dist": "webpack --mode production",
         "firefox": "web-ext run -s dist --firefox=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\"",
@@ -28,6 +28,7 @@
     "author": "Rik Harink",
     "license": "MIT",
     "devDependencies": {
+        "@types/jest": "^25.1.1",
         "@typescript-eslint/eslint-plugin": "^2.19.0",
         "@typescript-eslint/parser": "^2.19.0",
         "clean-webpack-plugin": "^3.0.0",
@@ -39,6 +40,7 @@
         "html-loader": "^0.5.5",
         "html-webpack-plugin": "^3.2.0",
         "husky": "^4.2.1",
+        "jest": "^25.1.0",
         "lint-staged": "^10.0.7",
         "mini-css-extract-plugin": "^0.9.0",
         "node-sass": "^4.13.1",
@@ -49,6 +51,7 @@
         "sass-loader": "^8.0.2",
         "source-map-loader": "^0.2.4",
         "terser-webpack-plugin": "^2.3.4",
+        "ts-jest": "^25.2.0",
         "ts-loader": "^6.2.1",
         "typescript": "^3.7.5",
         "web-ext": "^4.0.0",
