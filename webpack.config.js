@@ -135,16 +135,17 @@ module.exports = (_, argv) => {
         // const bundleAnalyzer = new BundleAnalyzerPlugin();
         // config.plugins.push(bundleAnalyzer);
     } else {
-        const ChromeExtensionReloader = require("webpack-chrome-extension-reloader");
-        const chromeExtensionReloader = new ChromeExtensionReloader({
+        const ExtensionReloader = require("webpack-extension-reloader");
+        const extensionReloader = new ExtensionReloader ({
             port: 9090,
             reloadPage: true,
             entries: {
                 contentScript: "content_script",
-                background: "background"
+                background: "background",
+                extensionPage: ["popup", "options"],
             }
         });
-        config.plugins.push(chromeExtensionReloader);
+        config.plugins.push(extensionReloader);
     }
     return config;
 };

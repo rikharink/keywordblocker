@@ -62,7 +62,6 @@ export class Blocker {
     }
 
     public checkForBlockedVideos(): void {
-        console.log('Checking for blocked videos...');
         const title = document.querySelector('h1.title');
         const description = document.getElementById('description');
         const page = getYouTubePage();
@@ -76,7 +75,6 @@ export class Blocker {
                 if (action !== BlockAction.Nothing) {
                     this.hideVideo();
                 }
-                console.log(action);
                 if (action === BlockAction.Block) {
                     this.showPopup();
                 } else if (action === BlockAction.Redirect) {
@@ -84,7 +82,7 @@ export class Blocker {
                 }
             }
         }
-
+        
         const videos = this.getVideos();
         videos
             .filter(video => {
