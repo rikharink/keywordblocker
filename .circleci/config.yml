@@ -6,16 +6,11 @@ workflows:
   version: 2
   main:
     jobs:
-      - test:
-          filters:
-            tags:
-              only: /.*/
-      - build:
-          filters:
-            tags:
-              only: /.*/
+      - test
+      - build
       - publish:
           requires:
+            - test
             - build
           filters:
             branches:
