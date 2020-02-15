@@ -3,13 +3,13 @@
     "version": "2.2.1",
     "description": "Web Extension to block unwanted videos and channels",
     "scripts": {
-        "test": "jest",
-        "e2e": "jest --runInBand --config=jest.e2e.config.js",
-        "dev": "webpack --mode development --watch",
-        "dist": "webpack --mode production",
-        "firefox": "web-ext run -s dist --firefox=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\"",
-        "firefox:build": "web-ext build -s dist",
-        "lint": "tsc --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+        "test": "npx jest",
+        "e2e": "npx jest --runInBand --config=jest.e2e.config.js",
+        "dev": "npx webpack --mode development --watch",
+        "dist": "npx webpack --mode production",
+        "firefox": "npx web-ext run -s dist --firefox=\"C:\\Program Files\\Firefox Developer Edition\\firefox.exe\"",
+        "firefox:build": "npx web-ext build -s dist",
+        "lint": "npx tsc --noEmit && eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
     },
     "husky": {
         "hooks": {
