@@ -12,6 +12,14 @@ export class Blocker {
         'YTD-MOVIE-RENDERER',
         'YTD-CHANNEL-RENDERER',
         'YTD-VIDEO-OWNER-RENDERER',
+        'YTM-GRID-VIDEO-RENDERER',
+        'YTM-VIDEO-RENDERER',
+        'YTM-COMPACT-VIDEO-RENDERER',
+        'YTM-RICH-GRID-VIDEO-RENDERER',
+        'YTM-PLAYLIST-RENDERER',
+        'YTM-MOVIE-RENDERER',
+        'YTM-CHANNEL-RENDERER',
+        'YTM-VIDEO-OWNER-RENDERER',
     ];
     private settings: Settings;
     private partialMatchKeywords: string[];
@@ -82,7 +90,7 @@ export class Blocker {
                 }
             }
         }
-        
+
         const videos = this.getVideos();
         videos
             .filter(video => {

@@ -6,9 +6,7 @@
         "128": "img/icon-128.png"
     },
     "background": {
-        "scripts": [
-            "background.bundle.js"
-        ]
+        "scripts": ["background.bundle.js"]
     },
     "browser_action": {
         "default_icon": {
@@ -24,19 +22,10 @@
     },
     "content_scripts": [
         {
-            "matches": [
-                "*://www.youtube.com/*"
-            ],
+            "matches": ["*://www.youtube.com/*", "*://m.youtube.com/*"],
             "css": ["styles/content_script.css"],
-            "js": [
-                "content_script.bundle.js"
-            ]
+            "js": ["content_script.bundle.js"]
         }
     ],
-    "permissions": [
-        "tabs",
-        "storage",
-        "contextMenus",
-        "*://www.youtube.com/*"
-    ]
+    "permissions": ["tabs", "storage", "contextMenus", "*://www.youtube.com/*", "*://m.youtube.com/*"]
 }
