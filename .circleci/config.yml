@@ -21,7 +21,7 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/node:12.16.1-buster
+      - image: circleci/node:12.16.2-buster
     working_directory: ~/app
     steps:
       - checkout
@@ -45,7 +45,7 @@ jobs:
             npm test
   build:
     docker:
-      - image: circleci/node:12.16.1-buster
+      - image: circleci/node:12.16.2-buster
     working_directory: ~/app
     steps:
       - checkout
