@@ -57,7 +57,7 @@
         "typescript": "3.7.5",
         "web-ext": "4.1.0",
         "webpack": "4.41.5",
-        "webpack": "4.41.6",
+        "webpack": "4.43.0",
         "webpack-bundle-analyzer": "3.6.1",
         "webpack-cli": "3.3.11",
         "webpack-extension-reloader": "1.1.4"
