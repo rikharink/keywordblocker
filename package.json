@@ -39,7 +39,7 @@
         "html-loader": "0.5.5",
         "html-webpack-plugin": "4.0.1",
         "husky": "4.2.3",
-        "jest": "25.1.0",
+        "jest": "25.5.4",
         "jest-puppeteer": "4.4.0",
         "lint-staged": "10.0.9",
         "mini-css-extract-plugin": "0.9.0",
