@@ -148,7 +148,7 @@ const config = {
 module.exports = (_: any, argv: any) => {
     config.mode = argv.mode;
     if (config.mode === 'development') {
-        config.devtool = 'eval-source-map';
+        config.devtool = 'cheap-module-source-map';
     }
     return config;
 };
