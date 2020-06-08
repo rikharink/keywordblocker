@@ -9,7 +9,7 @@ export enum YouTubePage {
 }
 
 export function isChannel(pathname: string): boolean {
-    const path = pathname.split('/').filter(x => x !== '');
+    const path = pathname.split('/').filter((x) => x !== '');
     if (path.length < 2) {
         return false;
     }

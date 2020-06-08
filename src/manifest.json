@@ -23,7 +23,7 @@
     "content_scripts": [
         {
             "matches": ["*://www.youtube.com/*", "*://m.youtube.com/*"],
-            "css": ["styles/content_script.css"],
+            "css": ["content_script.css"],
             "js": ["content_script.bundle.js"]
         }
     ],

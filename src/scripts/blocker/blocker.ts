@@ -12,14 +12,6 @@ export class Blocker {
         'YTD-MOVIE-RENDERER',
         'YTD-CHANNEL-RENDERER',
         'YTD-VIDEO-OWNER-RENDERER',
-        'YTM-GRID-VIDEO-RENDERER',
-        'YTM-VIDEO-RENDERER',
-        'YTM-COMPACT-VIDEO-RENDERER',
-        'YTM-RICH-GRID-VIDEO-RENDERER',
-        'YTM-PLAYLIST-RENDERER',
-        'YTM-MOVIE-RENDERER',
-        'YTM-CHANNEL-RENDERER',
-        'YTM-VIDEO-OWNER-RENDERER',
     ];
     private settings: Settings;
     private partialMatchKeywords: string[];
@@ -44,28 +36,28 @@ export class Blocker {
 
     public async loadSettings(): Promise<void> {
         this.wholeMatchKeywords = this.settings.keywords
-            .filter(keyword => !keyword.blockPartialMatch)
-            .map(x => x.keyword);
+            .filter((keyword) => !keyword.blockPartialMatch)
+            .map((x) => x.keyword);
         this.partialMatchKeywords = this.settings.keywords
-            .filter(keyword => keyword.blockPartialMatch)
-            .map(x => x.keyword);
+            .filter((keyword) => keyword.blockPartialMatch)
+            .map((x) => x.keyword);
         this.wholeMatchChannels = this.settings.channels
-            .filter(channel => !channel.blockPartialMatch)
-            .map(x => x.keyword);
+            .filter((channel) => !channel.blockPartialMatch)
+            .map((x) => x.keyword);
         this.partialMatchChannels = this.settings.channels
-            .filter(channel => channel.blockPartialMatch)
-            .map(x => x.keyword);
+            .filter((channel) => channel.blockPartialMatch)
+            .map((x) => x.keyword);
 
         const begin = '(?:-|\\s|\\W|^)';
         const end = '(?:-|\\s|\\W|$)';
         this.wholeMatchKeywordsRegExp = new RegExp(`${begin}(?:${this.wholeMatchKeywords.join('|')})${end}`, 'i');
 
-        const partialKeywordRegExp = this.partialMatchKeywords.map(x => '(.)*' + x + '(.)*').join('|');
+        const partialKeywordRegExp = this.partialMatchKeywords.map((x) => '(.)*' + x + '(.)*').join('|');
         this.partialMatchKeywordsRegExp = new RegExp(`(?:${partialKeywordRegExp})`, 'i');
 
         this.wholeMatchChannelsRegExp = new RegExp(`^(?:${this.wholeMatchChannels.join('|')})$`, 'i');
 
-        const partialChannelRegExp = this.partialMatchChannels.map(x => '(.)*' + x + '(.)*').join('|');
+        const partialChannelRegExp = this.partialMatchChannels.map((x) => '(.)*' + x + '(.)*').join('|');
         this.partialMatchChannelsRegExp = new RegExp(`(?:${partialChannelRegExp})`, 'i');
     }
 
@@ -93,7 +85,7 @@ export class Blocker {
 
         const videos = this.getVideos();
         videos
-            .filter(video => {
+            .filter((video) => {
                 const videoTitle = video.querySelector<HTMLElement>('#video-title');
                 const channelTitle = video.querySelector<HTMLSpanElement>('#channel-title span');
                 const channel = video.querySelector('#metadata a');
@@ -120,7 +112,7 @@ export class Blocker {
                 }
                 return blocked;
             })
-            .map(x => this.remove(x));
+            .map((x) => this.remove(x));
     }
 
     public remove(node: HTMLElement): void {
@@ -184,7 +176,7 @@ export class Blocker {
         for (const tag of this.videoNodeNames) {
             videos.push(...document.getElementsByTagName(tag));
         }
-        return videos.map(x => x as HTMLElement);
+        return videos.map((x) => x as HTMLElement);
     }
 
     public watchRightClick(): void {
@@ -193,13 +185,13 @@ export class Blocker {
                 filter((event: MouseEvent) => event.button === 2),
                 pluck('target'),
                 filter<HTMLElement>(
-                    t =>
+                    (t) =>
                         t instanceof HTMLElement &&
                         (t.closest('ytd-grid-video-renderer') !== null ||
                             t.closest('ytd-compact-video-renderer') != null),
                 ),
             )
-            .subscribe(t => {
+            .subscribe((t) => {
                 const videoGridRenderer = t.closest('ytd-grid-video-renderer');
                 const compactVideoRenderer = t.closest('ytd-compact-video-renderer');
 

@@ -28,7 +28,7 @@ export class ChannelSettingsController extends BlockItemSettingsController {
             const input: HTMLInputElement = document.querySelector('#channel-input .keyword');
             const blockPartial: HTMLInputElement = document.querySelector('#channel-input .block-partial');
             const channel = input.value;
-            const channelArray = this.settings.channels.map(x => x.keyword);
+            const channelArray = this.settings.channels.map((x) => x.keyword);
             if (input.value.length > 0 && channelArray.indexOf(channel) === -1) {
                 this.settings.channels.push(new BlockItem(channel, blockPartial.checked));
                 await this.settings.save();

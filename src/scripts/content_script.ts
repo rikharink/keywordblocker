@@ -10,7 +10,7 @@ const ignoredChanges: string[] = ['YTD-MOVING-THUMBNAIL-RENDERER', 'svg', 'PAPER
 let blocker: Blocker;
 function handleUpdate(records: MutationRecord[]): void {
     const added = records
-        .map(record => [...record.addedNodes])
+        .map((record) => [...record.addedNodes])
         .reduce((x, y) => x.concat(y))
         .filter((x: HTMLElement) => {
             return (
@@ -27,7 +27,7 @@ const mutationObserver = new MutationObserver(debounce(handleUpdate, debounceTim
 
 library.add(faTimesCircle);
 dom.watch();
-new Settings().load().then(settings => {
+new Settings().load().then((settings) => {
     blocker = new Blocker(settings);
     blocker.init().then(() => {
         const subscription = interval(100).subscribe(() => {

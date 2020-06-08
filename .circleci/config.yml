@@ -21,55 +21,55 @@ version: 2
 jobs:
   test:
     docker:
-      - image: circleci/node:12.16.0-buster
+      - image: circleci/node:lts-buster
     working_directory: ~/app
     steps:
       - checkout
       - restore_cache:
           keys:
-            - v2-2-dependencies-{{ checksum "package.json" }}
+            - yarn-packages-{{ checksum "yarn.lock" }}
             # fallback to using the latest cache if no exact match is found
-            - v2-2-dependencies-
+            - yarn-packages
       - run:
           name: "Install dependencies"
           command: |
             sudo apt-get update
-            npm install
+            yarn install --immutable
       - save_cache:
           paths:
-            - node_modules
-          key: v2.2-dependencies-{{ checksum "package.json" }}
+             - ~/.cache/yarn
+          key: yarn-packages-{{ checksum "yarn.lock" }}
       - run:
           name: "Run tests"
           command: |
-            npm test
+            yarn test
   build:
     docker:
-      - image: circleci/node:12.16.0-buster
+      - image: circleci/node:lts-buster
     working_directory: ~/app
     steps:
       - checkout
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v2-2-dependencies-{{ checksum "package.json" }}
+            - yarn-packages-{{ checksum "yarn.lock" }}
             # fallback to using the latest cache if no exact match is found
-            - v2-2-dependencies-
+            - yarn-packages
       - run:
           name: "Install dependencies"
           command: |
             sudo apt-get update
             sudo apt-get install -y zip
-            npm install
+            yarn install --immutable
       - save_cache:
           paths:
-            - node_modules
-          key: v2.2-dependencies-{{ checksum "package.json" }}
+             - ~/.cache/yarn
+          key: yarn-packages-{{ checksum "yarn.lock" }}
       - run: 
           name: "Package extension"
           command: |
-            npm run dist
-            npm run firefox:build
+            yarn run dist
+            yarn run firefox:build
             cd dist
             zip -r ../dist.zip *
       - persist_to_workspace:

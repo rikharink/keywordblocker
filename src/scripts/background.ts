@@ -96,6 +96,6 @@ export class Background {
     }
 }
 
-new Settings().load().then(settings => {
+new Settings().load().then((settings) => {
     new Background(settings).initialize();
 });

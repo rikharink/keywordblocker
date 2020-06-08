@@ -31,7 +31,7 @@ export class Options {
 
 library.add(faTrashAlt, faPlus, faTimesCircle);
 dom.watch();
-new Settings().load().then(settings => {
+new Settings().load().then((settings) => {
     new Options(
         new GeneralSettingsController(settings),
         new KeywordSettingsController(settings),

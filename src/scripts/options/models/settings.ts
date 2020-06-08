@@ -114,7 +114,7 @@ export class Settings {
     }
 
     public setBlockOption(page: YouTubePage, action: BlockAction): void {
-        const index = this.blockOptions.findIndex(i => i.page === page);
+        const index = this.blockOptions.findIndex((i) => i.page === page);
         if (index === -1) {
             this.blockOptions.push(new BlockOption(page, action));
         } else {
@@ -123,7 +123,7 @@ export class Settings {
     }
 
     public getBlockAction(page: YouTubePage): BlockAction {
-        const index = this.blockOptions.findIndex(i => i.page === page);
+        const index = this.blockOptions.findIndex((i) => i.page === page);
         if (index !== -1) {
             return this.blockOptions[index].action;
         }

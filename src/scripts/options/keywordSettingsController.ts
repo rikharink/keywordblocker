@@ -29,7 +29,7 @@ export class KeywordSettingsController extends BlockItemSettingsController {
             const input = document.querySelector('#keyword-input .keyword') as HTMLInputElement;
             const blockPartial = document.querySelector('#keyword-input .block-partial') as HTMLInputElement;
             const keyword = input.value;
-            const keywordArray = this.settings.keywords.map(x => x.keyword);
+            const keywordArray = this.settings.keywords.map((x) => x.keyword);
             if (keyword.length > 0 && keywordArray.indexOf(keyword) === -1) {
                 this.settings.keywords.push(new BlockItem(keyword, blockPartial.checked));
                 await this.settings.save();

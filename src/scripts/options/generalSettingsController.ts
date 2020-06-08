@@ -97,7 +97,7 @@ export class GeneralSettingsController implements SettingsController {
     private watchBlockOptions(): void {
         fromEvent(document.getElementsByClassName('segmented-control'), 'click')
             .pipe(
-                filter(x => x.target instanceof HTMLLabelElement),
+                filter((x) => x.target instanceof HTMLLabelElement),
                 pluck('target'),
                 pluck('dataset'),
             )
@@ -190,7 +190,7 @@ export class GeneralSettingsController implements SettingsController {
 
     private displaySegmentedOption(element: HTMLElement, action: BlockAction): void {
         const actionName = BlockAction[action];
-        Array.from(element.getElementsByTagName('input')).forEach(i => (i.checked = false));
+        Array.from(element.getElementsByTagName('input')).forEach((i) => (i.checked = false));
         const label = element.querySelector('label[data-value=' + actionName + ']').getAttribute('for');
         (element.querySelector('#' + label) as HTMLInputElement).checked = true;
     }
@@ -243,7 +243,7 @@ export class GeneralSettingsController implements SettingsController {
                 filter((file: File) => file.type.match('application/json') !== null),
                 mergeMap((file: File) => {
                     const fileReader = new FileReader();
-                    const observable = new Observable<string | ArrayBuffer>(o => {
+                    const observable = new Observable<string | ArrayBuffer>((o) => {
                         fileReader.onload = (): void => {
                             o.next(fileReader.result);
                             o.complete();
