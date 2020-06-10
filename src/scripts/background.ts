@@ -1,10 +1,12 @@
 import 'chrome-extension-async';
-import { BlockItem, Settings } from './options/models/settings';
+import { BlockItem } from './options/models/blockItem';
+import { ISettings } from './options/models/ISettings';
+import { Settings } from './options/models/settings';
 
 export class Background {
-    private settings: Settings;
+    private settings: ISettings;
 
-    constructor(settings: Settings) {
+    constructor(settings: ISettings) {
         this.settings = settings;
     }
 

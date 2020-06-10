@@ -1,19 +1,13 @@
 import { fromEvent, interval, merge } from 'rxjs';
 import { filter, pluck } from 'rxjs/operators';
-import { BlockAction, BlockItem, Settings } from '../options/models/settings';
+import { BlockItem } from '../options/models/blockItem';
+import { BlockAction } from '../options/models/blockAction';
+import { ISettings } from '../options/models/ISettings';
 import { getYouTubePage, isChannel, YouTubePage } from './youtube';
+import { videoNodeNames } from './videoNodeNames';
+
 export class Blocker {
-    public readonly videoNodeNames = [
-        'YTD-GRID-VIDEO-RENDERER',
-        'YTD-VIDEO-RENDERER',
-        'YTD-COMPACT-VIDEO-RENDERER',
-        'YTD-RICH-GRID-VIDEO-RENDERER',
-        'YTD-PLAYLIST-RENDERER',
-        'YTD-MOVIE-RENDERER',
-        'YTD-CHANNEL-RENDERER',
-        'YTD-VIDEO-OWNER-RENDERER',
-    ];
-    private settings: Settings;
+    private settings: ISettings;
     private partialMatchKeywords: string[];
     private wholeMatchKeywords: string[];
     private partialMatchChannels: string[];
@@ -24,7 +18,7 @@ export class Blocker {
     private wholeMatchChannelsRegExp: RegExp;
     private clickedChannel: string;
 
-    constructor(settings: Settings) {
+    constructor(settings: ISettings) {
         this.settings = settings;
     }
 
@@ -91,6 +85,8 @@ export class Blocker {
                 const channel = video.querySelector('#metadata a');
                 const owner = video.querySelector<HTMLAnchorElement>('#owner-name a');
                 const byline = video.querySelector('#byline');
+
+                console.log(videoTitle, channelTitle, channel, owner, byline);
                 let blocked = false;
 
                 if (this.settings.channels.length > 0 && (channel || channelTitle || owner || byline)) {
@@ -173,7 +169,7 @@ export class Blocker {
 
     public getVideos(): HTMLElement[] {
         const videos: Element[] = [];
-        for (const tag of this.videoNodeNames) {
+        for (const tag of videoNodeNames) {
             videos.push(...document.getElementsByTagName(tag));
         }
         return videos.map((x) => x as HTMLElement);

@@ -1,11 +1,13 @@
 import { from, fromEvent, Observable } from 'rxjs';
 import { debounceTime, filter, mergeMap, pluck } from 'rxjs/operators';
 import { YouTubePage } from '../blocker/youtube';
-import { BlockAction, Settings } from './models/settings';
+import { Settings } from './models/settings';
+import { BlockAction } from './models/blockAction';
 import { SettingsController } from './settingsController';
+import { ISettings } from './models/ISettings';
 
 export class GeneralSettingsController implements SettingsController {
-    private settings: Settings;
+    private settings: ISettings;
     private providedPassword: string;
     private passwordInput = document.getElementById('password') as HTMLInputElement;
     private checkDescription = document.getElementById('check-description') as HTMLInputElement;
@@ -20,7 +22,7 @@ export class GeneralSettingsController implements SettingsController {
     private exportSettings = document.getElementById('export-settings');
     private importFileInput = document.getElementById('import') as HTMLInputElement;
 
-    constructor(settings: Settings) {
+    constructor(settings: ISettings) {
         this.settings = settings;
     }
 

@@ -8,11 +8,11 @@
         "outDir": "dist",
         "noEmitOnError": true,
         "moduleResolution": "node",
+        "module": "ES2020",
         "types": [
             "jest",
-            "puppeteer",
-            "jest-environment-puppeteer",
-            "expect-puppeteer"
+            "jest-playwright-preset",
+            "expect-playwright"
         ],
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
@@ -22,5 +22,5 @@
                 "../../node_modules/chrome-extension-async/chrome-extension-async.d.ts"
             ]
         }
-    }
+    },
 }

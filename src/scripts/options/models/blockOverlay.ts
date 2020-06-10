@@ -24,7 +24,7 @@ export class BlockOverlay {
         return blockOverlayContainer;
     }
 
-    public convertToRgba(hex: string, opacity: number) {
+    public convertToRgba(hex: string, opacity: number): { a: number; b: number; g: number; r: number } {
         // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
         const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
         hex = hex.replace(shorthandRegex, (_, r, g, b) => r + r + g + g + b + b);

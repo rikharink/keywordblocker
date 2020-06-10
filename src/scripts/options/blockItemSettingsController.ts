@@ -1,6 +1,6 @@
 import { fromEvent } from 'rxjs';
 import { filter, map, pluck } from 'rxjs/operators';
-import { BlockItem } from './models/settings';
+import { BlockItem } from './models/blockItem';
 import { SettingsController } from './settingsController';
 
 export abstract class BlockItemSettingsController implements SettingsController {

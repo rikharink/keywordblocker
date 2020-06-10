@@ -1,27 +1,18 @@
+import 'chrome-extension-async';
 import { BlockDialog } from './blockDialog';
 import { BlockItem } from './blockItem';
 import { BlockOverlay } from './blockOverlay';
-export { BlockItem } from './blockItem';
-export { BlockDialog } from './blockDialog';
-export { BlockOverlay } from './blockOverlay';
 import { YouTubePage } from '../../blocker/youtube';
 import { BlockOption } from './blockOption';
-export { BlockOption } from './blockOption';
-import 'chrome-extension-async';
+import { ISettings } from './ISettings';
+import { BlockAction } from './blockAction';
 
-export enum BlockAction {
-    Nothing = 0,
-    Block = 1,
-    Remove = 2,
-    Redirect = 3,
-}
-
-export class Settings {
-    public static fromImportedSettings(importedSettings: { [key: string]: any }): Settings {
+export class Settings implements ISettings {
+    public static fromImportedSettings(importedSettings: { [key: string]: any }): ISettings {
         return this.fromLocalStorage(importedSettings);
     }
 
-    private static fromLocalStorage(localStorageData: { [key: string]: any }): Settings {
+    private static fromLocalStorage(localStorageData: { [key: string]: any }): ISettings {
         if (localStorageData.settingsVersion === 2) {
             const storedSettings = localStorageData;
             const settings = new Settings();
@@ -46,7 +37,7 @@ export class Settings {
         }
     }
 
-    private static convertOldSettings(oldSettings: { [key: string]: any }): Settings {
+    private static convertOldSettings(oldSettings: { [key: string]: any }): ISettings {
         const settings = new Settings();
         settings.oldSettingsBackup = JSON.stringify(oldSettings);
         if (typeof oldSettings.removeFromResults !== 'undefined') {
@@ -101,7 +92,7 @@ export class Settings {
     public settingsVersion = 2;
     public oldSettingsBackup = '';
 
-    public async load(): Promise<Settings> {
+    public async load(): Promise<ISettings> {
         return Settings.fromLocalStorage(await this.getLocalStorage());
     }
 

@@ -1,9 +1,10 @@
 import { BlockItemSettingsController } from './blockItemSettingsController';
-import { BlockItem, Settings } from './models/settings';
+import { BlockItem } from './models/blockItem';
+import { ISettings } from './models/ISettings';
 export class ChannelSettingsController extends BlockItemSettingsController {
-    private settings: Settings;
+    private settings: ISettings;
 
-    constructor(settings: Settings) {
+    constructor(settings: ISettings) {
         super();
         this.settings = settings;
     }
