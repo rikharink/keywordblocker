@@ -4162,7 +4162,7 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   dependencies:
     homedir-polyfill "^1.0.1"
 
-expect-playwright@^0.2.4:
+expect-playwright@0.2.4, expect-playwright@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/expect-playwright/-/expect-playwright-0.2.4.tgz#a091f081eeb65d23d17ef63738634acfa76569ad"
   integrity sha512-gsEJxwNPgjq924zuMqZ++P12zAOw2vxKOFRDQzWZgd4cK7cmannqEP41ArOKcfaQRKdSihuXL+ehJ5qDTiriJA==
@@ -6271,7 +6271,7 @@ jest-mock@^26.0.1:
   dependencies:
     "@jest/types" "^26.0.1"
 
-jest-playwright-preset@^0.2.3:
+jest-playwright-preset@0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/jest-playwright-preset/-/jest-playwright-preset-0.2.3.tgz#93bee588ba60067797c7b74d2849776c6608cee5"
   integrity sha512-GrY0qS0+1VtszkEMvss2NhN7Mq+f1YsWYWLErZXJDpT8lafTpxsUuRpc9eTDq7PeksPgy9dYO5baGGr37HI9RQ==
@@ -8311,7 +8311,7 @@ playwright-core@=1.0.2:
     rimraf "^3.0.2"
     ws "^6.1.0"
 
-playwright@^1.0.2:
+playwright@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.0.2.tgz#0706486a4db99f9dfaf20503887e020a6d749c0b"
   integrity sha512-92qvTeQ45Wex7wRwxqFZQm7lV8j7Z+Dxs7mNUS9wtlGS9mXswp1903XV1r7lKlvvaZ89uqV2BuZN+UUDpBaIAQ==
