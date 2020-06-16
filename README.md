@@ -15,8 +15,8 @@ or for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/keyword-blocker/
 ## Build instructions
 
 -   checkout the repository and run yarn install
--   npm run dev will build a development version of the extension in the dist folder
--   npm run dist will build the release version
+-   yarn run dev will build a development version of the extension in the dist folder
+-   yarn run dist will build the release version
 
 Note:
 
