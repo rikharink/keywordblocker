@@ -4134,7 +4134,14 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   dependencies:
     homedir-polyfill "^1.0.1"
 
-expect-playwright@0.2.4, expect-playwright@^0.2.4:
+expect-playwright@0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/expect-playwright/-/expect-playwright-0.2.5.tgz#928733173447b9cb88fcfd5e9ccb6e711bc89d78"
+  integrity sha512-H7S4+ZG9ziYTnHU23YbnEJ5KLzjnFdNx1UN78to+SDiXufoeXS/ddMOkxHruo/wqeGhjFD3gslfmunWjdG4RFQ==
+  dependencies:
+    playwright-core "^1.2.1"
+
+expect-playwright@^0.2.4:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/expect-playwright/-/expect-playwright-0.2.4.tgz#a091f081eeb65d23d17ef63738634acfa76569ad"
   integrity sha512-gsEJxwNPgjq924zuMqZ++P12zAOw2vxKOFRDQzWZgd4cK7cmannqEP41ArOKcfaQRKdSihuXL+ehJ5qDTiriJA==
@@ -8502,6 +8509,23 @@ pkg-up@^2.0.0:
   integrity sha1-yBmscoBZpGHKscOImivjxJoATX8=
   dependencies:
     find-up "^2.1.0"
+
+playwright-core@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.2.1.tgz#24f46bf70b488f06da7646a60e4c5c89fd8f51d7"
+  integrity sha512-mpDr/Tllr1aGN2Q9FtsxsFOwBHBvwRjoIHafMKhdiq/F3UE52ra2HU4CYB0WdDpPIQqFV2zB+BZwNeAC/nc9Pw==
+  dependencies:
+    commander "^5.1.0"
+    debug "^4.1.1"
+    extract-zip "^2.0.0"
+    https-proxy-agent "^5.0.0"
+    jpeg-js "^0.3.7"
+    mime "^2.4.4"
+    pngjs "^5.0.0"
+    progress "^2.0.3"
+    proxy-from-env "^1.1.0"
+    rimraf "^3.0.2"
+    ws "^6.1.0"
 
 playwright@1.2.1:
   version "1.2.1"
