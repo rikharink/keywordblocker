@@ -10359,10 +10359,10 @@ playwright-core@>=1.2.0, playwright-core@^1.2.1:
     rimraf "^3.0.2"
     ws "^6.1.0"
 
-playwright@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.5.0.tgz#27f80ea373b9eec4f735973de4e16ba983b37207"
-  integrity sha512-szV0YksBqKQ8XTaDhhvwoA+0nBICj2GOe8ptesSpmUq8xXjjSYSJqwH2J7haYwY35GD9zzH2+HGqeObI2i8tJw==
+playwright@1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.5.1.tgz#f5333cbfefaf9cb7213b0c9ca8bc9f3f18efcf16"
+  integrity sha512-FYxrQ2TAmvp5ZnBnc6EJHc1Vt3DmXx8xVDq6rxVVG4YVoNKHYMarHI92zGyDlueN2kKCavrhk4Et9w6jJ5XWaA==
   dependencies:
     debug "^4.1.1"
     extract-zip "^2.0.1"
