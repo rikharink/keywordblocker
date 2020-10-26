@@ -62,7 +62,7 @@
         "sass-loader": "10.0.4",
         "source-map-loader": "1.1.1",
         "terser-webpack-plugin": "4.2.3",
-        "ts-jest": "26.4.2",
+        "ts-jest": "26.4.3",
         "ts-loader": "8.0.7",
         "ts-node": "9.0.0",
         "tsconfig-paths": "3.9.0",
