@@ -4326,12 +4326,10 @@ expand-tilde@^1.2.2:
   dependencies:
     os-homedir "^1.0.1"
 
-expect-playwright@0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/expect-playwright/-/expect-playwright-0.2.5.tgz#928733173447b9cb88fcfd5e9ccb6e711bc89d78"
-  integrity sha512-H7S4+ZG9ziYTnHU23YbnEJ5KLzjnFdNx1UN78to+SDiXufoeXS/ddMOkxHruo/wqeGhjFD3gslfmunWjdG4RFQ==
-  dependencies:
-    playwright-core "^1.2.1"
+expect-playwright@0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/expect-playwright/-/expect-playwright-0.2.6.tgz#fb690763ea386c6b88494512119817beb2c61cf1"
+  integrity sha512-zb+0L9ayNPhFm89F0BOQP8yTckETbA33wmWoxcnUY/A0pFsd7e4Tn8YrDsLiMQ7gZX2dD3LQHH9TWSnvEJi8rw==
 
 expect-playwright@^0.2.4:
   version "0.2.4"
@@ -8730,7 +8728,7 @@ pkg-up@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
-playwright-core@>=1.2.0, playwright-core@^1.2.1:
+playwright-core@>=1.2.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.2.1.tgz#24f46bf70b488f06da7646a60e4c5c89fd8f51d7"
   integrity sha512-mpDr/Tllr1aGN2Q9FtsxsFOwBHBvwRjoIHafMKhdiq/F3UE52ra2HU4CYB0WdDpPIQqFV2zB+BZwNeAC/nc9Pw==
