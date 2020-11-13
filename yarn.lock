@@ -8238,10 +8238,10 @@ playwright-core@>=1.2.0:
     rimraf "^3.0.2"
     ws "^6.1.0"
 
-playwright@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.6.0.tgz#e73b23562f899be618d4b9d204cdb259e550f831"
-  integrity sha512-fzKoIfIa98ffGnxTHoUgcb+iDPGkJF1OCJEL8in9NbDIyuEjed+gTlIn9X9qWi+RuEOJqrJw8bsG7Yi+dghgrw==
+playwright@1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.6.1.tgz#0afc0829139792f6b944fa2a1aa91231fc32a75a"
+  integrity sha512-0CQdAg1NbV+ZXr7p3E62sSPRLO2peNAFC7e7NXCXR7Nj75b9Dmc8lF8bevT7eu1gbzo0ZwtFUlmAGLZ1/W/wVg==
   dependencies:
     debug "^4.1.1"
     extract-zip "^2.0.1"
