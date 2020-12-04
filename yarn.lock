@@ -6411,15 +6411,15 @@ jest-mock@^26.6.2:
     "@jest/types" "^26.6.2"
     "@types/node" "*"
 
-jest-playwright-preset@1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/jest-playwright-preset/-/jest-playwright-preset-1.4.1.tgz#94488dfbbfd516e55311d1ba4483c465c0f1fb85"
-  integrity sha512-SOPxGvjcZCmWkhxRwoOxkJIGTpIQjgFQsbvek0MUHR2TuoovEfcv22OvK+UWt2GBEWp4deln+zh+FXuDOXrduA==
+jest-playwright-preset@1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/jest-playwright-preset/-/jest-playwright-preset-1.4.2.tgz#bfd5330c3ac59276b1df35ed4323e7e9e24a9253"
+  integrity sha512-Z1nVGubumgtSWOgq4aT5XjwkagFt5BKjRwn/OLXD4+GgvA3RHCEaY7Pq/ktze5SlAyPWuehfzFpAiobSYTN0FA==
   dependencies:
     expect-playwright "^0.2.6"
     jest-circus "^26.6.3"
     jest-environment-node "^26.6.2"
-    jest-process-manager "^0.2.6"
+    jest-process-manager "^0.2.7"
     nyc "^15.1.0"
     playwright-core ">=1.2.0"
     rimraf "^3.0.2"
@@ -6430,10 +6430,10 @@ jest-pnp-resolver@^1.2.2:
   resolved "https://registry.yarnpkg.com/jest-pnp-resolver/-/jest-pnp-resolver-1.2.2.tgz#b704ac0ae028a89108a4d040b3f919dfddc8e33c"
   integrity sha512-olV41bKSMm8BdnuMsewT4jqlZ8+3TCARAXjZGT9jcoSnrfUnRCqnMoF9XEeoWjbzObpqF9dRhHQj0Xb9QdF6/w==
 
-jest-process-manager@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/jest-process-manager/-/jest-process-manager-0.2.6.tgz#98c6608de2677b0be584d7275e8d64932121359d"
-  integrity sha512-uWxUgTtgljoJMEg4T2FswXj/OWha1daZvHXWre7zty6Zv2lsghI4OepEStneJNefs9HQT7N6R8bIq5VlgRiFpA==
+jest-process-manager@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/jest-process-manager/-/jest-process-manager-0.2.7.tgz#f537cccdc0b110abdbaa8ce4b79407f73c01b52c"
+  integrity sha512-Bq47J22/PG1fTyVdDnoI3l6wQ1vtNwvzZShipKmY7K4wY9aggS8aGhu+ut7VPpV4O95QTIdYOTzeaOxcmM50uw==
   dependencies:
     "@types/wait-on" "^4.0.0"
     chalk "^4.1.0"
