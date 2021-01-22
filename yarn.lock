@@ -5993,10 +5993,10 @@ jest-mock@^26.6.2:
     "@jest/types" "^26.6.2"
     "@types/node" "*"
 
-jest-playwright-preset@1.4.4:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/jest-playwright-preset/-/jest-playwright-preset-1.4.4.tgz#ec8fa2260455e4169821b7681560ba2161d718e5"
-  integrity sha512-IEd50dlK/6NHawVnxEzJW6EG19pCMZO+FcN13hkedWjOZ+5rhx5ICrlwKDsPQLrp9vBtQ9ssDmMZWX8oYw0qGQ==
+jest-playwright-preset@1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/jest-playwright-preset/-/jest-playwright-preset-1.4.5.tgz#f797dcdc04053bb92bd81798b639bc679ceffa36"
+  integrity sha512-IM/Aw5bNIyjhLelKU2C1+xg8t6WcTgwYtX/23mbSHCV6cCry4J3bwrHQHWmYKAqkv7NM6ONTFTSdYv0125epdg==
   dependencies:
     expect-playwright "^0.3.0"
     jest-circus "^26.6.3"
