@@ -60,7 +60,7 @@
         "postcss-loader": "3.0.0",
         "prettier": "2.2.1",
         "sass-loader": "10.1.1",
-        "source-map-loader": "2.0.0",
+        "source-map-loader": "2.0.1",
         "terser-webpack-plugin": "4.2.3",
         "ts-jest": "26.5.1",
         "ts-loader": "8.0.16",
