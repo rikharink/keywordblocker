@@ -856,14 +856,6 @@
     jest-diff "^25.2.1"
     pretty-format "^25.2.1"
 
-"@types/jest@26.x":
-  version "26.0.9"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-26.0.9.tgz#0543b57da5f0cd949c5f423a00c56c492289c989"
-  integrity sha512-k4qFfJ5AUKrWok5KYXp2EPm89b0P/KZpl7Vg4XuOTVVQEhLDBDBU3iBFrjjdgd8fLw96aAtmnwhXHl63bWeBQQ==
-  dependencies:
-    jest-diff "^25.2.1"
-    pretty-format "^25.2.1"
-
 "@types/json-schema@^7.0.3":
   version "7.0.4"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.4.tgz#38fd73ddfd9b55abb1e1b2ed578cb55bd7b7d339"
@@ -10625,12 +10617,11 @@ ts-debounce@2.3.0:
   resolved "https://registry.yarnpkg.com/ts-debounce/-/ts-debounce-2.3.0.tgz#a360a8bd29402ce0ea9970f7cfc0df44dfae7139"
   integrity sha512-j63IP7/unAzovrhVHE7U+fNkvDKwIaLH11dCO9TcRbYOZw1chPL054poqq3ZloyRJ5KwJMeB8csN/vGPPpQJjw==
 
-ts-jest@26.5.2:
-  version "26.5.2"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.2.tgz#5281d6b44c2f94f71205728a389edc3d7995b0c4"
-  integrity sha512-bwyJ2zJieSugf7RB+o8fgkMeoMVMM2KPDE0UklRLuACxjwJsOrZNo6chrcScmK33YavPSwhARffy8dZx5LJdUQ==
+ts-jest@26.5.3:
+  version "26.5.3"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.3.tgz#a6ee00ba547be3b09877550df40a1465d0295554"
+  integrity sha512-nBiiFGNvtujdLryU7MiMQh1iPmnZ/QvOskBbD2kURiI1MwqvxlxNnaAB/z9TbslMqCsSbu5BXvSSQPc5tvHGeA==
   dependencies:
-    "@types/jest" "26.x"
     bs-logger "0.x"
     buffer-from "1.x"
     fast-json-stable-stringify "2.x"
