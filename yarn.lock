@@ -10623,10 +10623,10 @@ trim-newlines@^1.0.0:
   dependencies:
     glob "^7.1.2"
 
-ts-debounce@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/ts-debounce/-/ts-debounce-2.3.0.tgz#a360a8bd29402ce0ea9970f7cfc0df44dfae7139"
-  integrity sha512-j63IP7/unAzovrhVHE7U+fNkvDKwIaLH11dCO9TcRbYOZw1chPL054poqq3ZloyRJ5KwJMeB8csN/vGPPpQJjw==
+ts-debounce@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ts-debounce/-/ts-debounce-3.0.0.tgz#9beedf59c04de3b5bef8ff28bd6885624df357be"
+  integrity sha512-7jiRWgN4/8IdvCxbIwnwg2W0bbYFBH6BxFqBjMKk442t7+liF2Z1H6AUCcl8e/pD93GjPru+axeiJwFmRww1WQ==
 
 ts-jest@26.5.4:
   version "26.5.4"
