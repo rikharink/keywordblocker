@@ -81,7 +81,7 @@
         "chrome-extension-async": "git://github.com/KeithHenry/chromeExtensionAsync.git",
         "formbase": "12.0.1",
         "normalize-scss": "7.0.1",
-        "rxjs": "6.6.6",
+        "rxjs": "6.6.7",
         "ts-debounce": "2.3.0"
     },
     "browserslist": [
