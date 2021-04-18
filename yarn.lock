@@ -862,10 +862,10 @@
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
 
-"@types/mini-css-extract-plugin@1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@types/mini-css-extract-plugin/-/mini-css-extract-plugin-1.4.1.tgz#de984842ba298efc3688d7cea39439b343d24f68"
-  integrity sha512-MB+ghVm4f62cwwP7xuiEvKVkSryrkeVAENI0324ZOI/2m5shATwvkAeeXRpKPiEBJ5wLE1QA/NG4t2uggDs+sw==
+"@types/mini-css-extract-plugin@1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@types/mini-css-extract-plugin/-/mini-css-extract-plugin-1.4.2.tgz#79b562f6977d8d692190d81c4ba890826a0761e1"
+  integrity sha512-jAE5X6kO8+0ByUqzqUaOz9z/dilUKOBNcmNXAETJM9Ak9VopBqWZo+ISqILJnxh6/E/Ci6i2xAUydq2w6vE69g==
   dependencies:
     "@types/node" "*"
     tapable "^2.2.0"
