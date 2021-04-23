@@ -754,10 +754,10 @@
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
 
-"@types/copy-webpack-plugin@6.4.1":
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/@types/copy-webpack-plugin/-/copy-webpack-plugin-6.4.1.tgz#f2ab07def407c6a1fcfe626864b326c3584e2167"
-  integrity sha512-jnM0aMsaMTBr+xlMIO/fu+ZXIbSncmj4UB9ZHTXVfZJsUwGqtdfdSfz1/S8O99R9k7G5V6KhbAd8+QL0f2kUkg==
+"@types/copy-webpack-plugin@6.4.2":
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/@types/copy-webpack-plugin/-/copy-webpack-plugin-6.4.2.tgz#b2ec2bed52068110e2f71ab673e062763254809d"
+  integrity sha512-pjEkbOxQLxKdNRJHf2MI8Rx66WK67NQao1ruLeaHizsu6F25gjW5LQL6Xc8lmMRhu9KIJ3WO4KyxP5Oy0tCUjg==
   dependencies:
     "@types/webpack" "^4"
 
