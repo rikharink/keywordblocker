@@ -55,7 +55,7 @@
         "mini-css-extract-plugin": "1.6.0",
         "node-sass": "6.0.0",
         "optimize-css-assets-webpack-plugin": "5.0.4",
-        "playwright": "1.10.0",
+        "playwright": "1.11.0",
         "postcss-cssnext": "3.1.0",
         "postcss-loader": "3.0.0",
         "prettier": "2.3.0",
