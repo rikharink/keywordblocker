@@ -4331,10 +4331,10 @@ expand-tilde@^1.2.2:
   dependencies:
     os-homedir "^1.0.1"
 
-expect-playwright@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/expect-playwright/-/expect-playwright-0.4.1.tgz#363c84d72d3d4ded0b30e49c68cb8f90bd896661"
-  integrity sha512-lPssOx7gN4mKOvJPsdySBCqwOK7i8mqpHwzqKhaASlil3YMAL4XQHuwnVhCty8UNfA7UaWwdJSrMIFXsj6kEqQ==
+expect-playwright@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/expect-playwright/-/expect-playwright-0.5.0.tgz#e879ba4e8096d4801bf18989c3850dc00daac098"
+  integrity sha512-aUoY6Lbg0TWgXaBVuFVN7NwV+7pqM3LJ2+Fget+ywNaXS174n3s3dFk3vSittwI40V/L4mykmWtAW1A4JGLZKQ==
 
 expect-playwright@^0.4.0:
   version "0.4.0"
