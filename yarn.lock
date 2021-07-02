@@ -953,10 +953,10 @@
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.7.tgz#545158342f949e8fd3bfd813224971ecddc3fac4"
   integrity sha512-0VBprVqfgFD7Ehb2vd8Lh9TG3jP98gvr8rgehQqzztZNI7o8zS8Ad4jyZneKELphpuE212D8J70LnSNQSyO6bQ==
 
-"@types/terser-webpack-plugin@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@types/terser-webpack-plugin/-/terser-webpack-plugin-4.2.1.tgz#cbeccec2b011ad12a9ddcd60b4089c9e138a313a"
-  integrity sha512-x688KsgQKJF8PPfv4qSvHQztdZNHLlWJdolN9/ptAGimHVy3rY+vHdfglQDFh1Z39h7eMWOd6fQ7ke3PKQcdyA==
+"@types/terser-webpack-plugin@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@types/terser-webpack-plugin/-/terser-webpack-plugin-4.2.2.tgz#d69b255108c370f811092c980e13d248e5188581"
+  integrity sha512-UIGSYVKxSi87qjOKrG/elFhumhLY41b1MjblsrrbiTgfblkb+78BO91/4z11EXFf+MOyBoDu5526phbHPIutxw==
   dependencies:
     "@types/webpack" "^4"
     terser "^4.6.13"
