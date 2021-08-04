@@ -74,10 +74,10 @@
         "webpack-extension-reloader": "1.1.4"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-svg-core": "1.2.35",
-        "@fortawesome/free-brands-svg-icons": "5.15.3",
-        "@fortawesome/free-regular-svg-icons": "5.15.3",
-        "@fortawesome/free-solid-svg-icons": "5.15.3",
+        "@fortawesome/fontawesome-svg-core": "1.2.36",
+        "@fortawesome/free-brands-svg-icons": "5.15.4",
+        "@fortawesome/free-regular-svg-icons": "5.15.4",
+        "@fortawesome/free-solid-svg-icons": "5.15.4",
         "chrome-extension-async": "git://github.com/KeithHenry/chromeExtensionAsync.git",
         "formbase": "12.0.1",
         "normalize-scss": "7.0.1",
