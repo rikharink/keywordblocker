@@ -70,7 +70,7 @@
         "web-ext": "6.2.0",
         "webpack": "4.46.0",
         "webpack-bundle-analyzer": "4.4.2",
-        "webpack-cli": "4.7.2",
+        "webpack-cli": "4.8.0",
         "webpack-extension-reloader": "1.1.4"
     },
     "dependencies": {
