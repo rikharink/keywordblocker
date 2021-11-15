@@ -35,7 +35,7 @@
         "@types/node": "16.11.7",
         "@types/optimize-css-assets-webpack-plugin": "5.0.4",
         "@types/terser-webpack-plugin": "4.2.2",
-        "@types/webpack": "4.41.31",
+        "@types/webpack": "4.41.32",
         "@typescript-eslint/eslint-plugin": "5.3.1",
         "@typescript-eslint/parser": "5.3.1",
         "clean-webpack-plugin": "4.0.0",
