@@ -4962,10 +4962,10 @@ form-data@~2.3.2:
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
 
-formbase@12.0.1:
-  version "12.0.1"
-  resolved "https://registry.yarnpkg.com/formbase/-/formbase-12.0.1.tgz#7e32cd998a0a434f9c1e8876a485028c32bbd194"
-  integrity sha512-BuvRQhEKtJBMc1I3gcwkh/kSXWIOReNzFgD04l5fhnCOOblu39TA6rQpYNDr8ETY5mVBxsXi2QoqMzRLjmVCqA==
+formbase@12.0.2:
+  version "12.0.2"
+  resolved "https://registry.yarnpkg.com/formbase/-/formbase-12.0.2.tgz#8c09034fc487004b5f7d2f99365c0f20326a0f3d"
+  integrity sha512-I10U6rGozo0zXpYvDXcx0osuO2vYtmxKZVaj7PK2KKTud26GOGxtJYXxDI0MFWNHUGQnDwNfwkUEJiqMwiHLvQ==
 
 fragment-cache@^0.2.1:
   version "0.2.1"
